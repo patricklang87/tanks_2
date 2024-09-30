@@ -3,6 +3,7 @@ import {
   canvasConstants,
   tankColors,
   designConstants,
+  actions,
 } from "../../../constants";
 import { arrayToRgba } from "../../../utils/colors";
 import { getCoordinatesOnCircle } from "../../../utils/angleManipulation";
@@ -76,11 +77,11 @@ export const initiateTank = (props) => {
     tankFallAnimationExecuting: false,
     fuel: 100,
     selectedAction: "standardShot",
-    //   availableActions: [
-    //     actions.standardShot,
-    //     actions.steelShotput,
-    //     actions.drive,
-    //   ],
+    availableActions: [
+      actions.standardShot,
+      actions.steelShotput,
+      actions.drive,
+    ],
   };
 };
 
@@ -117,6 +118,13 @@ const drawTank = (ctx, customProps) => {
 };
 
 export const drawTanks = (ctx, customProps) => {
-    const { tanks } = customProps;
+  const { tanks } = customProps;
+  ctx?.clearRect(0, 0, canvasConstants.width, canvasConstants.height);
   tanks?.forEach((tank) => drawTank(ctx, tank));
+};
+
+export const getSelectedActionData = (selectedAction, availableActions) => {
+  return (
+    availableActions?.find((action) => action.name === selectedAction) || {}
+  );
 };
