@@ -9,7 +9,7 @@ function App() {
 
   return (
     <>
-      <h1>Tank you muchly!</h1>
+      <h1>Tanks a million!</h1>
       <Counter />
       <GameScreen />
       
