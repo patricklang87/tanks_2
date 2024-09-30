@@ -16,7 +16,6 @@ const calculateStartingHeight = (props) => {
 
 const risingFallingValleyFlatOrPeak = () => {
   const indicator = Math.random();
-  console.log("ind", indicator);
   let returnObject = {
     getStartingHeight: (maxHeight) => Math.min(Math.random(), 0.3) * maxHeight,
     getDirection: () => 0.5,
@@ -24,7 +23,6 @@ const risingFallingValleyFlatOrPeak = () => {
   switch (true) {
     case 1 >= indicator && indicator > 0.8:
       // rising
-      console.log("rising");
       return {
         getStartingHeight: (maxHeight) =>
           Math.min(Math.random(), 0.1) * maxHeight,
@@ -32,7 +30,6 @@ const risingFallingValleyFlatOrPeak = () => {
       };
     case 0.8 >= indicator && indicator > 0.6:
       //falling
-      console.log("falling");
       return {
         getStartingHeight: (maxHeight) =>
           Math.max(Math.random(), 0.9) * maxHeight,
@@ -40,7 +37,6 @@ const risingFallingValleyFlatOrPeak = () => {
       };
     case 0.6 >= indicator && indicator > 0.4:
       // valley
-      console.log("valley");
       return {
         getStartingHeight: (maxHeight) =>
           Math.max(Math.random(), 0.9) * maxHeight,
@@ -50,7 +46,6 @@ const risingFallingValleyFlatOrPeak = () => {
       };
     case 0.4 >= indicator && indicator > 0.2:
       // peak
-      console.log("peak");
       return {
         getStartingHeight: (maxHeight) =>
           Math.min(Math.random(), 0.1) * maxHeight,
@@ -59,7 +54,6 @@ const risingFallingValleyFlatOrPeak = () => {
         },
       };
     default:
-      console.log(console.log("flat"));
       // flat
       return returnObject;
   }
@@ -118,6 +112,7 @@ export const drawTopography = (ctx, customProps) => {
   topography?.forEach((point, index) => {
     const positionX = point[0];
     const positionY = point[1];
+    
     if (index === 0) {
       ctx.moveTo(positionX, positionY);
     } else {

@@ -34,6 +34,6 @@ export const useInitiateGame = () => {
   //   ),
   // });
 
-  console.log("init top", initialTopography)
+
   dispatch(setTopography(initialTopography))
 };
