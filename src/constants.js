@@ -8,6 +8,7 @@ export const designConstants = {
   landscapeStrokeStyle: "darkgreen",
   landscapeStrokeWidth: 8,
   landscapeFillStyle: "lightgreen",
+  destroyedTankColor: "#997570",
 };
 
 export const topographyConstants = {
@@ -16,3 +17,16 @@ export const topographyConstants = {
   minHeightCoefficient: 0.2,
   maxHeightCoefficient: 0.8,
 };
+
+export const tankDimensions = {
+    height: 10,
+    width: 20,
+    turretLength: 15,
+  };
+
+  export const tankColors = [
+    [255, 118, 206, 1],
+    [253, 255, 194, 1],
+    [148, 255, 216, 1],
+    [163, 216, 255, 1],
+  ];
