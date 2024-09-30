@@ -39,10 +39,10 @@ const Canvas = (props) => {
 };
 
 Canvas.propTypes = {
-  animationFunction: PropTypes.function || null,
-  staticShapes: PropTypes.function || null,
+  animationFunction: PropTypes.func || null,
+  staticShapes: PropTypes.func || null,
   customProps: PropTypes.object || null,
-  cancelationCondition: PropTypes.function || null,
+  cancelationCondition: PropTypes.func || null,
 };
 
 export default Canvas;

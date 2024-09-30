@@ -1,11 +1,11 @@
-import { useEffect } from 'react';
-
 import Counter from './components/counter';
 import GameScreen from './components/gameDisplay/gamescreen';
+
 import './App.css'
+import { useInitiateGame } from './components/gameDisplay/gameControls';
 
 function App() {
-  useEffect(() => {}, []);
+  useInitiateGame();
 
   return (
     <>

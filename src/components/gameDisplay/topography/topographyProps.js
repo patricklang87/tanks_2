@@ -1,3 +1,5 @@
+import { canvasConstants, designConstants } from "../../../constants";
+
 const calculateStartingHeight = (props) => {
     const { canvasHeight, minHeightCoefficient, maxHeightCoefficient } = props;
     const maxHeight = canvasHeight * maxHeightCoefficient;
@@ -6,6 +8,14 @@ const calculateStartingHeight = (props) => {
       startingHeight = minHeightCoefficient * canvasHeight;
     return startingHeight;
   };
+
+// const risingFallingValleyFlatOrPeak = () => {
+//     const indicator = Math.random();
+//     let returnObject = {startingHeight: () => Math.random() * maxHeight, directionFunction: () => 0.5}
+//     switch (indcator) {
+
+//     }
+// }
 
 export const createInitialTopography = (props) => {
     const {
@@ -17,6 +27,7 @@ export const createInitialTopography = (props) => {
       maxHeightCoefficient,
     } = props;
     const points = [];
+
     const maxHeight = canvasHeight * maxHeightCoefficient;
     const incrementWidth = canvasWidth / increments;
     points.push([
@@ -47,3 +58,30 @@ export const createInitialTopography = (props) => {
   
     return points.map((point) => [point[0], canvasHeight - point[1]]);
   };
+
+  export const drawTopography = (ctx, customProps) => {
+    const { topography } = customProps;
+
+    ctx.beginPath();
+    topography?.forEach((point, index) => {
+      const positionX = point[0];
+      const positionY = point[1];
+      if (index === 0) {
+        ctx.moveTo(positionX, positionY);
+      } else {
+        ctx.lineTo(positionX, positionY);
+      }
+    });
+    ctx.lineTo(
+      canvasConstants.width,
+      canvasConstants.height +
+        designConstants.landscapeStrokeWidth
+    );
+    ctx.lineTo(0, canvasConstants.height);
+    ctx.strokeStyle = designConstants.landscapeStrokeStyle;
+    ctx.lineWidth = designConstants.landscapeStrokeWidth;
+    ctx.stroke();
+    ctx.fillStyle = designConstants.landscapeFillStyle;
+    ctx.fill();
+    ctx.closePath();
+  }
