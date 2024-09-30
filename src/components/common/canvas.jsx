@@ -1,0 +1,48 @@
+import { useEffect, useRef } from "react";
+import PropTypes from "prop-types";
+import { canvasConstants } from "../../constants";
+
+const Canvas = (props) => {
+  const {
+    animationFunction = null,
+    staticShapes = null,
+    customProps = {},
+    cancelationCondition,
+  } = props;
+  const canvasRef = useRef(null);
+  canvasRef.width =
+    canvasRef.height * (canvasRef.clientWidth / canvasRef.clientHeight);
+  useEffect(() => {
+    if (canvasRef?.current) {
+      const ctx = canvasRef.current.getContext("2d");
+      if (staticShapes) {
+        staticShapes(ctx, customProps);
+      }
+      if (animationFunction) {
+        let animationId = requestAnimationFrame(() =>
+          animationFunction(ctx, customProps)
+        );
+        if (cancelationCondition(customProps)) {
+          cancelAnimationFrame(animationId);
+        }
+      }
+    }
+  }, [customProps]);
+  return (
+    <canvas
+      ref={canvasRef}
+      width={canvasConstants.width}
+      height={canvasConstants.height}
+      className="layering-canvas"
+    />
+  );
+};
+
+Canvas.propTypes = {
+  animationFunction: PropTypes.function || null,
+  staticShapes: PropTypes.function || null,
+  customProps: PropTypes.object || null,
+  cancelationCondition: PropTypes.function || null,
+};
+
+export default Canvas;
