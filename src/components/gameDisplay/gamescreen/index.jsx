@@ -6,11 +6,14 @@ import Tanks from "../tanks/tanks";
 const GameScreen = () => {
   return (
     <>
-      <div className="canvas-container">
+    <div>
+    <div className="canvas-container">
         <StaticBackground />
         <Topography />
         <Tanks />
       </div>
+    </div>
+
     </>
   );
 };

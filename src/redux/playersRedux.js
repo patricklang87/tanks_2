@@ -4,7 +4,6 @@ const playersSlice = createSlice({
   name: "players",
   initialState: {
     tanks: [],
-    value: 0,
     currentPlayerIndex: 0,
   },
   reducers: {
@@ -23,6 +22,19 @@ const playersSlice = createSlice({
     setCurrentTankShotPower: (state, action) => {
       state.tanks[state.currentPlayerIndex].shotPower = action.payload;
     },
+    setCurrentTankDriveDistance: (state, action) => {
+      state.tanks[state.currentPlayerIndex].driveDistance = action.payload;
+    },
+    setCurrentTankSelectedAction: (state, action) => {
+      state.tanks[state.currentPlayerIndex].selectedAction = action.payload;
+    },
+    advancePlayerTurn: (state) => {
+      if (state.currentPlayerIndex < state.tanks.length - 1) {
+        state.currentPlayerIndex = state.currentPlayerIndex + 1;
+      } else {
+        state.currentPlayerIndex = 0;
+      }
+    },
   },
 });
 
@@ -32,6 +44,9 @@ export const {
   setInitialTanks,
   setCurrentTankTurretAngle,
   setCurrentTankShotPower,
+  setCurrentTankDriveDistance,
+  setCurrentTankSelectedAction,
+  advancePlayerTurn,
 } = playersSlice.actions;
 export const selectTanks = (state) => state.players.tanks;
 export const selectCurrentTank = (state) =>

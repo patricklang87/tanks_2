@@ -1,9 +1,9 @@
-import Counter from './components/counter';
-import GameScreen from './components/gameDisplay/gamescreen';
+import GameScreen from "./components/gameDisplay/gamescreen";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-import './App.css'
-import { useInitiateGame } from './components/gameDisplay/gameControls';
-import ControlPanel from './components/gameDisplay/controlPanel';
+import "./App.css";
+import { useInitiateGame } from "./components/gameDisplay/gameControls";
+import ControlPanel from "./components/gameDisplay/controlPanel/ControlPanel";
 
 function App() {
   useInitiateGame();
@@ -11,12 +11,10 @@ function App() {
   return (
     <>
       <h1>Tanks a million!</h1>
-      <Counter />
       <ControlPanel />
       <GameScreen />
-      
     </>
-  )
+  );
 }
 
-export default App
+export default App;

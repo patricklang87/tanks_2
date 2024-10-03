@@ -1,9 +1,5 @@
 import { useId } from "react";
 import Form from "react-bootstrap/Form";
-// import {
-//   setTurretAngle,
-//   setShotPower,
-// } from "../gameplay/gameControls";
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectCurrentTank,
@@ -12,7 +8,7 @@ import {
 } from "../../../redux/playersRedux";
 import { getSelectedActionData } from "../tanks/tanksProps";
 
-const ControlPanel = () => {
+const ShotControls = () => {
   const dispatch = useDispatch();
   const currentTank = useSelector(selectCurrentTank);
 
@@ -74,4 +70,4 @@ const ControlPanel = () => {
   );
 };
 
-export default ControlPanel;
+export default ShotControls;

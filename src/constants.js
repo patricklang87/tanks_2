@@ -1,6 +1,6 @@
 export const canvasConstants = {
-  width: 1200,
-  height: 600,
+  width: 1400,
+  height: 800,
 };
 
 export const designConstants = {
