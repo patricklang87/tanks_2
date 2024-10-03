@@ -10,6 +10,7 @@ import {
 } from "../../../redux/playersRedux";
 import { getSelectedActionData } from "../tanks/tanksProps";
 import { actions } from "../../../constants";
+import { launchProjectile } from "../gameControls";
 // import { animationsAreExecuting } from "./playDashboardHooks";
 // import { getAnimationStatement } from "./playDashboardHooks";
 
@@ -91,6 +92,7 @@ const ControlPanel = () => {
             onClick={() => {
               console.log("clicked fire");
               console.log("currentPlayerIndex", currentPlayerIndex);
+              dispatch(() => launchProjectile({dispatch, tank}))
               dispatch(advancePlayerTurn());
             }}
           >
