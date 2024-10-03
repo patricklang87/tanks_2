@@ -1,0 +1,12 @@
+.control-panel-container {
+    max-width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+.control-panel {
+    background-color: lightgrey;
+    padding: 10px;
+    width: 1200px;
+}

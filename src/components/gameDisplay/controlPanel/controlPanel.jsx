@@ -1,3 +1,4 @@
+import "../../../css/controlPanel.css";
 import Shields from "./Shields";
 import ShotControls from "./ShotControls";
 import DriveControls from "./DriveControls";
@@ -51,7 +52,9 @@ const ControlSection = () => {
 const ControlPanel = () => {
   const dispatch = useDispatch();
   const tank = useSelector(selectCurrentTank);
-  const currentPlayerIndex = useSelector(state => state.players.currentPlayerIndex)
+  const currentPlayerIndex = useSelector(
+    (state) => state.players.currentPlayerIndex
+  );
 
   //   const animationsExecuting = animationsAreExecuting(gameState);
   // const animationStatement = getAnimationStatement(gameState);
@@ -65,8 +68,10 @@ const ControlPanel = () => {
     selectedAction.rounds === 0 && selectedAction.type === "PROJECTILE";
 
   return (
-    <div style={{ backgroundColor: "lightgrey", padding: "10px" }}>
-      <div className="row">
+    <div
+    className="control-panel-container"
+    >
+      <div className="row control-panel">
         <div className="col-4">
           <Shields />
         </div>
@@ -80,13 +85,13 @@ const ControlPanel = () => {
         <div className="col-1">
           <button
             disabled={
-            //   animationsExecuting ||
+              //   animationsExecuting ||
               noRoundsRemain
             }
             onClick={() => {
-                console.log("clicked fire")
-                console.log("currentPlayerIndex", currentPlayerIndex)
-                dispatch(advancePlayerTurn())
+              console.log("clicked fire");
+              console.log("currentPlayerIndex", currentPlayerIndex);
+              dispatch(advancePlayerTurn());
             }}
           >
             {selectedAction.type === "DRIVE" ? "Drive!" : "Fire!"}

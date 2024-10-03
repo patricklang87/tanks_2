@@ -10,9 +10,9 @@ function App() {
 
   return (
     <>
-      <h1>Tanks a million!</h1>
-      <ControlPanel />
+     <h1>Tanks A Million!</h1>
       <GameScreen />
+      <ControlPanel />
     </>
   );
 }
