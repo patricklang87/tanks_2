@@ -3,15 +3,17 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectProjectilePosition } from "../../../redux/projectileRedux";
 import {
   animateProjectile,
-  cancelProjectileAnimation,
+  shouldCancelProjectileAnimation,
+  resetProjectileAnimationAndAdvanceTurn
 } from "./projectileProps";
 import { selectCurrentTank } from "../../../redux/playersRedux";
 
 const Projectile = () => {
   const dispatch = useDispatch();
   const projectilePosition = useSelector(selectProjectilePosition);
+  const projectileVelocity = useSelector(state => state.projectile.velocity)
   const tank = useSelector(selectCurrentTank);
-  const { turretAngle, position } = tank;
+  const { turretAngle, position, shotPower } = tank;
 
   return (
     <Canvas
@@ -19,10 +21,13 @@ const Projectile = () => {
       customProps={{
         dispatch,
         projectilePosition,
+        projectileVelocity,
         turretAngle,
         tankPosition: position,
+        shotPower,
       }}
-      cancelationCondition={cancelProjectileAnimation}
+      cancelationCondition={shouldCancelProjectileAnimation}
+      onCancelation={resetProjectileAnimationAndAdvanceTurn}
     />
   );
 };

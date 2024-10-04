@@ -18,6 +18,11 @@ export const topographyConstants = {
   maxHeightCoefficient: 0.8,
 };
 
+export const environmentConstants = {
+  gravity: 0.5,
+  shotSlowingFactor: 0.3,
+};
+
 export const tankDimensions = {
   height: 10,
   width: 20,

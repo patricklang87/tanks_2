@@ -6,7 +6,6 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   setCurrentTankSelectedAction,
   selectCurrentTank,
-  advancePlayerTurn,
 } from "../../../redux/playersRedux";
 import { getSelectedActionData } from "../tanks/tanksProps";
 import { actions } from "../../../constants";
@@ -90,10 +89,8 @@ const ControlPanel = () => {
               noRoundsRemain
             }
             onClick={() => {
-              console.log("clicked fire");
               console.log("currentPlayerIndex", currentPlayerIndex);
               dispatch(() => launchProjectile({dispatch, tank}))
-              dispatch(advancePlayerTurn());
             }}
           >
             {selectedAction.type === "DRIVE" ? "Drive!" : "Fire!"}

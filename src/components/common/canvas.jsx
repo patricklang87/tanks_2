@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useMemo } from "react";
 import PropTypes from "prop-types";
 import { canvasConstants } from "../../constants";
 
@@ -8,10 +8,12 @@ const Canvas = (props) => {
     staticShapes = null,
     customProps = {},
     cancelationCondition,
+    onCancelation = null,
   } = props;
   const canvasRef = useRef(null);
   canvasRef.width =
     canvasRef.height * (canvasRef.clientWidth / canvasRef.clientHeight);
+
   useEffect(() => {
     if (canvasRef?.current) {
       const ctx = canvasRef.current.getContext("2d");
@@ -24,10 +26,14 @@ const Canvas = (props) => {
         );
         if (cancelationCondition(customProps)) {
           cancelAnimationFrame(animationId);
+          if (onCancelation) {
+            onCancelation(customProps)
+          }
         }
       }
     }
   }, [customProps]);
+
   return (
     <canvas
       ref={canvasRef}
@@ -43,6 +49,7 @@ Canvas.propTypes = {
   staticShapes: PropTypes.func || null,
   customProps: PropTypes.object || null,
   cancelationCondition: PropTypes.func || null,
+  onCancelation: PropTypes.func || null,
 };
 
 export default Canvas;
