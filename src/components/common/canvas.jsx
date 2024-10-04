@@ -1,4 +1,4 @@
-import { useEffect, useRef, useMemo } from "react";
+import { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { canvasConstants } from "../../constants";
 

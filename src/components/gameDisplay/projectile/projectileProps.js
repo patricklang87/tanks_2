@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { canvasConstants, environmentConstants } from "../../../constants";
 import {
   setProjectileValues,
