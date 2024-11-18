@@ -7,3 +7,14 @@
 .canvas-container {
     position: relative;
 }
+
+.title-container {
+    z-index: 1;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+}
+
+.title-card {
+    padding: 20px 0 20px 0;
+}

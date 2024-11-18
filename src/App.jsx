@@ -10,7 +10,6 @@ function App() {
 
   return (
     <>
-     <h1>Tanks A Million!</h1>
       <GameScreen />
       <ControlPanel />
     </>

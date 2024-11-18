@@ -13,6 +13,11 @@ const GameScreen = () => {
     projectilePosition[0] !== null && projectilePosition[1] !== null;
   return (
     <>
+      <div className="title-container">
+        {" "}
+        <h1 className="title-card">Tanks A Million!</h1>
+      </div>
+
       <div
         className="canvas-container"
         style={{
