@@ -7,9 +7,9 @@ import {
   setProjectileValues,
   clearProjectileValues,
 } from "../../../redux/projectileRedux";
-import { advancePlayerTurn, setNewTankShields } from "../../../redux/playersRedux";
+import { advancePlayerTurn } from "../../../redux/playersRedux";
 import { degreesToRadians } from "../../../utils/angleManipulation";
-import { reduceTankShields } from "../../../redux/playersRedux";
+import { setNewTankShields } from "../../../redux/playersRedux";
 
 export const animateProjectile = (ctx, customProps) => {
   const { dispatch, projectilePosition, projectileVelocity } = customProps;
@@ -44,16 +44,15 @@ export const shouldCancelProjectileAnimation = (customProps) => {
 
   const struckTanks = checkForStrike(projectilePosition, tanks);
 
-  dispatch(setNewTankShields(struckTanks)); 
-
+  dispatch(setNewTankShields(struckTanks));
+  
   return outOfBounds || struckTanks.length;
 };
 
 export const resetProjectileAnimationAndAdvanceTurn = (customProps) => {
   const { dispatch } = customProps;
-  dispatch(reduceTankShields());
-  dispatch(advancePlayerTurn());
   dispatch(clearProjectileValues());
+  dispatch(advancePlayerTurn());
 };
 
 export const drawCircle = (ctx, circleDims = {}) => {

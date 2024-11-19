@@ -4,9 +4,8 @@ import { useDispatch } from "react-redux";
 import { setTopography } from "../../redux/topographyRedux";
 import {
   setInitialTanks,
-  setUpcomingPlayerIndex,
 } from "../../redux/playersRedux";
-import { setProjectileValues } from "../../redux/projectileRedux";
+import { setProjectileValues, startProjectileAnimating } from "../../redux/projectileRedux";
 import {
   calculateTurretEndpoints,
   generateTankPositions,
@@ -68,5 +67,5 @@ export const launchProjectile = (props) => {
   dispatch(
     setProjectileValues({ position: endingPoint, velocity: initialVelocities })
   );
-  dispatch(setUpcomingPlayerIndex());
+  dispatch(startProjectileAnimating());
 };

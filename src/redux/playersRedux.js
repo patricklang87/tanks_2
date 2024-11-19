@@ -5,7 +5,6 @@ const playersSlice = createSlice({
   name: "players",
   initialState: {
     tanks: [],
-    newTankShields: {},
     currentPlayerIndex: 0,
     upcomingPlayerIndex: 1,
   },
@@ -31,30 +30,19 @@ const playersSlice = createSlice({
     setCurrentTankSelectedAction: (state, action) => {
       state.tanks[state.currentPlayerIndex].selectedAction = action.payload;
     },
-    setUpcomingPlayerIndex: (state) => {
-      if (state.currentPlayerIndex < state.tanks.length - 1) {
-        state.upcomingPlayerIndex = state.currentPlayerIndex + 1;
-      } else {
-        state.upcomingPlayerIndex = 0;
-      }
-    },
     advancePlayerTurn: (state) => {
-      state.currentPlayerIndex = state.upcomingPlayerIndex;
+      if (state.currentPlayerIndex < state.tanks.length - 1) {
+        state.currentPlayerIndex = state.currentPlayerIndex + 1;
+      } else {
+        state.currentPlayerIndex = 0;
+      }
     },
     setNewTankShields: (state, action) => {
       for (let tankInd of action.payload) {
         const attackDamage =
           actions[state.tanks[state.currentPlayerIndex].selectedAction].damage;
         const newShieldValue = state.tanks[tankInd].shields - attackDamage;
-        state.newTankShields[tankInd] = newShieldValue;
-      }
-    },
-    reduceTankShields: (state) => {
-      if (Object.keys(state.newTankShields).length > 0) {
-        for (let [tankInd, newShields] of Object.entries(state.newTankShields)) {
-          state.tanks[tankInd].shields = newShields;
-        }
-        state.newTankShields = {};
+        state.tanks[tankInd].shields = newShieldValue;
       }
     },
   },
@@ -68,9 +56,7 @@ export const {
   setCurrentTankShotPower,
   setCurrentTankDriveDistance,
   setCurrentTankSelectedAction,
-  setUpcomingPlayerIndex,
   advancePlayerTurn,
-  reduceTankShields,
   setNewTankShields,
 } = playersSlice.actions;
 export const selectTanks = (state) => state.players.tanks;

@@ -5,12 +5,10 @@ import Tanks from "../tanks/tanks";
 import { canvasConstants } from "../../../constants";
 import Projectile from "../projectile/projectile";
 import { useSelector } from "react-redux";
-import { selectProjectilePosition } from "../../../redux/projectileRedux";
+import { selectProjectileAnimating } from "../../../redux/projectileRedux";
 
 const GameScreen = () => {
-  const projectilePosition = useSelector(selectProjectilePosition);
-  const displayProjectile =
-    projectilePosition[0] !== null && projectilePosition[1] !== null;
+  const displayProjectile = useSelector(selectProjectileAnimating);
   return (
     <>
       <div className="title-container">
