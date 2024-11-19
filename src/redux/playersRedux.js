@@ -1,9 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { actions } from "../constants";
 
 const playersSlice = createSlice({
   name: "players",
   initialState: {
     tanks: [],
+    newTankShields: {},
     currentPlayerIndex: 0,
     upcomingPlayerIndex: 1,
   },
@@ -39,6 +41,22 @@ const playersSlice = createSlice({
     advancePlayerTurn: (state) => {
       state.currentPlayerIndex = state.upcomingPlayerIndex;
     },
+    setNewTankShields: (state, action) => {
+      for (let tankInd of action.payload) {
+        const attackDamage =
+          actions[state.tanks[state.currentPlayerIndex].selectedAction].damage;
+        const newShieldValue = state.tanks[tankInd].shields - attackDamage;
+        state.newTankShields[tankInd] = newShieldValue;
+      }
+    },
+    reduceTankShields: (state) => {
+      if (Object.keys(state.newTankShields).length > 0) {
+        for (let [tankInd, newShields] of Object.entries(state.newTankShields)) {
+          state.tanks[tankInd].shields = newShields;
+        }
+        state.newTankShields = {};
+      }
+    },
   },
 });
 
@@ -52,6 +70,8 @@ export const {
   setCurrentTankSelectedAction,
   setUpcomingPlayerIndex,
   advancePlayerTurn,
+  reduceTankShields,
+  setNewTankShields,
 } = playersSlice.actions;
 export const selectTanks = (state) => state.players.tanks;
 export const selectCurrentTank = (state) =>

@@ -89,7 +89,6 @@ const ControlPanel = () => {
               noRoundsRemain
             }
             onClick={() => {
-              console.log("currentPlayerIndex", currentPlayerIndex);
               dispatch(() => launchProjectile({dispatch, tank}))
             }}
           >

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import PropTypes from "prop-types";
 import { canvasConstants } from "../../constants";
 
@@ -10,6 +10,7 @@ const Canvas = (props) => {
     cancelationCondition,
     onCancelation = null,
   } = props;
+
   const canvasRef = useRef(null);
   canvasRef.width =
     canvasRef.height * (canvasRef.clientWidth / canvasRef.clientHeight);

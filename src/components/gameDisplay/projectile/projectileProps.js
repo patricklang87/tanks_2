@@ -1,10 +1,15 @@
-import { canvasConstants, environmentConstants } from "../../../constants";
+import {
+  canvasConstants,
+  environmentConstants,
+  tankDimensions,
+} from "../../../constants";
 import {
   setProjectileValues,
   clearProjectileValues,
 } from "../../../redux/projectileRedux";
-import { advancePlayerTurn } from "../../../redux/playersRedux";
+import { advancePlayerTurn, setNewTankShields } from "../../../redux/playersRedux";
 import { degreesToRadians } from "../../../utils/angleManipulation";
+import { reduceTankShields } from "../../../redux/playersRedux";
 
 export const animateProjectile = (ctx, customProps) => {
   const { dispatch, projectilePosition, projectileVelocity } = customProps;
@@ -30,19 +35,23 @@ export const animateProjectile = (ctx, customProps) => {
 };
 
 export const shouldCancelProjectileAnimation = (customProps) => {
-  const { projectilePosition } = customProps;
+  const { projectilePosition, tanks, dispatch } = customProps;
   const [currX, currY] = projectilePosition;
   const outOfBounds =
     currX > canvasConstants.width ||
     currX < 0 ||
     currY > canvasConstants.height;
 
-  return outOfBounds;
+  const struckTanks = checkForStrike(projectilePosition, tanks);
+
+  dispatch(setNewTankShields(struckTanks)); 
+
+  return outOfBounds || struckTanks.length;
 };
 
 export const resetProjectileAnimationAndAdvanceTurn = (customProps) => {
   const { dispatch } = customProps;
-  console.log("out of bounds");
+  dispatch(reduceTankShields());
   dispatch(advancePlayerTurn());
   dispatch(clearProjectileValues());
 };
@@ -111,4 +120,23 @@ const getLaunchAngle = (props) => {
   if (turretAngle < -90 && turretAngle >= -180)
     turretAngleAgainstHorizon = turretAngle;
   return turretAngleAgainstHorizon;
+};
+
+const checkForStrike = (projectilePosition, tanks) => {
+  const { height, width } = tankDimensions;
+  let struckTanks = [];
+  const [currX, currY] = projectilePosition;
+  tanks?.forEach((tank, index) => {
+    const [tankX, tankY] = tank.position;
+    if (
+      currX >= tankX - 0.5 * width &&
+      currX <= tankX + 0.5 * width &&
+      currY <= tankY + 0.5 * height &&
+      currY >= tankY - 0.5 * height
+    ) {
+      struckTanks.push(index);
+    }
+  });
+
+  return struckTanks;
 };
