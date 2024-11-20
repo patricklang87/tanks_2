@@ -128,10 +128,10 @@ const checkForStrike = (projectilePosition, tanks) => {
   tanks?.forEach((tank, index) => {
     const [tankX, tankY] = tank.position;
     if (
-      currX >= tankX - 0.5 * width &&
-      currX <= tankX + 0.5 * width &&
-      currY <= tankY + 0.5 * height &&
-      currY >= tankY - 0.5 * height
+      currX >= tankX &&
+      currX <= tankX + width &&
+      currY <= tankY + height &&
+      currY >= tankY
     ) {
       struckTanks.push(index);
     }
