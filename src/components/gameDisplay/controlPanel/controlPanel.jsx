@@ -8,9 +8,9 @@ import {
   selectCurrentTank,
 } from "../../../redux/playersRedux";
 import { getSelectedActionData } from "../tanks/tanksProps";
+import { selectProjectileAnimating } from "../../../redux/projectileRedux";
 import { actions } from "../../../constants";
 import { launchProjectile } from "../gameControls";
-// import { animationsAreExecuting } from "./playDashboardHooks";
 // import { getAnimationStatement } from "./playDashboardHooks";
 
 const ControlSection = () => {
@@ -52,11 +52,8 @@ const ControlSection = () => {
 const ControlPanel = () => {
   const dispatch = useDispatch();
   const tank = useSelector(selectCurrentTank);
-  const currentPlayerIndex = useSelector(
-    (state) => state.players.currentPlayerIndex
-  );
 
-  //   const animationsExecuting = animationsAreExecuting(gameState);
+    const animationsExecuting = useSelector(selectProjectileAnimating)
   // const animationStatement = getAnimationStatement(gameState);
 
   const selectedAction = getSelectedActionData(
@@ -79,13 +76,13 @@ const ControlPanel = () => {
           {/* {animationsExecuting && <p>&quot;{animationStatement}&quot;</p>}
           {!animationsExecuting && ( */}
           <ControlSection />
-          {/* )} */}
+        {/* )} */}
         </div>
 
         <div className="col-1">
           <button
             disabled={
-              //   animationsExecuting ||
+              animationsExecuting ||
               noRoundsRemain
             }
             onClick={() => {
