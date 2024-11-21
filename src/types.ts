@@ -6,3 +6,19 @@ export type Action = {
     rounds?: number | string;
     fuel?: number;
   }
+
+  export type Tank = {
+    turretAngle: number;
+    shotPower: number;
+    driveDistance: number;
+    shields: number;
+    position: number[];
+    targetPosition: number[];
+    tankDriveAnimationExecuting: boolean;
+    localColor: string;
+    currentColor: string;
+    tankFallAnimationExecuting: boolean;
+    fuel: number;
+    selectedAction: string;
+    availableActions: {}[]
+  }

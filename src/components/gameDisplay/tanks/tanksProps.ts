@@ -7,6 +7,7 @@ import {
 } from "../../../constants";
 import { arrayToRgba } from "../../../utils/colors";
 import { getCoordinatesOnCircle } from "../../../utils/angleManipulation";
+import { Tank } from "../../../types";
 
 export const generateTankPositions = ({
   topography,
@@ -82,21 +83,7 @@ export const initiateTank = ({
 }: {
   index: number;
   tankPosition: number[];
-}) : {
-  turretAngle: number;
-  shotPower: number;
-  driveDistance: number;
-  shields: number;
-  position: number[];
-  targetPosition: number[];
-  tankDriveAnimationExecuting: boolean;
-  localColor: string;
-  currentColor: string;
-  tankFallAnimationExecuting: boolean;
-  fuel: number;
-  selectedAction: string;
-  availableActions: {}[]
-} => {
+}) : Tank => {
   return {
     turretAngle: -90,
     shotPower: 50,
