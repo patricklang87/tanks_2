@@ -2,7 +2,8 @@ import "../../../css/controlPanel.css";
 import Shields from "./Shields";
 import ShotControls from "./ShotControls";
 import DriveControls from "./DriveControls";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "../../../redux/hooks";
 import {
   setCurrentTankSelectedAction,
   selectCurrentTank,
@@ -14,7 +15,7 @@ import { launchProjectile } from "../gameControls";
 // import { getAnimationStatement } from "./playDashboardHooks";
 
 const ControlSection = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const tank = useSelector(selectCurrentTank);
   const selectedAction = actions[tank.selectedAction];
   const availableActions = tank.availableActions;
@@ -50,7 +51,7 @@ const ControlSection = () => {
 };
 
 const ControlPanel = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const tank = useSelector(selectCurrentTank);
 
     const animationsExecuting = useSelector(selectProjectileAnimating)

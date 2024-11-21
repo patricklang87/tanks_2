@@ -1,6 +1,6 @@
 import { createInitialTopography } from "./topography/topographyProps";
 import { topographyConstants, canvasConstants } from "../../constants";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "../../redux/hooks";
 import { setTopography } from "../../redux/topographyRedux";
 import {
   setInitialTanks,
@@ -16,7 +16,7 @@ import { Tank } from "../../types";
 
 export const useInitiateGame = () : void => {
   const { height: canvasHeight, width: canvasWidth } = canvasConstants;
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const initialTopography = createInitialTopography({
     canvasHeight,

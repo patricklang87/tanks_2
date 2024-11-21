@@ -1,6 +1,6 @@
 import { createInitialTopography } from "./topography/topographyProps";
 import { topographyConstants, canvasConstants } from "../../constants";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "../../redux/hooks";
 import { setTopography } from "../../redux/topographyRedux";
 import { setInitialTanks, } from "../../redux/playersRedux";
 import { setProjectileValues, startProjectileAnimating } from "../../redux/projectileRedux";
@@ -8,7 +8,7 @@ import { calculateTurretEndpoints, generateTankPositions, initiateTank, } from "
 import { calculateInitialVelocities } from "./projectile/projectileProps";
 export const useInitiateGame = () => {
     const { height: canvasHeight, width: canvasWidth } = canvasConstants;
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const initialTopography = createInitialTopography({
         canvasHeight,
         canvasWidth,
