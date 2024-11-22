@@ -2,8 +2,8 @@ import { createInitialTopography } from "./topography/topographyProps";
 import { topographyConstants, canvasConstants } from "../../constants";
 import { useAppDispatch } from "../../redux/hooks";
 import { setTopography } from "../../redux/topographyRedux";
-import { setInitialTanks, } from "../../redux/playersRedux";
-import { setProjectileValues, startProjectileAnimating } from "../../redux/projectileRedux";
+import { reduceRemainingRounds, setInitialTanks, } from "../../redux/playersRedux";
+import { setProjectileValues, startProjectileAnimating, } from "../../redux/projectileRedux";
 import { calculateTurretEndpoints, generateTankPositions, initiateTank, } from "./tanks/tanksProps";
 import { calculateInitialVelocities } from "./projectile/projectileProps";
 export const useInitiateGame = () => {
@@ -36,7 +36,7 @@ export const useInitiateGame = () => {
     dispatch(setTopography(initialTopography));
     dispatch(setInitialTanks(initialTanks));
 };
-export const launchProjectile = ({ dispatch, tank }) => {
+export const launchProjectile = ({ dispatch, tank, }) => {
     const { turretAngle, position, shotPower } = tank;
     const { endingPoint } = calculateTurretEndpoints({
         turretAngle,
@@ -46,6 +46,7 @@ export const launchProjectile = ({ dispatch, tank }) => {
         turretAngle,
         initialVelocity: shotPower,
     });
+    dispatch(reduceRemainingRounds());
     dispatch(setProjectileValues({ position: endingPoint, velocity: initialVelocities }));
     dispatch(startProjectileAnimating());
 };

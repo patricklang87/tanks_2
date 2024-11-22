@@ -1,5 +1,5 @@
 import { jsx as _jsx, Fragment as _Fragment, jsxs as _jsxs } from "react/jsx-runtime";
-import GameScreen from "./components/gameDisplay/gamescreen";
+import GameScreen from "./components/gameDisplay/gamescreen/index";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import { useInitiateGame } from "./components/gameDisplay/gameControls";

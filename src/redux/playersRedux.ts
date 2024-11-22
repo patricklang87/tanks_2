@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { actions } from "../constants";
 import { RootState } from "./store";
-import { Tank } from "../types";
+import { Tank, Action } from "../types";
 
 interface PlayersState {
   tanks: Tank[];
@@ -51,6 +51,26 @@ const playersSlice = createSlice({
         state.tanks[tankInd].shields = newShieldValue;
       }
     },
+    reduceRemainingRounds: (state) => {
+      const attackingTank = state.tanks[state.currentPlayerIndex];
+      const actionSelector =
+        attackingTank.selectedAction as keyof typeof actions;
+      const selectedAction = actions[actionSelector];
+      const selectedActionIndex = attackingTank.availableActions.findIndex(
+        (option: Action) => option.name === actionSelector
+      );
+      const selectedActionRounds =
+        attackingTank.availableActions[selectedActionIndex].rounds;
+      if (
+        selectedActionRounds &&
+        selectedAction.type === "PROJECTILE" &&
+        typeof selectedActionRounds == "number"
+      ) {
+        state.tanks[state.currentPlayerIndex].availableActions[
+          selectedActionIndex
+        ].rounds = selectedActionRounds - 1;
+      }
+    },
   },
 });
 
@@ -62,6 +82,7 @@ export const {
   setCurrentTankSelectedAction,
   advancePlayerTurn,
   setNewTankShields,
+  reduceRemainingRounds,
 } = playersSlice.actions;
 export const selectTanks = (state: RootState) => state.players.tanks;
 export const selectCurrentTank = (state: RootState) =>
