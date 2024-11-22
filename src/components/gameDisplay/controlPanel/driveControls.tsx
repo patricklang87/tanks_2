@@ -4,12 +4,12 @@ import {
   setCurrentTankDriveDistance,
   selectCurrentTank,
 } from "../../../redux/playersRedux";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 
 const DriveControls = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const driveInputId = useId();
-  const currentTank = useSelector(selectCurrentTank);
+  const currentTank = useAppSelector(selectCurrentTank);
   const { driveDistance } = currentTank;
   return (
     <div className="align-items-center">

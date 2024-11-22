@@ -1,7 +1,7 @@
 import "../../../css/controlPanel.css";
-import Shields from "./Shields";
-import ShotControls from "./ShotControls";
-import DriveControls from "./DriveControls";
+import Shields from "./shields";
+import ShotControls from "./shotControls";
+import DriveControls from "./driveControls";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../../redux/hooks";
 import {
@@ -17,7 +17,7 @@ import { launchProjectile } from "../gameControls";
 const ControlSection = () => {
   const dispatch = useAppDispatch();
   const tank = useSelector(selectCurrentTank);
-  const selectedAction = actions[tank.selectedAction];
+  const selectedAction = actions[tank.selectedAction as keyof typeof actions];
   const availableActions = tank.availableActions;
   const availableActionsFiltered = availableActions.filter(
     (action) => action.name !== selectedAction.name
@@ -31,7 +31,9 @@ const ControlSection = () => {
         className="form-select"
         aria-label="Select action"
       >
-        <option defaultValue>{selectedAction.displayName}</option>
+        <option defaultValue={selectedAction.displayName}>
+          {selectedAction.displayName}
+        </option>
         {availableActionsFiltered.map((action) => {
           return (
             <option
@@ -54,7 +56,7 @@ const ControlPanel = () => {
   const dispatch = useAppDispatch();
   const tank = useSelector(selectCurrentTank);
 
-    const animationsExecuting = useSelector(selectProjectileAnimating)
+  const animationsExecuting = useSelector(selectProjectileAnimating);
   // const animationStatement = getAnimationStatement(gameState);
 
   const selectedAction = getSelectedActionData(
@@ -63,12 +65,10 @@ const ControlPanel = () => {
   );
 
   const noRoundsRemain =
-    selectedAction.rounds === 0 && selectedAction.type === "PROJECTILE";
+    selectedAction?.rounds === 0 && selectedAction?.type === "PROJECTILE";
 
   return (
-    <div
-    className="control-panel-container"
-    >
+    <div className="control-panel-container">
       <div className="row control-panel">
         <div className="col-4">
           <Shields />
@@ -77,20 +77,17 @@ const ControlPanel = () => {
           {/* {animationsExecuting && <p>&quot;{animationStatement}&quot;</p>}
           {!animationsExecuting && ( */}
           <ControlSection />
-        {/* )} */}
+          {/* )} */}
         </div>
 
         <div className="col-1">
           <button
-            disabled={
-              animationsExecuting ||
-              noRoundsRemain
-            }
+            disabled={animationsExecuting || noRoundsRemain}
             onClick={() => {
-              dispatch(() => launchProjectile({dispatch, tank}))
+              dispatch(() => launchProjectile({ dispatch, tank }));
             }}
           >
-            {selectedAction.type === "DRIVE" ? "Drive!" : "Fire!"}
+            {selectedAction?.type === "DRIVE" ? "Drive!" : "Fire!"}
           </button>
         </div>
       </div>

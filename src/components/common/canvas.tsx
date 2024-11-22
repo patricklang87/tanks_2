@@ -1,8 +1,16 @@
-import { useEffect, useRef } from "react";
-import PropTypes from "prop-types";
+import { useEffect, useRef, RefObject } from "react";
 import { canvasConstants } from "../../constants";
+import { ToastContainer } from "react-bootstrap";
 
-const Canvas = (props) => {
+interface Props {
+  animationFunction?: Function;
+  staticShapes?: Function;
+  customProps?: {};
+  cancelationCondition?: Function;
+  onCancelation?: Function;
+}
+
+const Canvas = (props: Props) => {
   const {
     animationFunction = null,
     staticShapes = null,
@@ -11,9 +19,19 @@ const Canvas = (props) => {
     onCancelation = null,
   } = props;
 
-  const canvasRef = useRef(null);
-  canvasRef.width =
-    canvasRef.height * (canvasRef.clientWidth / canvasRef.clientHeight);
+  interface CanvasRef extends RefObject<HTMLCanvasElement> {
+    width?: number;
+    height?: number;
+    clientWidth?: number;
+    clientHeight?: number;
+  }
+
+  const canvasRef: CanvasRef = useRef(null);
+
+  if (canvasRef.height && canvasRef.clientWidth && canvasRef.clientHeight) {
+    canvasRef.width =
+      canvasRef.height * (canvasRef.clientWidth / canvasRef.clientHeight);
+  }
 
   useEffect(() => {
     if (canvasRef?.current) {
@@ -25,10 +43,10 @@ const Canvas = (props) => {
         let animationId = requestAnimationFrame(() =>
           animationFunction(ctx, customProps)
         );
-        if (cancelationCondition(customProps)) {
+        if (cancelationCondition && cancelationCondition(customProps)) {
           cancelAnimationFrame(animationId);
           if (onCancelation) {
-            onCancelation(customProps)
+            onCancelation(customProps);
           }
         }
       }
@@ -43,14 +61,6 @@ const Canvas = (props) => {
       className="layering-canvas"
     />
   );
-};
-
-Canvas.propTypes = {
-  animationFunction: PropTypes.func || null,
-  staticShapes: PropTypes.func || null,
-  customProps: PropTypes.object || null,
-  cancelationCondition: PropTypes.func || null,
-  onCancelation: PropTypes.func || null,
 };
 
 export default Canvas;

@@ -20,5 +20,5 @@ export type Action = {
     tankFallAnimationExecuting: boolean;
     fuel: number;
     selectedAction: string;
-    availableActions: {}[]
+    availableActions: Action[];
   }

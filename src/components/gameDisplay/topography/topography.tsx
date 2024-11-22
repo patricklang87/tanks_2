@@ -1,10 +1,11 @@
 import Canvas from "../../common/canvas";
-import { useSelector } from "react-redux";
+useAppSelector
 import { selectTopography } from "../../../redux/topographyRedux";
 import { drawTopography } from "./topographyProps";
+import { useAppSelector } from "../../../redux/hooks";
 
 const Topography = () => {
-  const topography = useSelector(selectTopography);
+  const topography = useAppSelector(selectTopography);
 
   return <Canvas staticShapes={drawTopography} customProps={{ topography }} />;
 };

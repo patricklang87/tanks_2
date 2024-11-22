@@ -4,11 +4,11 @@ import Topography from "../topography/topography";
 import Tanks from "../tanks/tanks";
 import { canvasConstants } from "../../../constants";
 import Projectile from "../projectile/projectile";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../../../redux/hooks";
 import { selectProjectileAnimating } from "../../../redux/projectileRedux";
 
 const GameScreen = () => {
-  const displayProjectile = useSelector(selectProjectileAnimating);
+  const displayProjectile = useAppSelector(selectProjectileAnimating);
   return (
     <>
       <div className="title-container">

@@ -8,6 +8,7 @@ import {
 import { arrayToRgba } from "../../../utils/colors";
 import { getCoordinatesOnCircle } from "../../../utils/angleManipulation";
 import { Tank } from "../../../types";
+import { Action } from "../../../types";
 
 export const generateTankPositions = ({
   topography,
@@ -83,7 +84,7 @@ export const initiateTank = ({
 }: {
   index: number;
   tankPosition: number[];
-}) : Tank => {
+}): Tank => {
   return {
     turretAngle: -90,
     shotPower: 50,
@@ -132,14 +133,10 @@ const drawTank = (
   );
   ctx.fill();
 
-  const {
-    startingPoint,
-    endingPoint,
-  } =
-    calculateTurretEndpoints({
-      tankPosition: [tankX, tankY],
-      turretAngle: turretAngle,
-    });
+  const { startingPoint, endingPoint } = calculateTurretEndpoints({
+    tankPosition: [tankX, tankY],
+    turretAngle: turretAngle,
+  });
   ctx.beginPath();
   ctx.moveTo(...startingPoint);
   ctx.lineTo(...endingPoint);
@@ -149,14 +146,20 @@ const drawTank = (
   ctx.closePath();
 };
 
-export const drawTanks = (ctx : CanvasRenderingContext2D, customProps : {tanks: []}) : void => {
+export const drawTanks = (
+  ctx: CanvasRenderingContext2D,
+  customProps: { tanks: [] }
+): void => {
   const { tanks } = customProps;
   ctx?.clearRect(0, 0, canvasConstants.width, canvasConstants.height);
   tanks?.forEach((tank) => drawTank(ctx, tank));
 };
 
-export const getSelectedActionData = (selectedAction: string, availableActions: {name: string}[]) : {} => {
+export const getSelectedActionData = (
+  selectedAction: string,
+  availableActions: Action[]
+): Action | undefined => {
   return (
-    availableActions?.find((action) => action.name === selectedAction) || {}
+    availableActions?.find((action) => action.name === selectedAction) 
   );
 };

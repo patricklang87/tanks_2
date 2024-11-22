@@ -1,6 +1,6 @@
 import { useId } from "react";
 import Form from "react-bootstrap/Form";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import {
   selectCurrentTank,
   setCurrentTankTurretAngle,
@@ -9,8 +9,8 @@ import {
 import { getSelectedActionData } from "../tanks/tanksProps";
 
 const ShotControls = () => {
-  const dispatch = useDispatch();
-  const currentTank = useSelector(selectCurrentTank);
+  const dispatch = useAppDispatch();
+  const currentTank = useAppSelector(selectCurrentTank);
 
   const turretAngleInputId = useId();
   const shotPowerIndexId = useId();
@@ -19,7 +19,7 @@ const ShotControls = () => {
     currentTank.selectedAction,
     currentTank.availableActions
   );
-  const remainingRounds = selectedActionData.rounds;
+  const remainingRounds = selectedActionData?.rounds;
   return (
     <div className="align-items-center">
       <div className="row">
@@ -34,7 +34,7 @@ const ShotControls = () => {
           <Form.Range
             value={turretAngle + 90}
             onChange={(e) =>
-              dispatch(setCurrentTankTurretAngle(e.target.value - 90))
+              dispatch(setCurrentTankTurretAngle(Number(e.target.value) - 90))
             }
             id={turretAngleInputId}
             name="turretAngle"
@@ -54,12 +54,11 @@ const ShotControls = () => {
           {" "}
           <Form.Range
             value={shotPower}
-            onChange={(e) => dispatch(setCurrentTankShotPower(e.target.value))}
+            onChange={(e) => dispatch(setCurrentTankShotPower(Number(e.target.value)))}
             id={shotPowerIndexId}
             name="shotPower"
             min={0}
             max={100}
-            type="number"
           />
         </div>
       </div>

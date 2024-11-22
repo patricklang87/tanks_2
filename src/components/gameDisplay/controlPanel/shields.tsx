@@ -1,10 +1,10 @@
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../../../redux/hooks";
 import { selectTanks } from "../../../redux/playersRedux";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import { designConstants } from "../../../constants";
 
 const Shields = () => {
-  const tanks = useSelector(selectTanks);
+  const tanks = useAppSelector(selectTanks);
   const {destroyedTankColor} = designConstants;
 
   return (
@@ -15,7 +15,7 @@ const Shields = () => {
           className="row"
           style={{
             margin: "5px",
-            radius: "10px",
+            borderRadius: "10px",
             padding: "5px",
             backgroundColor: tank.shields > 0 ? tank.localColor : destroyedTankColor,
           }}

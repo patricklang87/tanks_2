@@ -77,7 +77,7 @@ const drawTank = (ctx, customProps) => {
     ctx.beginPath();
     ctx.arc(tankX + tankDimensions.width / 2, tankY, tankDimensions.height / 2, 0, 2 * Math.PI);
     ctx.fill();
-    const { startingPoint, endingPoint, } = calculateTurretEndpoints({
+    const { startingPoint, endingPoint } = calculateTurretEndpoints({
         tankPosition: [tankX, tankY],
         turretAngle: turretAngle,
     });
@@ -95,5 +95,5 @@ export const drawTanks = (ctx, customProps) => {
     tanks?.forEach((tank) => drawTank(ctx, tank));
 };
 export const getSelectedActionData = (selectedAction, availableActions) => {
-    return (availableActions?.find((action) => action.name === selectedAction) || {});
+    return (availableActions?.find((action) => action.name === selectedAction));
 };
