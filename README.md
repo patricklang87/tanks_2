@@ -5,7 +5,8 @@
 ## Screenshots
 
 ### Desktop
-Coming soon...
+<img width="1401" alt="tanks_a_million" src="https://github.com/user-attachments/assets/83939f1a-bb5b-4dcc-b10a-744073d45f0d">
+
   
 ### Mobile
 The project has not yet been optimized for mobile devices.
