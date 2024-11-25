@@ -13,7 +13,7 @@ export type Action = {
     driveDistance: number;
     shields: number;
     position: number[];
-    targetPosition: number[];
+    targetX: number;
     tankDriveAnimationExecuting: boolean;
     localColor: string;
     currentColor: string;

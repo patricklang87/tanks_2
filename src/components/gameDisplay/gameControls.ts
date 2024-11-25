@@ -1,10 +1,11 @@
 import { createInitialTopography } from "./topography/topographyProps";
-import { topographyConstants, canvasConstants } from "../../constants";
+import { topographyConstants, canvasConstants, tankDimensions } from "../../constants";
 import { useAppDispatch } from "../../redux/hooks";
 import { setTopography } from "../../redux/topographyRedux";
 import {
   reduceRemainingRounds,
   setInitialTanks,
+  setTanksAnimating,
 } from "../../redux/playersRedux";
 import {
   setProjectileValues,
@@ -78,4 +79,23 @@ export const launchProjectile = ({
     setProjectileValues({ position: endingPoint, velocity: initialVelocities })
   );
   dispatch(startProjectileAnimating());
+};
+
+export const driveTank = ({
+  dispatch,
+  tank,
+  tankInd,
+}: {
+  dispatch: Function;
+  tank: Tank;
+  tankInd: number;
+}): void => {
+  const { position, driveDistance } = tank;
+  const currX = position[0];
+  let targetX = currX + driveDistance
+  if (targetX < 0) targetX = 0;
+  if (targetX > canvasConstants.width - tankDimensions.width) {
+    targetX = canvasConstants.width - tankDimensions.width;
+  }
+  dispatch(setTanksAnimating({tankInd, targetX}));
 };

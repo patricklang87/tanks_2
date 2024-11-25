@@ -1,6 +1,7 @@
 import { tankDimensions, canvasConstants, tankColor, designConstants, actions, } from "../../../constants";
 import { arrayToRgba } from "../../../utils/colors";
 import { getCoordinatesOnCircle } from "../../../utils/angleManipulation";
+import { cancelTanksAnimating, updateTankPosition, advancePlayerTurn, } from "../../../redux/playersRedux";
 export const generateTankPositions = ({ topography, numberOfTanks = 2, }) => {
     const rangeWidth = canvasConstants.width / numberOfTanks;
     const rangeStarts = [];
@@ -31,6 +32,11 @@ export const centerTank = (uncenteredPoint) => {
     const [tankX, tankY] = uncenteredPoint;
     return [tankX - tankWidth / 2, tankY - tankHeight];
 };
+export const uncenterTank = (centeredPoint) => {
+    const { width: tankWidth, height: tankHeight } = tankDimensions;
+    const [currX, currY] = centeredPoint;
+    return [currX + tankWidth / 2, currY + tankHeight];
+};
 export const calculateTurretEndpoints = ({ tankPosition, turretAngle, }) => {
     const [tankX, tankY] = tankPosition;
     const { turretLength, width: tankWidth } = tankDimensions;
@@ -53,7 +59,7 @@ export const initiateTank = ({ index, tankPosition, }) => {
         driveDistance: 0,
         shields: 100,
         position: tankPosition,
-        targetPosition: tankPosition,
+        targetX: tankPosition[0],
         tankDriveAnimationExecuting: false,
         localColor: arrayToRgba(tankColor[index]),
         currentColor: arrayToRgba(tankColor[index]),
@@ -95,5 +101,35 @@ export const drawTanks = (ctx, customProps) => {
     tanks?.forEach((tank) => drawTank(ctx, tank));
 };
 export const getSelectedActionData = (selectedAction, availableActions) => {
-    return (availableActions?.find((action) => action.name === selectedAction));
+    return availableActions?.find((action) => action.name === selectedAction);
+};
+export const animateTankDriving = (ctx, customProps) => {
+    const { dispatch, tank, tankInd, topography } = customProps;
+    drawTanks(ctx, customProps);
+    const position = tank.position;
+    const currX = uncenterTank(position)[0];
+    const uncenteredTarget = tank.targetX + tankDimensions.width / 2;
+    const driveDirection = uncenteredTarget - currX > 0 ? 1 : -1;
+    let newX;
+    if (Math.abs(uncenteredTarget - currX) < 1) {
+        newX = uncenteredTarget;
+    }
+    else {
+        newX = currX + driveDirection;
+    }
+    const newY = getTankY({ topography, tankX: newX });
+    const newPosition = centerTank([newX, newY]);
+    dispatch(updateTankPosition({ newPosition, tankInd }));
+    ctx?.stroke();
+};
+export const shouldCancelDriveAnimation = ({ tank, }) => {
+    const { targetX, position } = tank;
+    const currX = position[0];
+    const outOfBounds = currX > canvasConstants.width || currX < 0;
+    const atTarget = targetX - currX === 0;
+    return outOfBounds || atTarget;
+};
+export const cancelDriveAnimationAndAdvanceTurn = ({ dispatch, }) => {
+    dispatch(cancelTanksAnimating());
+    dispatch(advancePlayerTurn());
 };

@@ -6,13 +6,13 @@ import { Tank, Action } from "../types";
 interface PlayersState {
   tanks: Tank[];
   currentPlayerIndex: number;
-  upcomingPlayerIndex: number;
+  tanksAnimating: boolean;
 }
 
 const initialState: PlayersState = {
   tanks: [],
   currentPlayerIndex: 0,
-  upcomingPlayerIndex: 1,
+  tanksAnimating: false,
 };
 
 const playersSlice = createSlice({
@@ -71,6 +71,18 @@ const playersSlice = createSlice({
         ].rounds = selectedActionRounds - 1;
       }
     },
+    updateTankPosition: (state, action) => {
+      const { tankInd, newPosition } = action.payload;
+      state.tanks[tankInd].position = newPosition;
+    },
+    setTanksAnimating: (state, action) => {
+      const {tankInd, targetX} = action.payload;
+      state.tanks[tankInd].targetX = targetX;
+      state.tanksAnimating = true;
+    },
+    cancelTanksAnimating: (state) => {
+      state.tanksAnimating = false;
+    }
   },
 });
 
@@ -83,9 +95,14 @@ export const {
   advancePlayerTurn,
   setNewTankShields,
   reduceRemainingRounds,
+  updateTankPosition,
+  setTanksAnimating,
+  cancelTanksAnimating,
 } = playersSlice.actions;
 export const selectTanks = (state: RootState) => state.players.tanks;
 export const selectCurrentTank = (state: RootState) =>
   state.players.tanks[state.players.currentPlayerIndex];
+export const selectCurrentPlayerIndex = (state: RootState) =>
+  state.players.currentPlayerIndex;
 
 export default playersSlice.reducer;

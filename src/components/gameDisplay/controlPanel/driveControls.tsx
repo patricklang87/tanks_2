@@ -25,7 +25,7 @@ const DriveControls = () => {
           <Form.Range
             value={driveDistance}
             onChange={(e) =>
-              dispatch(setCurrentTankDriveDistance(e.target.value))
+              dispatch(setCurrentTankDriveDistance(Number(e.target.value)))
             }
             id={driveInputId}
             name="driveDistance"

@@ -3,7 +3,7 @@ import { actions } from "../constants";
 const initialState = {
     tanks: [],
     currentPlayerIndex: 0,
-    upcomingPlayerIndex: 1,
+    tanksAnimating: false,
 };
 const playersSlice = createSlice({
     name: "players",
@@ -53,9 +53,22 @@ const playersSlice = createSlice({
                 state.tanks[state.currentPlayerIndex].availableActions[selectedActionIndex].rounds = selectedActionRounds - 1;
             }
         },
+        updateTankPosition: (state, action) => {
+            const { tankInd, newPosition } = action.payload;
+            state.tanks[tankInd].position = newPosition;
+        },
+        setTanksAnimating: (state, action) => {
+            const { tankInd, targetX } = action.payload;
+            state.tanks[tankInd].targetX = targetX;
+            state.tanksAnimating = true;
+        },
+        cancelTanksAnimating: (state) => {
+            state.tanksAnimating = false;
+        }
     },
 });
-export const { setInitialTanks, setCurrentTankTurretAngle, setCurrentTankShotPower, setCurrentTankDriveDistance, setCurrentTankSelectedAction, advancePlayerTurn, setNewTankShields, reduceRemainingRounds, } = playersSlice.actions;
+export const { setInitialTanks, setCurrentTankTurretAngle, setCurrentTankShotPower, setCurrentTankDriveDistance, setCurrentTankSelectedAction, advancePlayerTurn, setNewTankShields, reduceRemainingRounds, updateTankPosition, setTanksAnimating, cancelTanksAnimating, } = playersSlice.actions;
 export const selectTanks = (state) => state.players.tanks;
 export const selectCurrentTank = (state) => state.players.tanks[state.players.currentPlayerIndex];
+export const selectCurrentPlayerIndex = (state) => state.players.currentPlayerIndex;
 export default playersSlice.reducer;

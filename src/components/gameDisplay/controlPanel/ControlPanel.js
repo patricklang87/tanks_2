@@ -3,17 +3,16 @@ import "../../../css/controlPanel.css";
 import Shields from "./shields";
 import ShotControls from "./shotControls";
 import DriveControls from "./driveControls";
-import { useSelector } from "react-redux";
-import { useAppDispatch } from "../../../redux/hooks";
-import { setCurrentTankSelectedAction, selectCurrentTank, } from "../../../redux/playersRedux";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { setCurrentTankSelectedAction, selectCurrentTank, selectCurrentPlayerIndex, } from "../../../redux/playersRedux";
 import { getSelectedActionData } from "../tanks/tanksProps";
 import { selectProjectileAnimating } from "../../../redux/projectileRedux";
 import { actions } from "../../../constants";
-import { launchProjectile } from "../gameControls";
+import { launchProjectile, driveTank } from "../gameControls";
 // import { getAnimationStatement } from "./playDashboardHooks";
 const ControlSection = () => {
     const dispatch = useAppDispatch();
-    const tank = useSelector(selectCurrentTank);
+    const tank = useAppSelector(selectCurrentTank);
     const selectedAction = actions[tank.selectedAction];
     const availableActions = tank.availableActions;
     const availableActionsFiltered = availableActions.filter((action) => action.name !== selectedAction.name);
@@ -23,13 +22,20 @@ const ControlSection = () => {
 };
 const ControlPanel = () => {
     const dispatch = useAppDispatch();
-    const tank = useSelector(selectCurrentTank);
-    const animationsExecuting = useSelector(selectProjectileAnimating);
+    const tank = useAppSelector(selectCurrentTank);
+    const currentPlayerIndex = useAppSelector(selectCurrentPlayerIndex);
+    const animationsExecuting = useAppSelector(selectProjectileAnimating);
     // const animationStatement = getAnimationStatement(gameState);
     const selectedAction = getSelectedActionData(tank.selectedAction, tank.availableActions);
     const noRoundsRemain = selectedAction?.rounds === 0 && selectedAction?.type === "PROJECTILE";
-    return (_jsx("div", { className: "control-panel-container", children: _jsxs("div", { className: "row control-panel", children: [_jsx("div", { className: "col-4", children: _jsx(Shields, {}) }), _jsx("div", { className: "col-7", children: _jsx(ControlSection, {}) }), _jsx("div", { className: "col-1", children: _jsx("button", { disabled: animationsExecuting || noRoundsRemain, onClick: () => {
-                            dispatch(() => launchProjectile({ dispatch, tank }));
-                        }, children: selectedAction?.type === "DRIVE" ? "Drive!" : "Fire!" }) })] }) }));
+    const handleClick = () => {
+        if (selectedAction?.type === "PROJECTILE") {
+            dispatch(() => launchProjectile({ dispatch, tank }));
+        }
+        if (selectedAction?.type === "DRIVE") {
+            driveTank({ tank, tankInd: currentPlayerIndex, dispatch });
+        }
+    };
+    return (_jsx("div", { className: "control-panel-container", children: _jsxs("div", { className: "row control-panel", children: [_jsx("div", { className: "col-4", children: _jsx(Shields, {}) }), _jsx("div", { className: "col-7", children: _jsx(ControlSection, {}) }), _jsx("div", { className: "col-1", children: _jsx("button", { disabled: animationsExecuting || noRoundsRemain, onClick: handleClick, children: selectedAction?.type === "DRIVE" ? "Drive!" : "Fire!" }) })] }) }));
 };
 export default ControlPanel;

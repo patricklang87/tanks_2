@@ -2,21 +2,21 @@ import "../../../css/controlPanel.css";
 import Shields from "./shields";
 import ShotControls from "./shotControls";
 import DriveControls from "./driveControls";
-import { useSelector } from "react-redux";
-import { useAppDispatch } from "../../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import {
   setCurrentTankSelectedAction,
   selectCurrentTank,
+  selectCurrentPlayerIndex,
 } from "../../../redux/playersRedux";
 import { getSelectedActionData } from "../tanks/tanksProps";
 import { selectProjectileAnimating } from "../../../redux/projectileRedux";
 import { actions } from "../../../constants";
-import { launchProjectile } from "../gameControls";
+import { launchProjectile, driveTank } from "../gameControls";
 // import { getAnimationStatement } from "./playDashboardHooks";
 
 const ControlSection = () => {
   const dispatch = useAppDispatch();
-  const tank = useSelector(selectCurrentTank);
+  const tank = useAppSelector(selectCurrentTank);
   const selectedAction = actions[tank.selectedAction as keyof typeof actions];
   const availableActions = tank.availableActions;
   const availableActionsFiltered = availableActions.filter(
@@ -54,9 +54,10 @@ const ControlSection = () => {
 
 const ControlPanel = () => {
   const dispatch = useAppDispatch();
-  const tank = useSelector(selectCurrentTank);
+  const tank = useAppSelector(selectCurrentTank);
+  const currentPlayerIndex = useAppSelector(selectCurrentPlayerIndex);
 
-  const animationsExecuting = useSelector(selectProjectileAnimating);
+  const animationsExecuting = useAppSelector(selectProjectileAnimating);
   // const animationStatement = getAnimationStatement(gameState);
 
   const selectedAction = getSelectedActionData(
@@ -66,6 +67,15 @@ const ControlPanel = () => {
 
   const noRoundsRemain =
     selectedAction?.rounds === 0 && selectedAction?.type === "PROJECTILE";
+
+  const handleClick = () => {
+    if (selectedAction?.type === "PROJECTILE") {
+      dispatch(() => launchProjectile({ dispatch, tank }));
+    }
+    if (selectedAction?.type === "DRIVE") {
+      driveTank({tank, tankInd: currentPlayerIndex, dispatch })
+    }
+  }
 
   return (
     <div className="control-panel-container">
@@ -83,9 +93,7 @@ const ControlPanel = () => {
         <div className="col-1">
           <button
             disabled={animationsExecuting || noRoundsRemain}
-            onClick={() => {
-              dispatch(() => launchProjectile({ dispatch, tank }));
-            }}
+            onClick={handleClick}
           >
             {selectedAction?.type === "DRIVE" ? "Drive!" : "Fire!"}
           </button>
