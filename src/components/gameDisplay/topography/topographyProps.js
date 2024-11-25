@@ -82,6 +82,7 @@ export const createInitialTopography = ({ canvasHeight, canvasWidth, increments,
 };
 export const drawTopography = (ctx, customProps) => {
     const { topography } = customProps;
+    ctx.clearRect(0, 0, canvasConstants.width, canvasConstants.height);
     ctx.beginPath();
     topography?.forEach((point, index) => {
         const positionX = point[0];

@@ -2,7 +2,7 @@ import { tankDimensions, canvasConstants, tankColor, designConstants, actions, e
 import { arrayToRgba } from "../../../utils/colors";
 import { getCoordinatesOnCircle } from "../../../utils/angleManipulation";
 import { cancelTanksAnimating, updateTankPosition, } from "../../../redux/playersRedux";
-import { checkForWinnerAndAdvanceTurn } from "../gameControls";
+import { advancePlayerTurn } from "../gameControls";
 export const generateTankPositions = ({ topography, numberOfTanks = 2, }) => {
     const rangeWidth = canvasConstants.width / numberOfTanks;
     const rangeStarts = [];
@@ -133,5 +133,5 @@ export const shouldCancelDriveAnimation = ({ tank, }) => {
 };
 export const cancelDriveAnimationAndAdvanceTurn = ({ dispatch, tankInd, tanks, }) => {
     dispatch(cancelTanksAnimating());
-    checkForWinnerAndAdvanceTurn({ dispatch, tankInd, tanks });
+    advancePlayerTurn({ dispatch, tankInd, tanks });
 };

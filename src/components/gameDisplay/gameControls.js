@@ -1,14 +1,14 @@
 import { createInitialTopography } from "./topography/topographyProps";
-import { topographyConstants, canvasConstants, tankDimensions } from "../../constants";
-import { useAppDispatch } from "../../redux/hooks";
+import { topographyConstants, canvasConstants, tankDimensions, } from "../../constants";
 import { setTopography } from "../../redux/topographyRedux";
-import { reduceRemainingRounds, setInitialTanks, setTanksAnimating, setPlayerTurn, setWinner, } from "../../redux/playersRedux";
+import { reduceRemainingRounds, setInitialPlayerState, setTanksAnimating, setPlayerTurn,
+// setWinner,
+ } from "../../redux/playersRedux";
 import { setProjectileValues, startProjectileAnimating, } from "../../redux/projectileRedux";
 import { calculateTurretEndpoints, generateTankPositions, initiateTank, } from "./tanks/tanksProps";
 import { calculateInitialVelocities } from "./projectile/projectileProps";
-export const useInitiateGame = () => {
+export const initiateGame = (dispatch) => {
     const { height: canvasHeight, width: canvasWidth } = canvasConstants;
-    const dispatch = useAppDispatch();
     const initialTopography = createInitialTopography({
         canvasHeight,
         canvasWidth,
@@ -22,19 +22,8 @@ export const useInitiateGame = () => {
         numberOfTanks: 3,
     });
     const initialTanks = tankPositions.map((tankPosition, index) => initiateTank({ tankPosition, index }));
-    // const [gameState, setGameState] = useState({
-    //   numberOfPlayers,
-    //   currentPlayer: 1,
-    //   topography: initialTopography,
-    //   updatedTopography: initialTopography,
-    //   lastShot: [],
-    //   lastShotAnimationCompleted: false,
-    //   tanks: tankPositions.map((tankPosition, index) =>
-    //     initiateTank({ tankPosition, index })
-    //   ),
-    // });
     dispatch(setTopography(initialTopography));
-    dispatch(setInitialTanks(initialTanks));
+    dispatch(setInitialPlayerState(initialTanks));
 };
 export const launchProjectile = ({ dispatch, tank, }) => {
     const { turretAngle, position, shotPower } = tank;
@@ -61,21 +50,7 @@ export const driveTank = ({ dispatch, tank, tankInd, }) => {
     }
     dispatch(setTanksAnimating({ tankInd, targetX }));
 };
-export const checkForWinnerAndAdvanceTurn = ({ dispatch, tankInd, tanks }) => {
-    let survivingTanks = 0;
-    for (let tank of tanks) {
-        if (tank.shields > 0)
-            survivingTanks++;
-    }
-    if (survivingTanks === 1) {
-        setWinner(tankInd);
-    }
-    else {
-        let nextPlayer = findNextPlayer(tankInd, tanks);
-        dispatch(setPlayerTurn(nextPlayer));
-    }
-};
-const findNextPlayer = (tankInd, tanks) => {
+export const advancePlayerTurn = ({ dispatch, tankInd, tanks, }) => {
     let nextPlayer = tankInd + 1;
     if (nextPlayer > tanks.length - 1)
         nextPlayer = 0;
@@ -84,7 +59,7 @@ const findNextPlayer = (tankInd, tanks) => {
         if (nextPlayer > tanks.length - 1)
             nextPlayer = 0;
         if (nextPlayer === tankInd)
-            return tankInd;
+            break;
     }
-    return nextPlayer;
+    dispatch(setPlayerTurn(nextPlayer));
 };

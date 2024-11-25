@@ -10,7 +10,9 @@ import {
 import { degreesToRadians } from "../../../utils/angleManipulation";
 import { setNewTankShields } from "../../../redux/playersRedux";
 import { Tank } from "../../../types";
-import { checkForWinnerAndAdvanceTurn } from "../gameControls";
+import { 
+  // checkForWinner, 
+  advancePlayerTurn } from "../gameControls";
 
 export const animateProjectile = (
   ctx: CanvasRenderingContext2D,
@@ -46,10 +48,12 @@ export const shouldCancelProjectileAnimation = ({
   projectilePosition,
   tanks,
   dispatch,
+  tankInd
 }: {
   projectilePosition: [number, number];
   tanks: Tank[];
   dispatch: Function;
+  tankInd: number;
 }): boolean => {
   const [currX, currY] = projectilePosition;
   const outOfBounds =
@@ -60,6 +64,7 @@ export const shouldCancelProjectileAnimation = ({
   const struckTanks = checkForStrike(projectilePosition, tanks);
 
   dispatch(setNewTankShields(struckTanks));
+  // checkForWinner({tanks, tankInd, dispatch})
 
   return outOfBounds || !!struckTanks.length;
 };
@@ -74,7 +79,7 @@ export const resetProjectileAnimationAndAdvanceTurn = ({
   tanks: Tank[];
 }) => {
   dispatch(clearProjectileValues());
-  checkForWinnerAndAdvanceTurn({dispatch, tankInd, tanks});
+  advancePlayerTurn({dispatch, tankInd, tanks});
 };
 
 export const drawCircle = (

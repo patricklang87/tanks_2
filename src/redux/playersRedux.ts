@@ -21,8 +21,11 @@ const playersSlice = createSlice({
   name: "players",
   initialState,
   reducers: {
-    setInitialTanks: (state, action) => {
+    setInitialPlayerState: (state, action) => {
       state.tanks = action.payload;
+      state.currentPlayerIndex = 0;
+      state.tanksAnimating = false;
+      state.winner = null;
     },
     setCurrentTankTurretAngle: (state, action) => {
       state.tanks[state.currentPlayerIndex].turretAngle = action.payload;
@@ -39,9 +42,6 @@ const playersSlice = createSlice({
     setPlayerTurn: (state, action) => {
       state.currentPlayerIndex = action.payload;
     },
-    setWinner: (state, action) => {
-      state.winner = action.payload;
-    },
     setNewTankShields: (state, action) => {
       const attackingTank = state.tanks[state.currentPlayerIndex];
       const attackDamage =
@@ -50,6 +50,16 @@ const playersSlice = createSlice({
       for (let tankInd of action.payload) {
         const newShieldValue = state.tanks[tankInd].shields - attackDamage;
         state.tanks[tankInd].shields = newShieldValue;
+      }
+
+      let count = 0;
+      for (let tank of state.tanks) {
+        if (tank.shields > 0) count++;
+      }
+
+      if (count < 2) {
+        let survivor = state.tanks.findIndex(tank => tank.shields > 0);
+        state.winner = survivor;
       }
     },
     reduceRemainingRounds: (state) => {
@@ -88,7 +98,7 @@ const playersSlice = createSlice({
 });
 
 export const {
-  setInitialTanks,
+  setInitialPlayerState,
   setCurrentTankTurretAngle,
   setCurrentTankShotPower,
   setCurrentTankDriveDistance,
@@ -99,7 +109,6 @@ export const {
   updateTankPosition,
   setTanksAnimating,
   cancelTanksAnimating,
-  setWinner,
 } = playersSlice.actions;
 export const selectTanks = (state: RootState) => state.players.tanks;
 export const selectCurrentTank = (state: RootState) =>

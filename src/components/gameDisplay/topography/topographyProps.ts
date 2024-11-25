@@ -124,7 +124,7 @@ export const drawTopography = (
   customProps: { topography: [number, number][] }
 ): void => {
   const { topography } = customProps;
-
+  ctx.clearRect(0, 0, canvasConstants.width, canvasConstants.height);
   ctx.beginPath();
   topography?.forEach((point, index) => {
     const positionX = point[0];

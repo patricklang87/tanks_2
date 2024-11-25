@@ -13,7 +13,7 @@ import {
   cancelTanksAnimating,
   updateTankPosition,
 } from "../../../redux/playersRedux";
-import { checkForWinnerAndAdvanceTurn } from "../gameControls";
+import { advancePlayerTurn } from "../gameControls";
 
 export const generateTankPositions = ({
   topography,
@@ -228,5 +228,5 @@ export const cancelDriveAnimationAndAdvanceTurn = ({
   tanks: Tank[];
 }) => {
   dispatch(cancelTanksAnimating());
-  checkForWinnerAndAdvanceTurn({dispatch, tankInd, tanks})
+  advancePlayerTurn({dispatch, tankInd, tanks})
 };
