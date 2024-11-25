@@ -34,9 +34,11 @@ export const topographyConstants : {
 export const environmentConstants : {
   gravity: number;
   shotSlowingFactor: number;
+  driveAnimationSpeed: number;
 } = {
   gravity: 0.5,
   shotSlowingFactor: 0.3,
+  driveAnimationSpeed: 3,
 };
 
 export const tankDimensions : {

@@ -1,4 +1,4 @@
-import { tankDimensions, canvasConstants, tankColor, designConstants, actions, } from "../../../constants";
+import { tankDimensions, canvasConstants, tankColor, designConstants, actions, environmentConstants } from "../../../constants";
 import { arrayToRgba } from "../../../utils/colors";
 import { getCoordinatesOnCircle } from "../../../utils/angleManipulation";
 import { cancelTanksAnimating, updateTankPosition, advancePlayerTurn, } from "../../../redux/playersRedux";
@@ -105,17 +105,18 @@ export const getSelectedActionData = (selectedAction, availableActions) => {
 };
 export const animateTankDriving = (ctx, customProps) => {
     const { dispatch, tank, tankInd, topography } = customProps;
+    const { driveAnimationSpeed } = environmentConstants;
     drawTanks(ctx, customProps);
     const position = tank.position;
     const currX = uncenterTank(position)[0];
     const uncenteredTarget = tank.targetX + tankDimensions.width / 2;
     const driveDirection = uncenteredTarget - currX > 0 ? 1 : -1;
     let newX;
-    if (Math.abs(uncenteredTarget - currX) < 1) {
+    if (Math.abs(uncenteredTarget - currX) < driveAnimationSpeed) {
         newX = uncenteredTarget;
     }
     else {
-        newX = currX + driveDirection;
+        newX = currX + driveDirection * driveAnimationSpeed;
     }
     const newY = getTankY({ topography, tankX: newX });
     const newPosition = centerTank([newX, newY]);
