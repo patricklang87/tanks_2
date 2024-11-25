@@ -7,10 +7,10 @@ import {
   setProjectileValues,
   clearProjectileValues,
 } from "../../../redux/projectileRedux";
-import { advancePlayerTurn } from "../../../redux/playersRedux";
 import { degreesToRadians } from "../../../utils/angleManipulation";
 import { setNewTankShields } from "../../../redux/playersRedux";
 import { Tank } from "../../../types";
+import { checkForWinnerAndAdvanceTurn } from "../gameControls";
 
 export const animateProjectile = (
   ctx: CanvasRenderingContext2D,
@@ -66,11 +66,15 @@ export const shouldCancelProjectileAnimation = ({
 
 export const resetProjectileAnimationAndAdvanceTurn = ({
   dispatch,
+  tankInd,
+  tanks,
 }: {
   dispatch: Function;
+  tankInd: number;
+  tanks: Tank[];
 }) => {
   dispatch(clearProjectileValues());
-  dispatch(advancePlayerTurn());
+  checkForWinnerAndAdvanceTurn({dispatch, tankInd, tanks});
 };
 
 export const drawCircle = (

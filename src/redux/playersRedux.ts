@@ -7,12 +7,14 @@ interface PlayersState {
   tanks: Tank[];
   currentPlayerIndex: number;
   tanksAnimating: boolean;
+  winner: number | null;
 }
 
 const initialState: PlayersState = {
   tanks: [],
   currentPlayerIndex: 0,
   tanksAnimating: false,
+  winner: null
 };
 
 const playersSlice = createSlice({
@@ -34,12 +36,11 @@ const playersSlice = createSlice({
     setCurrentTankSelectedAction: (state, action) => {
       state.tanks[state.currentPlayerIndex].selectedAction = action.payload;
     },
-    advancePlayerTurn: (state) => {
-      if (state.currentPlayerIndex < state.tanks.length - 1) {
-        state.currentPlayerIndex = state.currentPlayerIndex + 1;
-      } else {
-        state.currentPlayerIndex = 0;
-      }
+    setPlayerTurn: (state, action) => {
+      state.currentPlayerIndex = action.payload;
+    },
+    setWinner: (state, action) => {
+      state.winner = action.payload;
     },
     setNewTankShields: (state, action) => {
       const attackingTank = state.tanks[state.currentPlayerIndex];
@@ -92,12 +93,13 @@ export const {
   setCurrentTankShotPower,
   setCurrentTankDriveDistance,
   setCurrentTankSelectedAction,
-  advancePlayerTurn,
+  setPlayerTurn,
   setNewTankShields,
   reduceRemainingRounds,
   updateTankPosition,
   setTanksAnimating,
   cancelTanksAnimating,
+  setWinner,
 } = playersSlice.actions;
 export const selectTanks = (state: RootState) => state.players.tanks;
 export const selectCurrentTank = (state: RootState) =>
