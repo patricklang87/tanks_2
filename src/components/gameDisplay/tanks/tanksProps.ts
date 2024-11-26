@@ -133,6 +133,7 @@ export const drawTank = (
   const [tankX, tankY] = position;
   const tankFillColor =
     shields > 0 ? currentColor : designConstants.destroyedTankColor;
+  ctx.clearRect(0, 0, 100, 100)
   ctx.fillStyle = tankFillColor;
   ctx.fillRect(tankX, tankY, tankDimensions.width * factor, tankDimensions.height * factor);
 

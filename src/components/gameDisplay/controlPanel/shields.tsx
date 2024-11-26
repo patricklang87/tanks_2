@@ -12,11 +12,9 @@ const Shields = () => {
       {tanks.map((tank, index) => (
         <div
           key={`shields_${index}`}
-          className="row"
+          className="row shields-indicator"
           style={{
-            margin: "5px",
-            borderRadius: "10px",
-            padding: "5px",
+ 
             backgroundColor: tank.shields > 0 ? tank.localColor : destroyedTankColor,
           }}
         >
