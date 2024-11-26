@@ -46,9 +46,10 @@ Not yet implemented.
 
 - [x] Complete Tank driving feature.
 - [x] Implement current player turn indicator.
-- [ ] Implement start screen and player count selection.
 - [x] Implement game over and winner selection.
 - [x] Implement game restart.
+- [ ] Implement start screen and player count selection.
+- [ ] End projectile movement when projectile intersects topography.
 - [ ] Improve strike assessment by calculating linear intersections.
 
 ## Future Updates
