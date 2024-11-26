@@ -5,7 +5,7 @@
 ## Screenshots
 
 ### Desktop
-<img width="1401" alt="tanks_a_million" src="https://github.com/user-attachments/assets/83939f1a-bb5b-4dcc-b10a-744073d45f0d">
+<img width="1401" alt="Screenshot 2024-11-25 at 11 46 47 PM" src="https://github.com/user-attachments/assets/3057169c-0b00-4b3a-9d84-c9bbd5ce6fe6">
 
   
 ### Mobile
