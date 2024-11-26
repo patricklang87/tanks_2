@@ -1,6 +1,5 @@
 import { useEffect, useRef, RefObject } from "react";
 import { canvasConstants } from "../../constants";
-import { ToastContainer } from "react-bootstrap";
 
 interface Props {
   animationFunction?: Function;
@@ -8,6 +7,9 @@ interface Props {
   customProps?: {};
   cancelationCondition?: Function;
   onCancelation?: Function;
+  canvasClass?: string;
+  width?: number;
+  height?: number;
 }
 
 const Canvas = (props: Props) => {
@@ -17,6 +19,9 @@ const Canvas = (props: Props) => {
     customProps = {},
     cancelationCondition,
     onCancelation = null,
+    canvasClass = "layering-canvas",
+    width = canvasConstants.width,
+    height = canvasConstants.height,
   } = props;
 
   interface CanvasRef extends RefObject<HTMLCanvasElement> {
@@ -28,10 +33,10 @@ const Canvas = (props: Props) => {
 
   const canvasRef: CanvasRef = useRef(null);
 
-  if (canvasRef.height && canvasRef.clientWidth && canvasRef.clientHeight) {
-    canvasRef.width =
-      canvasRef.height * (canvasRef.clientWidth / canvasRef.clientHeight);
-  }
+ if (canvasRef.height && canvasRef.clientWidth && canvasRef.clientHeight) {
+      canvasRef.width =
+        canvasRef.height * (canvasRef.clientWidth / canvasRef.clientHeight);
+    }
 
   useEffect(() => {
     if (canvasRef?.current) {
@@ -56,9 +61,9 @@ const Canvas = (props: Props) => {
   return (
     <canvas
       ref={canvasRef}
-      width={canvasConstants.width}
-      height={canvasConstants.height}
-      className="layering-canvas"
+      width={width}
+      height={height}
+      className={canvasClass}
     />
   );
 };

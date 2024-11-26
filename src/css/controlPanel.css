@@ -8,5 +8,15 @@
 .control-panel {
     background-color: lightgrey;
     padding: 10px;
-    width: 1200px;
+    width: 1400px;
+}
+
+.indicator-canvas-container {
+    position: relative;
+}
+
+.indicator-canvas {
+    background-color: darkslategrey;
+    border-radius: 100px;
+    border: solid 10px;
 }

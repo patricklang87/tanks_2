@@ -2,6 +2,7 @@ import "../../../css/controlPanel.css";
 import Shields from "./shields";
 import ShotControls from "./shotControls";
 import DriveControls from "./driveControls";
+import CurrentPlayerIndicator from "./currentPlayerIndicator";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import {
   setCurrentTankSelectedAction,
@@ -12,6 +13,7 @@ import { getSelectedActionData } from "../tanks/tanksProps";
 import { selectProjectileAnimating } from "../../../redux/projectileRedux";
 import { actions } from "../../../constants";
 import { launchProjectile, driveTank } from "../gameControls";
+
 // import { getAnimationStatement } from "./playDashboardHooks";
 
 const ControlSection = () => {
@@ -80,10 +82,13 @@ const ControlPanel = () => {
   return (
     <div className="control-panel-container">
       <div className="row control-panel">
-        <div className="col-4">
+        <div className="col-2">
+          <CurrentPlayerIndicator />
+        </div>
+        <div className="col-3">
           <Shields />
         </div>
-        <div className="col-7">
+        <div className="col-6">
           {/* {animationsExecuting && <p>&quot;{animationStatement}&quot;</p>}
           {!animationsExecuting && ( */}
           <ControlSection />

@@ -1,6 +1,6 @@
 export const canvasConstants = {
     width: 1400,
-    height: 700,
+    height: 600,
 };
 export const designConstants = {
     skyColor: "skyblue",

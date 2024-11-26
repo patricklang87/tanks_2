@@ -2,7 +2,7 @@ import { Action } from "./types";
 
 export const canvasConstants: { width: number; height: number } = {
   width: 1400,
-  height: 700,
+  height: 600,
 };
 
 export const designConstants: {

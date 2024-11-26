@@ -38,14 +38,14 @@ export const uncenterTank = (centeredPoint) => {
     const [currX, currY] = centeredPoint;
     return [currX + tankWidth / 2, currY + tankHeight];
 };
-export const calculateTurretEndpoints = ({ tankPosition, turretAngle, }) => {
+export const calculateTurretEndpoints = ({ tankPosition, turretAngle, factor = 1, }) => {
     const [tankX, tankY] = tankPosition;
     const { turretLength, width: tankWidth } = tankDimensions;
-    const turretStartingX = tankX + tankWidth / 2;
+    const turretStartingX = tankX + tankWidth * factor / 2;
     const turretStartingY = tankY;
     const turretEnding = getCoordinatesOnCircle({
         center: [turretStartingX, turretStartingY],
-        radius: turretLength,
+        radius: turretLength * factor,
         angle: turretAngle,
     });
     return {
@@ -74,25 +74,26 @@ export const initiateTank = ({ index, tankPosition, }) => {
         ],
     };
 };
-const drawTank = (ctx, customProps) => {
-    const { shields, position, currentColor, turretAngle } = customProps;
+export const drawTank = (ctx, customProps) => {
+    const { shields, position, currentColor, turretAngle, factor = 1 } = customProps;
     const [tankX, tankY] = position;
     const tankFillColor = shields > 0 ? currentColor : designConstants.destroyedTankColor;
     ctx.fillStyle = tankFillColor;
-    ctx.fillRect(tankX, tankY, tankDimensions.width, tankDimensions.height);
+    ctx.fillRect(tankX, tankY, tankDimensions.width * factor, tankDimensions.height * factor);
     ctx.fillStyle = tankFillColor;
     ctx.beginPath();
-    ctx.arc(tankX + tankDimensions.width / 2, tankY, tankDimensions.height / 2, 0, 2 * Math.PI);
+    ctx.arc(tankX + tankDimensions.width * factor / 2, tankY, tankDimensions.height * factor / 2, 0, 2 * Math.PI);
     ctx.fill();
     const { startingPoint, endingPoint } = calculateTurretEndpoints({
         tankPosition: [tankX, tankY],
         turretAngle: turretAngle,
+        factor
     });
     ctx.beginPath();
     ctx.moveTo(...startingPoint);
     ctx.lineTo(...endingPoint);
     ctx.strokeStyle = tankFillColor;
-    ctx.lineWidth = 3;
+    ctx.lineWidth = 3 * factor;
     ctx.stroke();
     ctx.closePath();
 };

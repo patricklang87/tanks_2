@@ -2,7 +2,7 @@ import { jsx as _jsx } from "react/jsx-runtime";
 import { useEffect, useRef } from "react";
 import { canvasConstants } from "../../constants";
 const Canvas = (props) => {
-    const { animationFunction = null, staticShapes = null, customProps = {}, cancelationCondition, onCancelation = null, } = props;
+    const { animationFunction = null, staticShapes = null, customProps = {}, cancelationCondition, onCancelation = null, canvasClass = "layering-canvas", width = canvasConstants.width, height = canvasConstants.height, } = props;
     const canvasRef = useRef(null);
     if (canvasRef.height && canvasRef.clientWidth && canvasRef.clientHeight) {
         canvasRef.width =
@@ -25,6 +25,6 @@ const Canvas = (props) => {
             }
         }
     }, [customProps]);
-    return (_jsx("canvas", { ref: canvasRef, width: canvasConstants.width, height: canvasConstants.height, className: "layering-canvas" }));
+    return (_jsx("canvas", { ref: canvasRef, width: width, height: height, className: canvasClass }));
 };
 export default Canvas;

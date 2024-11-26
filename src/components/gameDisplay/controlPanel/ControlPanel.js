@@ -3,6 +3,7 @@ import "../../../css/controlPanel.css";
 import Shields from "./shields";
 import ShotControls from "./shotControls";
 import DriveControls from "./driveControls";
+import CurrentPlayerIndicator from "./currentPlayerIndicator";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { setCurrentTankSelectedAction, selectCurrentTank, selectCurrentPlayerIndex, } from "../../../redux/playersRedux";
 import { getSelectedActionData } from "../tanks/tanksProps";
@@ -36,6 +37,6 @@ const ControlPanel = () => {
             driveTank({ tank, tankInd: currentPlayerIndex, dispatch });
         }
     };
-    return (_jsx("div", { className: "control-panel-container", children: _jsxs("div", { className: "row control-panel", children: [_jsx("div", { className: "col-4", children: _jsx(Shields, {}) }), _jsx("div", { className: "col-7", children: _jsx(ControlSection, {}) }), _jsx("div", { className: "col-1", children: _jsx("button", { disabled: animationsExecuting || noRoundsRemain, onClick: handleClick, children: selectedAction?.type === "DRIVE" ? "Drive!" : "Fire!" }) })] }) }));
+    return (_jsx("div", { className: "control-panel-container", children: _jsxs("div", { className: "row control-panel", children: [_jsx("div", { className: "col-2", children: _jsx(CurrentPlayerIndicator, {}) }), _jsx("div", { className: "col-3", children: _jsx(Shields, {}) }), _jsx("div", { className: "col-6", children: _jsx(ControlSection, {}) }), _jsx("div", { className: "col-1", children: _jsx("button", { disabled: animationsExecuting || noRoundsRemain, onClick: handleClick, children: selectedAction?.type === "DRIVE" ? "Drive!" : "Fire!" }) })] }) }));
 };
 export default ControlPanel;
