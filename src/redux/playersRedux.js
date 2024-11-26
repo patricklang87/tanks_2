@@ -4,7 +4,7 @@ const initialState = {
     tanks: [],
     currentPlayerIndex: 0,
     tanksAnimating: false,
-    winner: null
+    winner: null,
 };
 const playersSlice = createSlice({
     name: "players",
@@ -45,7 +45,7 @@ const playersSlice = createSlice({
                     count++;
             }
             if (count < 2) {
-                let survivor = state.tanks.findIndex(tank => tank.shields > 0);
+                let survivor = state.tanks.findIndex((tank) => tank.shields > 0);
                 state.winner = survivor;
             }
         },
@@ -58,7 +58,13 @@ const playersSlice = createSlice({
             if (selectedActionRounds &&
                 selectedAction.type === "PROJECTILE" &&
                 typeof selectedActionRounds == "number") {
-                state.tanks[state.currentPlayerIndex].availableActions[selectedActionIndex].rounds = selectedActionRounds - 1;
+                const newRoundValue = selectedActionRounds - 1;
+                state.tanks[state.currentPlayerIndex].availableActions[selectedActionIndex].rounds = newRoundValue;
+                console.log(newRoundValue);
+                if (newRoundValue <= 0) {
+                    state.tanks[state.currentPlayerIndex].selectedAction =
+                        "standardShot";
+                }
             }
         },
         updateTankPosition: (state, action) => {
@@ -72,7 +78,7 @@ const playersSlice = createSlice({
         },
         cancelTanksAnimating: (state) => {
             state.tanksAnimating = false;
-        }
+        },
     },
 });
 export const { setInitialPlayerState, setCurrentTankTurretAngle, setCurrentTankShotPower, setCurrentTankDriveDistance, setCurrentTankSelectedAction, setPlayerTurn, setNewTankShields, reduceRemainingRounds, updateTankPosition, setTanksAnimating, cancelTanksAnimating, } = playersSlice.actions;
