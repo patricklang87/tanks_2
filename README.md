@@ -44,11 +44,11 @@ Not yet implemented.
 
 ## Next Updates
 
-- [ ] Complete Tank driving feature.
-- [ ] Implement current player turn indicator.
+- [x] Complete Tank driving feature.
+- [x] Implement current player turn indicator.
 - [ ] Implement start screen and player count selection.
-- [ ] Implement game over and winner selection.
-- [ ] Implement game restart.
+- [x] Implement game over and winner selection.
+- [x] Implement game restart.
 - [ ] Improve strike assessment by calculating linear intersections.
 
 ## Future Updates
