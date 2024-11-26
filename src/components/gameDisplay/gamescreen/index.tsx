@@ -15,7 +15,7 @@ const GameScreen = () => {
   console.log(typeof winner)
 
   return (
-    <>
+    <div className="gamescreen">
       <div className="title-container">
         {" "}
         <h1 className="title-card">Tanks A Million!</h1>
@@ -34,7 +34,7 @@ const GameScreen = () => {
         <Tanks />
         {displayProjectile && <Projectile />}
       </div>
-    </>
+    </div>
   );
 };
 
