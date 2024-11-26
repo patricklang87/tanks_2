@@ -5,7 +5,7 @@
 ## Screenshots
 
 ### Desktop
-<img width="1401" alt="tanks_a_million" src="https://github.com/user-attachments/assets/83939f1a-bb5b-4dcc-b10a-744073d45f0d">
+<img width="1401" alt="tanks_a_million" src="https://github.com/user-attachments/assets/3057169c-0b00-4b3a-9d84-c9bbd5ce6fe6">
 
   
 ### Mobile
@@ -46,9 +46,10 @@ Not yet implemented.
 
 - [x] Complete Tank driving feature.
 - [x] Implement current player turn indicator.
-- [ ] Implement start screen and player count selection.
 - [x] Implement game over and winner selection.
 - [x] Implement game restart.
+- [ ] Implement start screen and player count selection.
+- [ ] End projectile movement when projectile intersects topography.
 - [ ] Improve strike assessment by calculating linear intersections.
 
 ## Future Updates
