@@ -36,6 +36,7 @@ export const launchProjectile = ({ dispatch, tank, }) => {
         initialVelocity: shotPower,
     });
     dispatch(reduceRemainingRounds());
+    dispatch(startProjectileAnimating());
     dispatch(setProjectileValues({ position: endingPoint, velocity: initialVelocities }));
     dispatch(startProjectileAnimating());
 };

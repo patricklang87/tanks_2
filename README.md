@@ -37,6 +37,7 @@ To run the project locally:
 - React-Bootstrap
 - Redux
 - JS Canvas API
+- Mathjs
 
 
 ### Backend 
@@ -48,9 +49,10 @@ Not yet implemented.
 - [x] Implement current player turn indicator.
 - [x] Implement game over and winner selection.
 - [x] Implement game restart.
+- [x] Improve strike assessment by calculating linear intersections.
 - [ ] Implement start screen and player count selection.
 - [ ] End projectile movement when projectile intersects topography.
-- [ ] Improve strike assessment by calculating linear intersections.
+
 
 ## Future Updates
 

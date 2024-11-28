@@ -12,7 +12,6 @@ const GameScreen = () => {
   const displayProjectile = useAppSelector(selectProjectileAnimating);
   const winner = useAppSelector((state) => state.players.winner);
   const showWinnerPopup = winner != null;
-  console.log(typeof winner)
 
   return (
     <div className="gamescreen">

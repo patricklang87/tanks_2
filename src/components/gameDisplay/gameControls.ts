@@ -68,6 +68,7 @@ export const launchProjectile = ({
   });
 
   dispatch(reduceRemainingRounds());
+  dispatch(startProjectileAnimating());
   dispatch(
     setProjectileValues({ position: endingPoint, velocity: initialVelocities })
   );

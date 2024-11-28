@@ -4,7 +4,7 @@ import {
   tankColor,
   designConstants,
   actions,
-  environmentConstants
+  environmentConstants,
 } from "../../../constants";
 import { arrayToRgba } from "../../../utils/colors";
 import { getCoordinatesOnCircle } from "../../../utils/angleManipulation";
@@ -21,9 +21,9 @@ export const generateTankPositions = ({
 }: {
   topography: number[][];
   numberOfTanks: number;
-}): number[][] => {
+}): [number, number][] => {
   const rangeWidth = canvasConstants.width / numberOfTanks;
-  const rangeStarts: number[] = [];
+  const rangeStarts = [];
   let count = 0;
   while (count < numberOfTanks) {
     rangeStarts.push(count * rangeWidth);
@@ -54,30 +54,34 @@ export const getTankY = ({
   return gradient * tankX + yIntercept;
 };
 
-export const centerTank = (uncenteredPoint: number[]): number[] => {
+export const centerTank = (
+  uncenteredPoint: [number, number]
+): [number, number] => {
   const { width: tankWidth, height: tankHeight } = tankDimensions;
   const [tankX, tankY] = uncenteredPoint;
   return [tankX - tankWidth / 2, tankY - tankHeight];
 };
 
-export const uncenterTank = (centeredPoint: number[]) : number[] => {
+export const uncenterTank = (
+  centeredPoint: [number, number]
+): [number, number] => {
   const { width: tankWidth, height: tankHeight } = tankDimensions;
   const [currX, currY] = centeredPoint;
-  return [currX + tankWidth / 2, currY + tankHeight ]
-}
+  return [currX + tankWidth / 2, currY + tankHeight];
+};
 
 export const calculateTurretEndpoints = ({
   tankPosition,
   turretAngle,
   factor = 1,
 }: {
-  tankPosition: number[];
+  tankPosition: [number, number];
   turretAngle: number;
-  factor?: number; 
+  factor?: number;
 }): { startingPoint: [number, number]; endingPoint: [number, number] } => {
   const [tankX, tankY] = tankPosition;
   const { turretLength, width: tankWidth } = tankDimensions;
-  const turretStartingX = tankX + tankWidth * factor / 2;
+  const turretStartingX = tankX + (tankWidth * factor) / 2;
   const turretStartingY = tankY;
   const turretEnding = getCoordinatesOnCircle({
     center: [turretStartingX, turretStartingY],
@@ -96,7 +100,7 @@ export const initiateTank = ({
   tankPosition,
 }: {
   index: number;
-  tankPosition: number[];
+  tankPosition: [number, number];
 }): Tank => {
   return {
     turretAngle: -90,
@@ -123,26 +127,37 @@ export const drawTank = (
   ctx: CanvasRenderingContext2D,
   customProps: {
     shields: number;
-    position: number[];
+    position: [number, number];
     currentColor: string;
     turretAngle: number;
     factor?: number;
   }
 ): void => {
-  const { shields, position, currentColor, turretAngle, factor = 1 } = customProps;
+  const {
+    shields,
+    position,
+    currentColor,
+    turretAngle,
+    factor = 1,
+  } = customProps;
   const [tankX, tankY] = position;
   const tankFillColor =
     shields > 0 ? currentColor : designConstants.destroyedTankColor;
-  ctx.clearRect(0, 0, 100, 100)
+  ctx.clearRect(0, 0, 100, 100);
   ctx.fillStyle = tankFillColor;
-  ctx.fillRect(tankX, tankY, tankDimensions.width * factor, tankDimensions.height * factor);
+  ctx.fillRect(
+    tankX,
+    tankY,
+    tankDimensions.width * factor,
+    tankDimensions.height * factor
+  );
 
   ctx.fillStyle = tankFillColor;
   ctx.beginPath();
   ctx.arc(
-    tankX + tankDimensions.width * factor / 2,
+    tankX + (tankDimensions.width * factor) / 2,
     tankY,
-    tankDimensions.height * factor / 2,
+    (tankDimensions.height * factor) / 2,
     0,
     2 * Math.PI
   );
@@ -151,7 +166,7 @@ export const drawTank = (
   const { startingPoint, endingPoint } = calculateTurretEndpoints({
     tankPosition: [tankX, tankY],
     turretAngle: turretAngle,
-    factor
+    factor,
   });
   ctx.beginPath();
   ctx.moveTo(...startingPoint);
@@ -184,16 +199,16 @@ export const animateTankDriving = (
     tanks: Tank[];
     tank: Tank;
     tankInd: number;
-    topography: number[][],
+    topography: number[][];
     dispatch: Function;
   }
 ): void => {
   const { dispatch, tank, tankInd, topography } = customProps;
-  const { driveAnimationSpeed } = environmentConstants
+  const { driveAnimationSpeed } = environmentConstants;
   drawTanks(ctx, customProps);
   const position = tank.position;
   const currX = uncenterTank(position)[0];
-  const uncenteredTarget = tank.targetX + tankDimensions.width / 2
+  const uncenteredTarget = tank.targetX + tankDimensions.width / 2;
   const driveDirection = uncenteredTarget - currX > 0 ? 1 : -1;
   let newX;
   if (Math.abs(uncenteredTarget - currX) < driveAnimationSpeed) {
@@ -201,9 +216,9 @@ export const animateTankDriving = (
   } else {
     newX = currX + driveDirection * driveAnimationSpeed;
   }
-  const newY = getTankY({topography, tankX: newX})
+  const newY = getTankY({ topography, tankX: newX });
   const newPosition = centerTank([newX, newY]);
-  dispatch(updateTankPosition({ newPosition, tankInd}));
+  dispatch(updateTankPosition({ newPosition, tankInd }));
   ctx?.stroke();
 };
 
@@ -233,5 +248,5 @@ export const cancelDriveAnimationAndAdvanceTurn = ({
   tanks: Tank[];
 }) => {
   dispatch(cancelTanksAnimating());
-  advancePlayerTurn({dispatch, tankInd, tanks})
+  advancePlayerTurn({ dispatch, tankInd, tanks });
 };

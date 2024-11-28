@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
+    prevPosition: [null, null],
     position: [null, null],
     velocity: [null, null],
     isAnimating: false,
@@ -15,14 +16,18 @@ const projectileSlice = createSlice({
             state.isAnimating = true;
         },
         setProjectileValues: (state, action) => {
-            const { position, velocity } = action.payload;
-            state.position = position;
-            state.velocity = velocity;
+            if (state.isAnimating) {
+                const { position, velocity } = action.payload;
+                state.prevPosition = state.position;
+                state.position = position;
+                state.velocity = velocity;
+            }
         },
         clearProjectileValues: (state) => {
+            state.isAnimating = false;
+            state.prevPosition = [null, null];
             state.position = [null, null];
             state.velocity = [null, null];
-            state.isAnimating = false;
         },
     },
 });

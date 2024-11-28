@@ -2,9 +2,8 @@ import { canvasConstants, environmentConstants, tankDimensions, } from "../../..
 import { setProjectileValues, clearProjectileValues, } from "../../../redux/projectileRedux";
 import { degreesToRadians } from "../../../utils/angleManipulation";
 import { setNewTankShields } from "../../../redux/playersRedux";
-import { 
-// checkForWinner, 
-advancePlayerTurn } from "../gameControls";
+import { advancePlayerTurn } from "../gameControls";
+import { intersect } from "mathjs";
 export const animateProjectile = (ctx, customProps) => {
     const { dispatch, projectilePosition, projectileVelocity } = customProps;
     const [currX, currY] = projectilePosition;
@@ -26,14 +25,19 @@ export const animateProjectile = (ctx, customProps) => {
     dispatch(setProjectileValues(newProjectileValues));
     ctx?.stroke();
 };
-export const shouldCancelProjectileAnimation = ({ projectilePosition, tanks, dispatch, tankInd }) => {
+export const shouldCancelProjectileAnimation = ({ projectilePosition, prevPosition, tanks, dispatch, }) => {
     const [currX, currY] = projectilePosition;
     const outOfBounds = currX > canvasConstants.width ||
         currX < 0 ||
         currY > canvasConstants.height;
-    const struckTanks = checkForStrike(projectilePosition, tanks);
-    dispatch(setNewTankShields(struckTanks));
-    // checkForWinner({tanks, tankInd, dispatch})
+    const struckTanks = checkForStrike({
+        prevPosition,
+        projectilePosition,
+        tanks,
+    });
+    if (struckTanks.length) {
+        dispatch(setNewTankShields(struckTanks));
+    }
     return outOfBounds || !!struckTanks.length;
 };
 export const resetProjectileAnimationAndAdvanceTurn = ({ dispatch, tankInd, tanks, }) => {
@@ -79,22 +83,50 @@ const getLaunchAngle = ({ turretAngle }) => {
     let turretAngleAgainstHorizon;
     if (turretAngle <= 0 && turretAngle >= -90)
         turretAngleAgainstHorizon = turretAngle * -1;
-    // (turretAngle < -90 && turretAngle >= -180)
     else
         turretAngleAgainstHorizon = turretAngle;
     return turretAngleAgainstHorizon;
 };
-const checkForStrike = (projectilePosition, tanks) => {
+const checkForStrike = ({ prevPosition, projectilePosition, tanks, }) => {
     const { height, width } = tankDimensions;
     let struckTanks = [];
-    const [currX, currY] = projectilePosition;
+    if (prevPosition[0] == null && prevPosition[1] == null)
+        return [];
     tanks?.forEach((tank, index) => {
         const [tankX, tankY] = tank.position;
-        if (currX >= tankX &&
-            currX <= tankX + width &&
-            currY <= tankY + height &&
-            currY >= tankY) {
-            struckTanks.push(index);
+        const tankTopLeft = [tankX, tankY];
+        const tankTopRight = [tankX + width, tankY];
+        const tankBottomLeft = [tankX, tankY + height];
+        const tankBottomRight = [tankX + width, tankY + height];
+        const tankLines = [
+            [tankTopLeft, tankTopRight],
+            [tankBottomLeft, tankBottomRight],
+            [tankTopLeft, tankBottomLeft],
+            [tankTopRight, tankBottomRight],
+        ];
+        for (let i = 0; i < tankLines.length; i++) {
+            const intersection = intersect(projectilePosition, prevPosition, tankLines[i][0], tankLines[i][1]);
+            if (intersection) {
+                const xVal = Number(intersection[0]);
+                const yVal = Number(intersection[1]);
+                const [currX, currY] = projectilePosition;
+                const [prevX, prevY] = prevPosition;
+                const projGreaterX = Math.max(currX, prevX);
+                const projLesserX = Math.min(currX, prevX);
+                const projGreaterY = Math.max(currY, prevY);
+                const projLesserY = Math.min(currY, prevY);
+                const yValWithinProjLine = yVal <= projGreaterY && yVal >= projLesserY;
+                const xValWithinProjLine = xVal <= projGreaterX && xVal >= projLesserX;
+                const yValWithinTargLine = yVal >= tankY && yVal <= tankY + height;
+                const xValWithinTargLine = xVal >= tankX && xVal <= tankX + width;
+                if (xValWithinProjLine &&
+                    yValWithinProjLine &&
+                    xValWithinTargLine &&
+                    yValWithinTargLine) {
+                    struckTanks.push(index);
+                    break;
+                }
+            }
         }
     });
     return struckTanks;

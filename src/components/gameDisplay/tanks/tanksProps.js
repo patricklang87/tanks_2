@@ -1,4 +1,4 @@
-import { tankDimensions, canvasConstants, tankColor, designConstants, actions, environmentConstants } from "../../../constants";
+import { tankDimensions, canvasConstants, tankColor, designConstants, actions, environmentConstants, } from "../../../constants";
 import { arrayToRgba } from "../../../utils/colors";
 import { getCoordinatesOnCircle } from "../../../utils/angleManipulation";
 import { cancelTanksAnimating, updateTankPosition, } from "../../../redux/playersRedux";
@@ -41,7 +41,7 @@ export const uncenterTank = (centeredPoint) => {
 export const calculateTurretEndpoints = ({ tankPosition, turretAngle, factor = 1, }) => {
     const [tankX, tankY] = tankPosition;
     const { turretLength, width: tankWidth } = tankDimensions;
-    const turretStartingX = tankX + tankWidth * factor / 2;
+    const turretStartingX = tankX + (tankWidth * factor) / 2;
     const turretStartingY = tankY;
     const turretEnding = getCoordinatesOnCircle({
         center: [turretStartingX, turretStartingY],
@@ -75,7 +75,7 @@ export const initiateTank = ({ index, tankPosition, }) => {
     };
 };
 export const drawTank = (ctx, customProps) => {
-    const { shields, position, currentColor, turretAngle, factor = 1 } = customProps;
+    const { shields, position, currentColor, turretAngle, factor = 1, } = customProps;
     const [tankX, tankY] = position;
     const tankFillColor = shields > 0 ? currentColor : designConstants.destroyedTankColor;
     ctx.clearRect(0, 0, 100, 100);
@@ -83,12 +83,12 @@ export const drawTank = (ctx, customProps) => {
     ctx.fillRect(tankX, tankY, tankDimensions.width * factor, tankDimensions.height * factor);
     ctx.fillStyle = tankFillColor;
     ctx.beginPath();
-    ctx.arc(tankX + tankDimensions.width * factor / 2, tankY, tankDimensions.height * factor / 2, 0, 2 * Math.PI);
+    ctx.arc(tankX + (tankDimensions.width * factor) / 2, tankY, (tankDimensions.height * factor) / 2, 0, 2 * Math.PI);
     ctx.fill();
     const { startingPoint, endingPoint } = calculateTurretEndpoints({
         tankPosition: [tankX, tankY],
         turretAngle: turretAngle,
-        factor
+        factor,
     });
     ctx.beginPath();
     ctx.moveTo(...startingPoint);

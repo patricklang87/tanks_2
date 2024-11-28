@@ -81,10 +81,8 @@ const playersSlice = createSlice({
         state.tanks[state.currentPlayerIndex].availableActions[
           selectedActionIndex
         ].rounds = newRoundValue;
-        console.log(newRoundValue)
         if (newRoundValue <= 0) {
-          state.tanks[state.currentPlayerIndex].selectedAction =
-          "standardShot";
+          state.tanks[state.currentPlayerIndex].selectedAction = "standardShot";
         }
       }
     },

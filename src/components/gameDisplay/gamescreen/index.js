@@ -12,7 +12,6 @@ const GameScreen = () => {
     const displayProjectile = useAppSelector(selectProjectileAnimating);
     const winner = useAppSelector((state) => state.players.winner);
     const showWinnerPopup = winner != null;
-    console.log(typeof winner);
     return (_jsxs("div", { className: "gamescreen", children: [_jsxs("div", { className: "title-container", children: [" ", _jsx("h1", { className: "title-card", children: "Tanks A Million!" })] }), showWinnerPopup && _jsx(WinnerPopup, {}), _jsxs("div", { className: "canvas-container", style: {
                     height: canvasConstants.height,
                     width: canvasConstants.width,
