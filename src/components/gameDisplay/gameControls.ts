@@ -4,14 +4,12 @@ import {
   canvasConstants,
   tankDimensions,
 } from "../../constants";
-import { useAppDispatch } from "../../redux/hooks";
 import { setTopography } from "../../redux/topographyRedux";
 import {
   reduceRemainingRounds,
   setInitialPlayerState,
   setTanksAnimating,
   setPlayerTurn,
-  // setWinner,
 } from "../../redux/playersRedux";
 import {
   setProjectileValues,
@@ -24,6 +22,7 @@ import {
 } from "./tanks/tanksProps";
 import { calculateInitialVelocities } from "./projectile/projectileProps";
 import { Tank } from "../../types";
+import { activateGame } from "../../redux/gameRedux";
 
 export const initiateGame = (dispatch: Function): void => {
   const { height: canvasHeight, width: canvasWidth } = canvasConstants;
@@ -45,9 +44,9 @@ export const initiateGame = (dispatch: Function): void => {
   const initialTanks = tankPositions.map((tankPosition, index) =>
     initiateTank({ tankPosition, index })
   );
-
   dispatch(setTopography(initialTopography));
   dispatch(setInitialPlayerState(initialTanks));
+  dispatch(activateGame());
 };
 
 export const launchProjectile = ({

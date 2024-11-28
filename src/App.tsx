@@ -1,19 +1,15 @@
-import GameScreen from "./components/gameDisplay/gamescreen/index";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import "./App.css";
-import { initiateGame } from "./components/gameDisplay/gameControls";
-import ControlPanel from "./components/gameDisplay/controlPanel/controlPanel";
-import { useAppDispatch } from "./redux/hooks";
+import { useAppSelector } from "./redux/hooks";
+import GameDisplay from "./components/gameDisplay/GameDisplay";
+import StartScreen from "./components/startScreen/StartScreen";
 
 function App() {
-  const dispatch = useAppDispatch();
-  initiateGame(dispatch);
-
+  const gameActive = useAppSelector(state => state.game.activeGame);
   return (
     <>
-      <GameScreen />
-      <ControlPanel />
+      {gameActive ?  <GameDisplay /> : <StartScreen />}
     </>
   );
 }
