@@ -105,6 +105,8 @@ export const drawTopography = (ctx, customProps) => {
     ctx.closePath();
 };
 export const checkForGroundCollision = ({ topography, point, }) => {
+    if (point[0] === null)
+        return null;
     const currentSectorEndIndex = topography.findIndex((sector) => sector[0] >= point[0]);
     if (currentSectorEndIndex === -1)
         return null;

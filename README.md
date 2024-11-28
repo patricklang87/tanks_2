@@ -50,8 +50,8 @@ Not yet implemented.
 - [x] Implement game over and winner selection.
 - [x] Implement game restart.
 - [x] Improve strike assessment by calculating linear intersections.
+- [x] End projectile movement when projectile intersects topography.
 - [ ] Implement start screen and player count selection.
-- [ ] End projectile movement when projectile intersects topography.
 
 
 ## Future Updates

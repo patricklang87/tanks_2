@@ -1,6 +1,6 @@
 import { canvasConstants, designConstants } from "../../../constants";
 import { getYForXInLine } from "../../../utils/linearEval";
-import { Tuple } from "../../../types";
+import { Tuple, NullTuple } from "../../../types";
 
 const calculateStartingHeight = ({
   canvasHeight,
@@ -156,8 +156,9 @@ export const checkForGroundCollision = ({
   point,
 }: {
   topography: Tuple[];
-  point: Tuple;
+  point: Tuple | NullTuple;
 }): Tuple | null => {
+  if (point[0] === null) return null;
   const currentSectorEndIndex = topography.findIndex(
     (sector) => sector[0] >= point[0]
   );

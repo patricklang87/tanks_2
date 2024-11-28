@@ -4,6 +4,7 @@ import { degreesToRadians } from "../../../utils/angleManipulation";
 import { setNewTankShields } from "../../../redux/playersRedux";
 import { advancePlayerTurn } from "../gameControls";
 import { intersect } from "mathjs";
+import { checkForGroundCollision } from "../topography/topographyProps";
 export const animateProjectile = (ctx, customProps) => {
     const { dispatch, projectilePosition, projectileVelocity } = customProps;
     const [currX, currY] = projectilePosition;
@@ -25,7 +26,7 @@ export const animateProjectile = (ctx, customProps) => {
     dispatch(setProjectileValues(newProjectileValues));
     ctx?.stroke();
 };
-export const shouldCancelProjectileAnimation = ({ projectilePosition, prevPosition, tanks, dispatch, }) => {
+export const shouldCancelProjectileAnimation = ({ projectilePosition, prevPosition, tanks, dispatch, topography, }) => {
     const [currX, currY] = projectilePosition;
     const outOfBounds = currX > canvasConstants.width ||
         currX < 0 ||
@@ -35,10 +36,15 @@ export const shouldCancelProjectileAnimation = ({ projectilePosition, prevPositi
         projectilePosition,
         tanks,
     });
+    // check for topography struck
+    const topographyStruck = checkForGroundCollision({
+        topography,
+        point: prevPosition,
+    });
     if (struckTanks.length) {
         dispatch(setNewTankShields(struckTanks));
     }
-    return outOfBounds || !!struckTanks.length;
+    return outOfBounds || !!struckTanks.length || !!topographyStruck;
 };
 export const resetProjectileAnimationAndAdvanceTurn = ({ dispatch, tankInd, tanks, }) => {
     dispatch(clearProjectileValues());

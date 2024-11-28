@@ -10,9 +10,11 @@ import {
   resetProjectileAnimationAndAdvanceTurn,
 } from "./projectileProps";
 import { selectCurrentTank, selectTanks } from "../../../redux/playersRedux";
+import { selectTopography } from "../../../redux/topographyRedux";
 
 const Projectile = () => {
   const dispatch = useAppDispatch();
+  const topography = useAppSelector(selectTopography)
   const projectilePosition = useAppSelector(selectProjectilePosition);
   const prevPosition = useAppSelector((state) => state.projectile.prevPosition);
   const projectileVelocity = useAppSelector(
@@ -39,6 +41,7 @@ const Projectile = () => {
         tank,
         tanks,
         tankInd: currentPlayerIndex,
+        topography,
       }}
       cancelationCondition={shouldCancelProjectileAnimation}
       onCancelation={resetProjectileAnimationAndAdvanceTurn}
