@@ -15,10 +15,6 @@ const GameScreen = () => {
 
   return (
     <div className="gamescreen">
-      <div className="title-container">
-        {" "}
-        <h1 className="title-card">Tanks A Million!</h1>
-      </div>
       {showWinnerPopup && <WinnerPopup />}
 
       <div

@@ -24,7 +24,13 @@ import { calculateInitialVelocities } from "./projectile/projectileProps";
 import { Tank } from "../../types";
 import { activateGame } from "../../redux/gameRedux";
 
-export const initiateGame = (dispatch: Function): void => {
+export const initiateGame = ({
+  dispatch,
+  playerCount,
+}: {
+  dispatch: Function;
+  playerCount: number;
+}): void => {
   const { height: canvasHeight, width: canvasWidth } = canvasConstants;
 
   const initialTopography = createInitialTopography({
@@ -38,7 +44,7 @@ export const initiateGame = (dispatch: Function): void => {
 
   const tankPositions = generateTankPositions({
     topography: initialTopography,
-    numberOfTanks: 3,
+    numberOfTanks: playerCount,
   });
 
   const initialTanks = tankPositions.map((tankPosition, index) =>

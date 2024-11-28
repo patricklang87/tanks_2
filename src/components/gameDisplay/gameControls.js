@@ -6,7 +6,7 @@ import { setProjectileValues, startProjectileAnimating, } from "../../redux/proj
 import { calculateTurretEndpoints, generateTankPositions, initiateTank, } from "./tanks/tanksProps";
 import { calculateInitialVelocities } from "./projectile/projectileProps";
 import { activateGame } from "../../redux/gameRedux";
-export const initiateGame = (dispatch) => {
+export const initiateGame = ({ dispatch, playerCount, }) => {
     const { height: canvasHeight, width: canvasWidth } = canvasConstants;
     const initialTopography = createInitialTopography({
         canvasHeight,
@@ -18,7 +18,7 @@ export const initiateGame = (dispatch) => {
     });
     const tankPositions = generateTankPositions({
         topography: initialTopography,
-        numberOfTanks: 3,
+        numberOfTanks: playerCount,
     });
     const initialTanks = tankPositions.map((tankPosition, index) => initiateTank({ tankPosition, index }));
     dispatch(setTopography(initialTopography));

@@ -1,4 +1,4 @@
-<h1 align="center">Tanks a Million!</h1>
+<h1 align="center">Tanks fer Nuthin'!</h1>
 
 <p align="center">To continue upskilling while on the job market, I a writing a clone of "Tanks," a childhood favorite. The frontend implements TypeScript, React, React-Redux, with the embedded JS Canvas API. I plan to add a Java backend to enable online multiplayer with websockets.</p>
 
@@ -13,7 +13,7 @@ The project has not yet been optimized for mobile devices.
 
 ## Links
 
-- [Repo](https://github.com/patricklang87/tanks_2 "Tanks a Million!") 
+- [Repo](https://github.com/patricklang87/tanks_2 "Tanks fer Nuthin'!") 
 
 
 ## Run the project

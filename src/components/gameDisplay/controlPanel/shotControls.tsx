@@ -23,13 +23,13 @@ const ShotControls = () => {
   return (
     <div className="align-items-center">
       <div className="row">
-        <div className="col-2">
+        <div className="col-3">
           <Form.Label>Turret Angle</Form.Label>
         </div>
         <div className="col-1">
           <span>{turretAngle + 90}&deg;</span>
         </div>
-        <div className="col-9">
+        <div className="col-8">
           {" "}
           <Form.Range
             value={turretAngle + 90}
@@ -44,13 +44,13 @@ const ShotControls = () => {
         </div>
       </div>
       <div className="row">
-        <div className="col-2">
+        <div className="col-3">
           <Form.Label>Shot Power</Form.Label>
         </div>
         <div className="col-1">
           <span>{shotPower}%</span>
         </div>
-        <div className="col-9">
+        <div className="col-8">
           {" "}
           <Form.Range
             value={shotPower}
@@ -63,7 +63,7 @@ const ShotControls = () => {
         </div>
       </div>
       <div>
-        <span>Rounds: {remainingRounds}</span>
+        <p>Rounds: {remainingRounds}</p>
       </div>
     </div>
   );
