@@ -9,7 +9,7 @@ import {
 } from "../../../redux/projectileRedux";
 import { degreesToRadians } from "../../../utils/angleManipulation";
 import { setNewTankShields } from "../../../redux/playersRedux";
-import { Tank } from "../../../types";
+import { Tank, Tuple } from "../../../types";
 import { advancePlayerTurn } from "../gameControls";
 import { intersect } from "mathjs";
 
@@ -17,8 +17,8 @@ export const animateProjectile = (
   ctx: CanvasRenderingContext2D,
   customProps: {
     dispatch: Function;
-    projectilePosition: [number, number];
-    projectileVelocity: [number, number];
+    projectilePosition: Tuple;
+    projectileVelocity: Tuple;
   }
 ): void => {
   const { dispatch, projectilePosition, projectileVelocity } = customProps;
@@ -51,8 +51,8 @@ export const shouldCancelProjectileAnimation = ({
   tanks,
   dispatch,
 }: {
-  projectilePosition: [number, number];
-  prevPosition: [number, number] | [null, null];
+  projectilePosition: Tuple;
+  prevPosition: Tuple | [null, null];
   tanks: Tank[];
   dispatch: Function;
 }): boolean => {
@@ -135,7 +135,7 @@ export const calculateNewProjectileValues = ({
   currVelY: number;
   currAccelX?: number;
   currAccelY?: number;
-}): { position: [number, number]; velocity: [number, number] } => {
+}): { position: Tuple; velocity: Tuple } => {
   const newPosX = currX + currVelX;
   const newPosY = currY + currVelY;
   const newVelX = currVelX + currAccelX;
@@ -149,7 +149,7 @@ export const calculateInitialVelocities = ({
 }: {
   turretAngle: number;
   initialVelocity: number;
-}): { projectileDirection: number; initialVelocities: [number, number] } => {
+}): { projectileDirection: number; initialVelocities: Tuple } => {
   const adjustedInitialVelocity =
     initialVelocity * environmentConstants.shotSlowingFactor;
   const launchAngle = getLaunchAngle({ turretAngle });
@@ -179,8 +179,8 @@ const checkForStrike = ({
   projectilePosition,
   tanks,
 }: {
-  prevPosition: [number, number] | [null, null];
-  projectilePosition: [number, number];
+  prevPosition: Tuple | [null, null];
+  projectilePosition: Tuple;
   tanks: Tank[];
 }): number[] => {
   const { height, width } = tankDimensions;
@@ -188,11 +188,11 @@ const checkForStrike = ({
   if (prevPosition[0] == null && prevPosition[1] == null) return [];
   tanks?.forEach((tank, index) => {
     const [tankX, tankY] = tank.position;
-    const tankTopLeft: [number, number] = [tankX, tankY];
-    const tankTopRight: [number, number] = [tankX + width, tankY];
-    const tankBottomLeft: [number, number] = [tankX, tankY + height];
-    const tankBottomRight: [number, number] = [tankX + width, tankY + height];
-    const tankLines: [number, number][][] = [
+    const tankTopLeft: Tuple = [tankX, tankY];
+    const tankTopRight: Tuple = [tankX + width, tankY];
+    const tankBottomLeft: Tuple = [tankX, tankY + height];
+    const tankBottomRight: Tuple = [tankX + width, tankY + height];
+    const tankLines: Tuple[][] = [
       [tankTopLeft, tankTopRight],
       [tankBottomLeft, tankBottomRight],
       [tankTopLeft, tankBottomLeft],

@@ -1,12 +1,14 @@
+import { Tuple } from "../types";
+
 export const getCoordinatesOnCircle = ({
   center,
   radius,
   angle,
 }: {
-  center: [number, number];
+  center: Tuple;
   radius: number;
   angle: number;
-}): [number, number] => {
+}): Tuple => {
   const [x, y] = center;
   const xPosition = x + radius * Math.cos(degreesToRadians(angle));
   const yPosition = y + radius * Math.sin(degreesToRadians(angle));

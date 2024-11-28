@@ -1,4 +1,5 @@
 import { canvasConstants, designConstants } from "../../../constants";
+import { getYForXInLine } from "../../../utils/linearEval";
 const calculateStartingHeight = ({ canvasHeight, minHeightCoefficient, maxHeightCoefficient, getStartingHeight, }) => {
     const maxHeight = canvasHeight * maxHeightCoefficient;
     let startingHeight = getStartingHeight(maxHeight);
@@ -102,4 +103,21 @@ export const drawTopography = (ctx, customProps) => {
     ctx.fillStyle = designConstants.landscapeFillStyle;
     ctx.fill();
     ctx.closePath();
+};
+export const checkForGroundCollision = ({ topography, point, }) => {
+    const currentSectorEndIndex = topography.findIndex((sector) => sector[0] >= point[0]);
+    if (currentSectorEndIndex === -1)
+        return null;
+    const currentSectorStartIndex = currentSectorEndIndex - 1;
+    const startPoint = topography[currentSectorStartIndex];
+    const endPoint = topography[currentSectorEndIndex];
+    const topographyLineY = getYForXInLine({
+        point1: startPoint,
+        point2: endPoint,
+        currentX: point[0],
+    });
+    if (topographyLineY < point[1]) {
+        return [point[0], topographyLineY];
+    }
+    return null;
 };

@@ -1,4 +1,6 @@
 import { canvasConstants, designConstants } from "../../../constants";
+import { getYForXInLine } from "../../../utils/linearEval";
+import { Tuple } from "../../../types";
 
 const calculateStartingHeight = ({
   canvasHeight,
@@ -82,7 +84,7 @@ export const createInitialTopography = ({
   minHeightCoefficient: number;
   maxHeightCoefficient: number;
 }): number[][] => {
-  const points: [number, number][] = [];
+  const points: Tuple[] = [];
 
   const { getDirection, getStartingHeight } = risingFallingValleyFlatOrPeak();
 
@@ -121,7 +123,7 @@ export const createInitialTopography = ({
 
 export const drawTopography = (
   ctx: CanvasRenderingContext2D,
-  customProps: { topography: [number, number][] }
+  customProps: { topography: Tuple[] }
 ): void => {
   const { topography } = customProps;
   ctx.clearRect(0, 0, canvasConstants.width, canvasConstants.height);
@@ -147,4 +149,30 @@ export const drawTopography = (
   ctx.fillStyle = designConstants.landscapeFillStyle;
   ctx.fill();
   ctx.closePath();
+};
+
+export const checkForGroundCollision = ({
+  topography,
+  point,
+}: {
+  topography: Tuple[];
+  point: Tuple;
+}): Tuple | null => {
+  const currentSectorEndIndex = topography.findIndex(
+    (sector) => sector[0] >= point[0]
+  );
+  if (currentSectorEndIndex === -1) return null;
+  const currentSectorStartIndex = currentSectorEndIndex - 1;
+  const startPoint = topography[currentSectorStartIndex];
+  const endPoint = topography[currentSectorEndIndex];
+
+  const topographyLineY = getYForXInLine({
+    point1: startPoint,
+    point2: endPoint,
+    currentX: point[0],
+  });
+  if (topographyLineY < point[1]) {
+    return [point[0], topographyLineY];
+  }
+  return null;
 };

@@ -12,7 +12,7 @@ export type Tank = {
   shotPower: number;
   driveDistance: number;
   shields: number;
-  position: [number, number];
+  position: Tuple;
   targetX: number;
   tankDriveAnimationExecuting: boolean;
   localColor: string;
@@ -22,3 +22,5 @@ export type Tank = {
   selectedAction: string;
   availableActions: Action[];
 };
+
+export type Tuple = [number, number];

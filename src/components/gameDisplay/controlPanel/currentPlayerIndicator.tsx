@@ -4,7 +4,6 @@ import Canvas from "../../common/canvas";
 import { drawTank } from "../tanks/tanksProps";
 import { tankColor, tankDimensions } from "../../../constants";
 import { arrayToRgba } from "../../../utils/colors";
-import { centerTank } from "../tanks/tanksProps";
 
 const CurrentPlayerIndicator = () => {
   const currentPlayerIndex = useAppSelector(selectCurrentPlayerIndex);

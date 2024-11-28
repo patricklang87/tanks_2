@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "./store";
+import { Tuple } from "../types";
 
 interface ProjectileState {
-  prevPosition: [number | number] | [null, null];
-  position: [number | number] | [null, null];
+  prevPosition: Tuple | [null, null];
+  position: Tuple | [null, null];
   velocity: [number | null, number | null];
   isAnimating: boolean;
 }

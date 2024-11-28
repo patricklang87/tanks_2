@@ -8,7 +8,7 @@ import {
 } from "../../../constants";
 import { arrayToRgba } from "../../../utils/colors";
 import { getCoordinatesOnCircle } from "../../../utils/angleManipulation";
-import { Tank, Action } from "../../../types";
+import { Tank, Action, Tuple } from "../../../types";
 import {
   cancelTanksAnimating,
   updateTankPosition,
@@ -21,7 +21,7 @@ export const generateTankPositions = ({
 }: {
   topography: number[][];
   numberOfTanks: number;
-}): [number, number][] => {
+}): Tuple[] => {
   const rangeWidth = canvasConstants.width / numberOfTanks;
   const rangeStarts = [];
   let count = 0;
@@ -55,16 +55,16 @@ export const getTankY = ({
 };
 
 export const centerTank = (
-  uncenteredPoint: [number, number]
-): [number, number] => {
+  uncenteredPoint: Tuple
+): Tuple => {
   const { width: tankWidth, height: tankHeight } = tankDimensions;
   const [tankX, tankY] = uncenteredPoint;
   return [tankX - tankWidth / 2, tankY - tankHeight];
 };
 
 export const uncenterTank = (
-  centeredPoint: [number, number]
-): [number, number] => {
+  centeredPoint: Tuple
+): Tuple => {
   const { width: tankWidth, height: tankHeight } = tankDimensions;
   const [currX, currY] = centeredPoint;
   return [currX + tankWidth / 2, currY + tankHeight];
@@ -75,10 +75,10 @@ export const calculateTurretEndpoints = ({
   turretAngle,
   factor = 1,
 }: {
-  tankPosition: [number, number];
+  tankPosition: Tuple;
   turretAngle: number;
   factor?: number;
-}): { startingPoint: [number, number]; endingPoint: [number, number] } => {
+}): { startingPoint: Tuple; endingPoint: Tuple } => {
   const [tankX, tankY] = tankPosition;
   const { turretLength, width: tankWidth } = tankDimensions;
   const turretStartingX = tankX + (tankWidth * factor) / 2;
@@ -100,7 +100,7 @@ export const initiateTank = ({
   tankPosition,
 }: {
   index: number;
-  tankPosition: [number, number];
+  tankPosition: Tuple;
 }): Tank => {
   return {
     turretAngle: -90,
@@ -127,7 +127,7 @@ export const drawTank = (
   ctx: CanvasRenderingContext2D,
   customProps: {
     shields: number;
-    position: [number, number];
+    position: Tuple;
     currentColor: string;
     turretAngle: number;
     factor?: number;
