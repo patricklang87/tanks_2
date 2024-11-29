@@ -52,6 +52,7 @@ Not yet implemented.
 - [x] Improve strike assessment by calculating linear intersections.
 - [x] End projectile movement when projectile intersects topography.
 - [x] Implement start screen and player count selection.
+- [ ] Make make sure destroyed tanks don't get another turn.
 - [ ] Update topography on strike.
 
 
