@@ -68,7 +68,7 @@ export const actions : {
   standardShot: {
     name: "standardShot",
     displayName: "Standard Shot",
-    damage: 20,
+    damage: 50,
     type: "PROJECTILE",
     rounds: "Infinite",
   },

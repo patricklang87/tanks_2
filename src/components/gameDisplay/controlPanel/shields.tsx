@@ -5,7 +5,7 @@ import { designConstants } from "../../../constants";
 
 const Shields = () => {
   const tanks = useAppSelector(selectTanks);
-  const {destroyedTankColor} = designConstants;
+  const { destroyedTankColor } = designConstants;
 
   return (
     <div style={{ padding: "10px" }}>
@@ -14,11 +14,13 @@ const Shields = () => {
           key={`shields_${index}`}
           className="row shields-indicator"
           style={{
- 
-            backgroundColor: tank.shields > 0 ? tank.localColor : destroyedTankColor,
+            backgroundColor:
+              tank.shields > 0 ? tank.localColor : destroyedTankColor,
           }}
         >
-          <span className="col-4">{tank.shields}%</span>
+          <span className="col-4">
+            {tank.shields > 0 ? tank.shields + "%" : "Deadzo"}
+          </span>
           <div className="col-8">
             {" "}
             <ProgressBar

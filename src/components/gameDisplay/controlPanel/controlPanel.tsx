@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import "../../../css/controlPanel.css";
 import Shields from "./shields";
 import ShotControls from "./shotControls";
@@ -8,11 +9,13 @@ import {
   setCurrentTankSelectedAction,
   selectCurrentTank,
   selectCurrentPlayerIndex,
+  selectTanks,
+  setPlayerTurn
 } from "../../../redux/playersRedux";
 import { getSelectedActionData } from "../tanks/tanksProps";
 import { selectProjectileAnimating } from "../../../redux/projectileRedux";
 import { actions } from "../../../constants";
-import { launchProjectile, driveTank } from "../gameControls";
+import { launchProjectile, driveTank, advancePlayerTurn } from "../gameControls";
 
 // import { getAnimationStatement } from "./playDashboardHooks";
 
@@ -58,6 +61,8 @@ const ControlPanel = () => {
   const dispatch = useAppDispatch();
   const tank = useAppSelector(selectCurrentTank);
   const currentPlayerIndex = useAppSelector(selectCurrentPlayerIndex);
+  const tanks = useAppSelector(selectTanks);
+  const currentTank = useAppSelector(selectCurrentTank)
 
   const animationsExecuting = useAppSelector(selectProjectileAnimating);
   // const animationStatement = getAnimationStatement(gameState);
@@ -78,6 +83,12 @@ const ControlPanel = () => {
       driveTank({tank, tankInd: currentPlayerIndex, dispatch })
     }
   }
+
+  useEffect(() => {
+    if (currentTank.shields <= 0) {
+      dispatch(setPlayerTurn(currentPlayerIndex + 1))
+    }
+  }, [...tanks.map(tank => tank.shields)])
 
   return (
     <div className="control-panel-container">
