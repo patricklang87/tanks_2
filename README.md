@@ -13,7 +13,8 @@ The project has not yet been optimized for mobile devices.
 
 ## Links
 
-- [Repo](https://github.com/patricklang87/tanks_2 "Tanks fer Nuthin'!") 
+- [Repo](https://github.com/patricklang87/tanks_2 "Tanks fer Nuthin'! - Code") 
+- [Deployment](https://patricklang87.github.io/tanks_2/ "Tanks fer Nuthin'! - Game") 
 
 
 ## Run the project
