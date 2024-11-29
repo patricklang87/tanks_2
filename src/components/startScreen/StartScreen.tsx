@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { initiateGame } from "../gameDisplay/gameControls";
 import { useAppDispatch } from "../../redux/hooks";
+import { tankColor } from "../../constants";
 
 const StartScreen = () => {
   const dispatch = useAppDispatch();
   const [playerCount, setPlayerCount] = useState(2);
+  const maxPlayerCount = tankColor.length;
 
   return (
     <>
@@ -13,7 +15,7 @@ const StartScreen = () => {
         <input
           type="number"
           defaultValue={playerCount}
-          max={4}
+          max={maxPlayerCount}
           min={2}
           id="playerCount"
           className="form-control"
