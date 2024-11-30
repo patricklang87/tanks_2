@@ -8,6 +8,7 @@ const Explosion = () => {
     const color = useAppSelector((state) => state.explosion.explosionColor);
     const radius = useAppSelector((state) => state.explosion.explosionRadius);
     const maxRadius = useAppSelector((state) => state.explosion.explosionMaxRadius);
-    return (_jsx(Canvas, { animationFunction: animateExplosion, customProps: { dispatch, color, center, radius, maxRadius }, cancelationCondition: shouldCancelExplosionAnimation, onCancelation: resetExplosionValues }));
+    const maxReached = useAppSelector((state) => state.explosion.maxReached);
+    return (_jsx(Canvas, { animationFunction: animateExplosion, customProps: { dispatch, color, center, radius, maxRadius, maxReached }, cancelationCondition: shouldCancelExplosionAnimation, onCancelation: resetExplosionValues }));
 };
 export default Explosion;

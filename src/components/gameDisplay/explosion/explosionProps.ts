@@ -67,13 +67,13 @@ export const animateExplosion = (
 
 export const shouldCancelExplosionAnimation = ({
   radius,
-  maxRadius,
+  maxReached
 }: {
   radius: number;
-  maxRadius: number;
+  maxReached: boolean;
 }) => {
-  return radius >= maxRadius;
-};
+  return radius <= 0 && maxReached;
+}
 
 export const resetExplosionValues = ({ dispatch }: { dispatch: Function }) => {
   dispatch(clearExplosionValues());

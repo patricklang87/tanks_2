@@ -8,6 +8,7 @@ interface ExplosionState {
   explosionMaxRadius: number;
   explosionRadius: number;
   explosionColor: string;
+  maxReached: boolean;
 }
 
 const initialState: ExplosionState = {
@@ -16,6 +17,7 @@ const initialState: ExplosionState = {
   explosionMaxRadius: 0,
   explosionRadius: 0,
   explosionColor: "none",
+  maxReached: false,
 };
 
 const explosionSlice = createSlice({
@@ -32,11 +34,14 @@ const explosionSlice = createSlice({
     },
     updateExplosionAnimation: (state) => {
       if (
-        state.explosionRadius < state.explosionMaxRadius &&
+        !state.maxReached &&
         state.explosionIsAnimating
       ) {
         state.explosionRadius += environmentConstants.explosionRate;
+      } else if (state.maxReached && state.explosionIsAnimating) {
+        state.explosionRadius -= environmentConstants.explosionRate;
       }
+      if (state.explosionIsAnimating && state.explosionRadius >= state.explosionMaxRadius) state.maxReached = true;
     },
     clearExplosionValues: (state) => {
       state.explosionIsAnimating = false;
@@ -44,6 +49,7 @@ const explosionSlice = createSlice({
       state.explosionMaxRadius = 0;
       state.explosionRadius = 0;
       state.explosionColor = "none";
+      state.maxReached = false;
     },
   },
 });

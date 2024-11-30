@@ -30,8 +30,8 @@ export const animateExplosion = (ctx, customProps) => {
     dispatch(updateExplosionAnimation());
     ctx?.stroke();
 };
-export const shouldCancelExplosionAnimation = ({ radius, maxRadius, }) => {
-    return radius >= maxRadius;
+export const shouldCancelExplosionAnimation = ({ radius, maxReached }) => {
+    return radius <= 0 && maxReached;
 };
 export const resetExplosionValues = ({ dispatch }) => {
     dispatch(clearExplosionValues());
