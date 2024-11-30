@@ -9,7 +9,6 @@ export const startExplosion = ({ dispatch, center, tank, topography, topographyS
     const { explosionColor, damage } = selectedAction;
     const maxRadius = damage ? damage / 2 : 5;
     const centerPoint = topographyStruck ? setOnTopography({ point: center, topography }) : center;
-    console.log("in start explosion", maxRadius);
     dispatch(setExplosionAnimating({
         explosionCenter: centerPoint,
         explosionColor: explosionColor,
