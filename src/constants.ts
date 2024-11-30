@@ -68,9 +68,10 @@ export const actions : {
   standardShot: {
     name: "standardShot",
     displayName: "Standard Shot",
-    damage: 50,
+    damage: 20,
     type: "PROJECTILE",
     rounds: "Infinite",
+    explosionColor: [241, 90, 34, 1]
   },
   drive: { name: "drive", displayName: "Drive", fuel: 1, type: "DRIVE" },
   steelShotput: {
@@ -79,5 +80,6 @@ export const actions : {
     damage: 30,
     type: "PROJECTILE",
     rounds: 3,
+    explosionColor: [241, 90, 34, 1]
   },
 };
