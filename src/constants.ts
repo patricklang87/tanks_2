@@ -68,7 +68,7 @@ export const actions : {
   standardShot: {
     name: "standardShot",
     displayName: "Standard Shot",
-    damage: 50,
+    damage: 20,
     type: "PROJECTILE",
     rounds: "Infinite",
   },
@@ -76,7 +76,7 @@ export const actions : {
   steelShotput: {
     name: "steelShotput",
     displayName: "Steel Shotput",
-    damage: 30,
+    damage: 35,
     type: "PROJECTILE",
     rounds: 3,
   },
