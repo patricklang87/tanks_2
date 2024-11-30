@@ -86,7 +86,7 @@ const ControlPanel = () => {
 
   useEffect(() => {
     if (currentTank.shields <= 0) {
-      dispatch(setPlayerTurn(currentPlayerIndex + 1))
+      dispatch(setPlayerTurn(currentPlayerIndex))
     }
   }, [...tanks.map(tank => tank.shields)])
 

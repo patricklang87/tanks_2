@@ -42,7 +42,7 @@ const ControlPanel = () => {
     };
     useEffect(() => {
         if (currentTank.shields <= 0) {
-            dispatch(setPlayerTurn(currentPlayerIndex + 1));
+            dispatch(setPlayerTurn(currentPlayerIndex));
         }
     }, [...tanks.map(tank => tank.shields)]);
     return (_jsx("div", { className: "control-panel-container", children: _jsxs("div", { className: "row control-panel", children: [_jsx("div", { className: "col-2", children: _jsx(CurrentPlayerIndicator, {}) }), _jsx("div", { className: "col-3", children: _jsx(Shields, {}) }), _jsx("div", { className: "col-6", children: _jsx(ControlSection, {}) }), _jsx("div", { className: "col-1", children: _jsx("button", { disabled: animationsExecuting || noRoundsRemain, onClick: handleClick, children: selectedAction?.type === "DRIVE" ? "Drive!" : "Fire!" }) })] }) }));
