@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { NullTuple, Tuple } from "../types";
+import { environmentConstants } from "../constants";
 
 interface ExplosionState {
   explosionIsAnimating: boolean;
@@ -34,7 +35,7 @@ const explosionSlice = createSlice({
         state.explosionRadius < state.explosionMaxRadius &&
         state.explosionIsAnimating
       ) {
-        state.explosionRadius += 0.00001;
+        state.explosionRadius += environmentConstants.explosionRate;
       }
     },
     clearExplosionValues: (state) => {

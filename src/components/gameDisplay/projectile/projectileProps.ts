@@ -86,7 +86,13 @@ export const shouldCancelProjectileAnimation = ({
   }
 
   if (!!struckTanks.length || !!topographyStruck) {
-    startExplosion({ dispatch, center: projectilePosition, tank });
+    startExplosion({
+      dispatch,
+      center: prevPosition,
+      tank,
+      topography,
+      topographyStruck: !!topographyStruck,
+    });
   }
 
   return outOfBounds || !!struckTanks.length || !!topographyStruck;

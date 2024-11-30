@@ -6,7 +6,7 @@ const Explosion = () => {
   const dispatch = useAppDispatch();
   const center = useAppSelector((state) => state.explosion.explosionCenter);
   const color = useAppSelector((state) => state.explosion.explosionColor);
-  const radius = useAppSelector((state) => state.explosion.explosionMaxRadius);
+  const radius = useAppSelector((state) => state.explosion.explosionRadius);
   const maxRadius = useAppSelector((state) => state.explosion.explosionMaxRadius)
 
   return (

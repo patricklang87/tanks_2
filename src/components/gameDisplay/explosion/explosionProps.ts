@@ -1,4 +1,4 @@
-import { Tuple, Tank } from "../../../types";
+import { Tuple, Tank, NullTuple } from "../../../types";
 import { drawCircle } from "../../common/commonAnimationFunctions";
 import {
   updateExplosionAnimation,
@@ -7,24 +7,31 @@ import {
 } from "../../../redux/explosionRedux";
 import { arrayToRgba } from "../../../utils/colors";
 import { actions } from "../../../constants";
+import { setOnTopography } from "../../../utils/pointCentering";
 
 export const startExplosion = ({
   dispatch,
   center,
   tank,
+  topography,
+  topographyStruck,
 }: {
   dispatch: Function;
-  center: Tuple;
+  center: Tuple | NullTuple;
   tank: Tank;
+  topography: Tuple[];
+  topographyStruck: boolean;
 }): void => {
-  console.log(center, tank);
   const actionSelector = tank.selectedAction as keyof typeof actions;
   const selectedAction = actions[actionSelector];
   const { explosionColor, damage } = selectedAction;
-  const maxRadius = damage ? damage / 10 : 10;
+  const maxRadius = damage ? damage / 2: 5;
+  const centerPoint = topographyStruck ? setOnTopography({point: center, topography}) : center;
+  console.log("in start explosion", maxRadius)
+
   dispatch(
     setExplosionAnimating({
-      explosionCenter: center,
+      explosionCenter: centerPoint,
       explosionColor: explosionColor,
       explosionMaxRadius: maxRadius,
     })
@@ -44,7 +51,6 @@ export const animateExplosion = (
   const [startX, startY] = center;
 
   const colorRgba = arrayToRgba(color);
-
 
   drawCircle(ctx, {
     radius,

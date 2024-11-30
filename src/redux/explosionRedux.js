@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { environmentConstants } from "../constants";
 const initialState = {
     explosionIsAnimating: false,
     explosionCenter: [null, null],
@@ -20,7 +21,7 @@ const explosionSlice = createSlice({
         updateExplosionAnimation: (state) => {
             if (state.explosionRadius < state.explosionMaxRadius &&
                 state.explosionIsAnimating) {
-                state.explosionRadius += 0.00001;
+                state.explosionRadius += environmentConstants.explosionRate;
             }
         },
         clearExplosionValues: (state) => {
