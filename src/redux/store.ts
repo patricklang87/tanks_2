@@ -3,6 +3,7 @@ import playersReducer from './playersRedux';
 import topographyReducer from './topographyRedux'
 import projectileReducer from './projectileRedux';
 import gameReducer from './gameRedux';
+import explosionReducer from './explosionRedux';
 
 const store = configureStore({
     reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
         topography: topographyReducer,
         projectile: projectileReducer,
         game: gameReducer,
+        explosion: explosionReducer,
     }
 });
 

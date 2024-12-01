@@ -1,10 +1,12 @@
 import { canvasConstants, environmentConstants, tankDimensions, } from "../../../constants";
 import { setProjectileValues, clearProjectileValues, } from "../../../redux/projectileRedux";
+import { drawCircle } from "../../common/commonAnimationFunctions";
 import { degreesToRadians } from "../../../utils/angleManipulation";
 import { setNewTankShields } from "../../../redux/playersRedux";
 import { advancePlayerTurn } from "../gameControls";
 import { intersect } from "mathjs";
 import { checkForGroundCollision } from "../topography/topographyProps";
+import { startExplosion } from "../explosion/explosionProps";
 export const animateProjectile = (ctx, customProps) => {
     const { dispatch, projectilePosition, projectileVelocity } = customProps;
     const [currX, currY] = projectilePosition;
@@ -26,7 +28,7 @@ export const animateProjectile = (ctx, customProps) => {
     dispatch(setProjectileValues(newProjectileValues));
     ctx?.stroke();
 };
-export const shouldCancelProjectileAnimation = ({ projectilePosition, prevPosition, tanks, dispatch, topography, }) => {
+export const shouldCancelProjectileAnimation = ({ projectilePosition, prevPosition, tanks, dispatch, topography, tank, }) => {
     const [currX, currY] = projectilePosition;
     const outOfBounds = currX > canvasConstants.width ||
         currX < 0 ||
@@ -44,26 +46,20 @@ export const shouldCancelProjectileAnimation = ({ projectilePosition, prevPositi
     if (struckTanks.length) {
         dispatch(setNewTankShields(struckTanks));
     }
+    if (!!struckTanks.length || !!topographyStruck) {
+        startExplosion({
+            dispatch,
+            center: prevPosition,
+            tank,
+            topography,
+            topographyStruck: !!topographyStruck,
+        });
+    }
     return outOfBounds || !!struckTanks.length || !!topographyStruck;
 };
 export const resetProjectileAnimationAndAdvanceTurn = ({ dispatch, tankInd, tanks, }) => {
     dispatch(clearProjectileValues());
     advancePlayerTurn({ dispatch, tankInd, tanks });
-};
-export const drawCircle = (ctx, circleDims
-// = {}
-) => {
-    const { radius, strokeStyle = "blue", startX, startY, lineWidth, colorFill = "pink", } = circleDims;
-    ctx?.clearRect(0, 0, canvasConstants.width, canvasConstants.height);
-    ctx.lineWidth = lineWidth;
-    ctx.strokeStyle = strokeStyle;
-    ctx?.beginPath();
-    ctx?.arc(startX, startY, radius, 0, Math.PI * 2, true);
-    ctx?.stroke();
-    if (colorFill) {
-        ctx.fillStyle = colorFill;
-        ctx.fill();
-    }
 };
 export const calculateNewProjectileValues = ({ currX, currY, currVelX, currVelY, currAccelX = 0, currAccelY = environmentConstants.gravity, }) => {
     const newPosX = currX + currVelX;

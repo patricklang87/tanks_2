@@ -35,10 +35,12 @@ export const environmentConstants : {
   gravity: number;
   shotSlowingFactor: number;
   driveAnimationSpeed: number;
+  explosionRate: number;
 } = {
   gravity: 0.5,
   shotSlowingFactor: 0.3,
   driveAnimationSpeed: 3,
+  explosionRate: 0.5,
 };
 
 export const tankDimensions : {
@@ -71,6 +73,7 @@ export const actions : {
     damage: 20,
     type: "PROJECTILE",
     rounds: "Infinite",
+    explosionColor: [241, 90, 34, 1]
   },
   drive: { name: "drive", displayName: "Drive", fuel: 1, type: "DRIVE" },
   steelShotput: {
@@ -79,5 +82,6 @@ export const actions : {
     damage: 35,
     type: "PROJECTILE",
     rounds: 3,
+    explosionColor: [241, 90, 34, 1]
   },
 };

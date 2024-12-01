@@ -5,6 +5,7 @@ export type Action = {
   type: string;
   rounds?: number | string;
   fuel?: number;
+  explosionColor?: number[];
 };
 
 export type Tank = {
