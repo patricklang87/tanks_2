@@ -53,6 +53,7 @@ Not yet implemented.
 - [x] Improve strike assessment by calculating linear intersections.
 - [x] End projectile movement when projectile intersects topography.
 - [x] Implement start screen and player count selection.
+- [x] Add explosion animation.
 - [ ] Update topography on strike.
 
 
