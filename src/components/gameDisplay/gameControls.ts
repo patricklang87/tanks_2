@@ -8,7 +8,7 @@ import { setTopography } from "../../redux/topographyRedux";
 import {
   reduceRemainingRounds,
   setInitialPlayerState,
-  setTanksAnimating,
+  setTanksDriving,
   setPlayerTurn,
 } from "../../redux/playersRedux";
 import {
@@ -96,7 +96,7 @@ export const driveTank = ({
   if (targetX > canvasConstants.width - tankDimensions.width) {
     targetX = canvasConstants.width - tankDimensions.width;
   }
-  dispatch(setTanksAnimating({ tankInd, targetX }));
+  dispatch(setTanksDriving({ tankInd, targetX }));
 };
 
 export const advancePlayerTurn = ({

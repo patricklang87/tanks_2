@@ -1,19 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { actions } from "../constants";
+import { actions, environmentConstants } from "../constants";
 import { RootState } from "./store";
 import { Tank, Action } from "../types";
 
 interface PlayersState {
   tanks: Tank[];
   currentPlayerIndex: number;
-  tanksAnimating: boolean;
+  tanksDriving: boolean;
+  tanksFalling: boolean;
   winner: number | null;
 }
 
 const initialState: PlayersState = {
   tanks: [],
   currentPlayerIndex: 0,
-  tanksAnimating: false,
+  tanksDriving: false,
+  tanksFalling: false,
   winner: null,
 };
 
@@ -24,7 +26,8 @@ const playersSlice = createSlice({
     setInitialPlayerState: (state, action) => {
       state.tanks = action.payload;
       state.currentPlayerIndex = 0;
-      state.tanksAnimating = false;
+      state.tanksDriving = false;
+      state.tanksFalling = false;
       state.winner = null;
     },
     setCurrentTankTurretAngle: (state, action) => {
@@ -90,13 +93,36 @@ const playersSlice = createSlice({
       const { tankInd, newPosition } = action.payload;
       state.tanks[tankInd].position = newPosition;
     },
-    setTanksAnimating: (state, action) => {
+    setTanksDriving: (state, action) => {
       const { tankInd, targetX } = action.payload;
       state.tanks[tankInd].targetX = targetX;
-      state.tanksAnimating = true;
+      state.tanksDriving = true;
     },
     cancelTanksAnimating: (state) => {
-      state.tanksAnimating = false;
+      state.tanksDriving = false;
+      state.tanksFalling = false;
+    },
+    setTanksFalling: (state, action) => {
+      for (let i = 0; i < action.payload.length; i++) {
+        if (action.payload[i]) {
+          state.tanks[i].targetY = action.payload[i];
+        }
+      }
+      state.tanksFalling = true;
+    },
+    updateTanksFalling: (state) => {
+      for (let tank of state.tanks) {
+        if (tank.targetY === tank.position[1]) continue;
+        if (
+          Math.abs(tank.position[1] - tank.targetY) <
+          environmentConstants.fallAnimationSpeed
+        ) {
+          tank.position[1] = tank.targetY;
+        } else if (tank.position[1] >= tank.targetY) {
+          tank.position[1] =
+            tank.position[1] - environmentConstants.fallAnimationSpeed;
+        }
+      }
     },
   },
 });
@@ -111,8 +137,9 @@ export const {
   setNewTankShields,
   reduceRemainingRounds,
   updateTankPosition,
-  setTanksAnimating,
+  setTanksDriving,
   cancelTanksAnimating,
+  setTanksFalling,
 } = playersSlice.actions;
 export const selectTanks = (state: RootState) => state.players.tanks;
 export const selectCurrentTank = (state: RootState) =>

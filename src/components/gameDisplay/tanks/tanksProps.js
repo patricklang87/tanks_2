@@ -1,8 +1,9 @@
 import { tankDimensions, canvasConstants, tankColor, designConstants, actions, environmentConstants, } from "../../../constants";
 import { arrayToRgba } from "../../../utils/colors";
 import { getCoordinatesOnCircle } from "../../../utils/angleManipulation";
-import { cancelTanksAnimating, updateTankPosition, } from "../../../redux/playersRedux";
+import { cancelTanksAnimating, updateTankPosition, setTanksFalling, } from "../../../redux/playersRedux";
 import { advancePlayerTurn } from "../gameControls";
+import { setOnTopography } from "../../../utils/pointCentering";
 export const generateTankPositions = ({ topography, numberOfTanks = 2, }) => {
     const rangeWidth = canvasConstants.width / numberOfTanks;
     const rangeStarts = [];
@@ -61,6 +62,7 @@ export const initiateTank = ({ index, tankPosition, }) => {
         shields: 100,
         position: tankPosition,
         targetX: tankPosition[0],
+        targetY: tankPosition[1],
         tankDriveAnimationExecuting: false,
         localColor: arrayToRgba(tankColor[index]),
         currentColor: arrayToRgba(tankColor[index]),
@@ -133,7 +135,70 @@ export const shouldCancelDriveAnimation = ({ tank, }) => {
     const atTarget = targetX - currX === 0;
     return outOfBounds || atTarget;
 };
-export const cancelDriveAnimationAndAdvanceTurn = ({ dispatch, tankInd, tanks, }) => {
+export const shouldCancelFallAnimation = ({ tanks }) => {
+    return tanks.every((tank) => tank.position[1] === tank.targetY);
+};
+export const cancelTankAnimationAndAdvanceTurn = ({ dispatch, tankInd, tanks, }) => {
     dispatch(cancelTanksAnimating());
     advancePlayerTurn({ dispatch, tankInd, tanks });
+};
+export const startTanksFalling = ({ topography, tanks, dispatch, }) => {
+    console.log("tanks", tanks);
+    let tanksWillFall = false;
+    let newYValues = new Array(tanks.length).fill(null);
+    for (let i = 0; i < tanks.length; i++) {
+        console.log(i);
+        let [currX, currY] = tanks[i].position;
+        const centerX = currX + tankDimensions.width / 2;
+        const bottomOfTankY = currY + tankDimensions.height;
+        const topoPosition = setOnTopography({
+            topography,
+            point: [centerX, currY],
+        });
+        console.log('topoposition', topoPosition);
+        // need to check to make sure shot landing is within crater
+        console.log("topoY, currY", topoPosition[1], bottomOfTankY);
+        if (topoPosition != null && topoPosition[1] > bottomOfTankY) {
+            tanksWillFall = true;
+            newYValues[i] = topoPosition[1] - tankDimensions.width;
+        }
+    }
+    console.log("twf", tanksWillFall);
+    if (tanksWillFall) {
+        console.log("tanksWillFall");
+        dispatch(setTanksFalling(newYValues));
+    }
+};
+export const animateTanksFalling = (ctx, customProps) => {
+    const { dispatch, tanks } = customProps;
+    const { fallAnimationSpeed } = environmentConstants;
+    drawTanks(ctx, customProps);
+    for (let i in tanks) {
+        const tank = tanks[i];
+        if (tank.targetY === tank.position[1])
+            continue;
+        let newTankY = tank.position[1];
+        if (Math.abs(tank.position[1] - tank.targetY) < fallAnimationSpeed) {
+            newTankY = tank.targetY;
+        }
+        else if (tank.position[1] < tank.targetY) {
+            newTankY = tank.position[1] + fallAnimationSpeed;
+        }
+        console.log(i, newTankY);
+        dispatch(updateTankPosition({ newPosition: [tank.position[0], newTankY], tankInd: i }));
+    }
+    // const position = tank.position;
+    // const currX = uncenterTank(position)[0];
+    // const uncenteredTarget = tank.targetX + tankDimensions.width / 2;
+    // const driveDirection = uncenteredTarget - currX > 0 ? 1 : -1;
+    // let newX;
+    // if (Math.abs(uncenteredTarget - currX) < driveAnimationSpeed) {
+    //   newX = uncenteredTarget;
+    // } else {
+    //   newX = currX + driveDirection * driveAnimationSpeed;
+    // }
+    // const newY = getTankY({ topography, tankX: newX });
+    // const newPosition = centerTank([newX, newY]);
+    // dispatch(updateTankPosition({ newPosition, tankInd }));
+    ctx?.stroke();
 };

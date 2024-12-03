@@ -12,8 +12,10 @@ import { Tank, Action, Tuple } from "../../../types";
 import {
   cancelTanksAnimating,
   updateTankPosition,
+  setTanksFalling,
 } from "../../../redux/playersRedux";
 import { advancePlayerTurn } from "../gameControls";
+import { setOnTopography } from "../../../utils/pointCentering";
 
 export const generateTankPositions = ({
   topography,
@@ -54,17 +56,13 @@ export const getTankY = ({
   return gradient * tankX + yIntercept;
 };
 
-export const centerTank = (
-  uncenteredPoint: Tuple
-): Tuple => {
+export const centerTank = (uncenteredPoint: Tuple): Tuple => {
   const { width: tankWidth, height: tankHeight } = tankDimensions;
   const [tankX, tankY] = uncenteredPoint;
   return [tankX - tankWidth / 2, tankY - tankHeight];
 };
 
-export const uncenterTank = (
-  centeredPoint: Tuple
-): Tuple => {
+export const uncenterTank = (centeredPoint: Tuple): Tuple => {
   const { width: tankWidth, height: tankHeight } = tankDimensions;
   const [currX, currY] = centeredPoint;
   return [currX + tankWidth / 2, currY + tankHeight];
@@ -109,6 +107,7 @@ export const initiateTank = ({
     shields: 100,
     position: tankPosition,
     targetX: tankPosition[0],
+    targetY: tankPosition[1],
     tankDriveAnimationExecuting: false,
     localColor: arrayToRgba(tankColor[index]),
     currentColor: arrayToRgba(tankColor[index]),
@@ -226,7 +225,6 @@ export const shouldCancelDriveAnimation = ({
   tank,
 }: {
   tank: Tank;
-  dispatch: Function;
 }): boolean => {
   const { targetX, position } = tank;
   const currX = position[0];
@@ -238,7 +236,15 @@ export const shouldCancelDriveAnimation = ({
   return outOfBounds || atTarget;
 };
 
-export const cancelDriveAnimationAndAdvanceTurn = ({
+export const shouldCancelFallAnimation = ({
+  tanks
+}: {
+  tanks: Tank[];
+}): boolean => {
+  return tanks.every((tank) => tank.position[1] === tank.targetY);
+};
+
+export const cancelTankAnimationAndAdvanceTurn = ({
   dispatch,
   tankInd,
   tanks,
@@ -249,4 +255,81 @@ export const cancelDriveAnimationAndAdvanceTurn = ({
 }) => {
   dispatch(cancelTanksAnimating());
   advancePlayerTurn({ dispatch, tankInd, tanks });
+};
+
+export const startTanksFalling = ({
+  topography,
+  tanks,
+  dispatch,
+}: {
+  tanks: Tank[];
+  topography: Tuple[];
+  dispatch: Function;
+}): void => {
+  console.log("tanks", tanks)
+  let tanksWillFall = false;
+  let newYValues = new Array(tanks.length).fill(null);
+  for (let i = 0; i < tanks.length; i++) {
+    console.log(i);
+    let [currX, currY] = tanks[i].position;
+    const centerX = currX + tankDimensions.width / 2;
+    const bottomOfTankY = currY + tankDimensions.height;
+    const topoPosition = setOnTopography({
+      topography,
+      point: [centerX, currY],
+    });
+    console.log('topoposition', topoPosition);
+    // need to check to make sure shot landing is within crater
+    console.log("topoY, currY", topoPosition[1], bottomOfTankY)
+    if (topoPosition != null && topoPosition[1] > bottomOfTankY) {
+      tanksWillFall = true;
+      newYValues[i] = topoPosition[1] - tankDimensions.width;
+    }
+  }
+  console.log("twf", tanksWillFall)
+  if (tanksWillFall) {
+    console.log("tanksWillFall")
+    dispatch(setTanksFalling(newYValues));
+  }
+};
+
+export const animateTanksFalling = (
+  ctx: CanvasRenderingContext2D,
+  customProps: {
+    tanks: Tank[];
+    topography: number[][];
+    dispatch: Function;
+  }
+): void => {
+  const { dispatch, tanks } = customProps;
+  const { fallAnimationSpeed } = environmentConstants;
+  drawTanks(ctx, customProps);
+
+  for (let i in tanks) {
+    const tank = tanks[i];
+    if (tank.targetY === tank.position[1]) continue;
+    let newTankY = tank.position[1];
+    if (Math.abs(tank.position[1] - tank.targetY) < fallAnimationSpeed) {
+      newTankY = tank.targetY;
+    } else if (tank.position[1] < tank.targetY) {
+      newTankY = tank.position[1] + fallAnimationSpeed;
+    }
+    console.log(i, newTankY)
+    dispatch(updateTankPosition({ newPosition: [tank.position[0], newTankY], tankInd: i }));
+  }
+
+  // const position = tank.position;
+  // const currX = uncenterTank(position)[0];
+  // const uncenteredTarget = tank.targetX + tankDimensions.width / 2;
+  // const driveDirection = uncenteredTarget - currX > 0 ? 1 : -1;
+  // let newX;
+  // if (Math.abs(uncenteredTarget - currX) < driveAnimationSpeed) {
+  //   newX = uncenteredTarget;
+  // } else {
+  //   newX = currX + driveDirection * driveAnimationSpeed;
+  // }
+  // const newY = getTankY({ topography, tankX: newX });
+  // const newPosition = centerTank([newX, newY]);
+  // dispatch(updateTankPosition({ newPosition, tankInd }));
+  ctx?.stroke();
 };

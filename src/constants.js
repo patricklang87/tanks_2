@@ -19,6 +19,7 @@ export const environmentConstants = {
     gravity: 0.5,
     shotSlowingFactor: 0.3,
     driveAnimationSpeed: 3,
+    fallAnimationSpeed: 3,
     explosionRate: 0.5,
 };
 export const tankDimensions = {
