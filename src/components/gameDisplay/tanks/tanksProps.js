@@ -143,7 +143,6 @@ export const cancelTankAnimationAndAdvanceTurn = ({ dispatch, tankInd, tanks, })
     advancePlayerTurn({ dispatch, tankInd, tanks });
 };
 export const startTanksFalling = ({ topography, tanks, dispatch, }) => {
-    console.log("tanks", tanks);
     let tanksWillFall = false;
     let newYValues = new Array(tanks.length).fill(null);
     for (let i = 0; i < tanks.length; i++) {
@@ -155,7 +154,6 @@ export const startTanksFalling = ({ topography, tanks, dispatch, }) => {
             topography,
             point: [centerX, currY],
         });
-        console.log('topoposition', topoPosition);
         // need to check to make sure shot landing is within crater
         console.log("topoY, currY", topoPosition[1], bottomOfTankY);
         if (topoPosition != null && topoPosition[1] > bottomOfTankY) {
@@ -163,9 +161,7 @@ export const startTanksFalling = ({ topography, tanks, dispatch, }) => {
             newYValues[i] = topoPosition[1] - tankDimensions.width;
         }
     }
-    console.log("twf", tanksWillFall);
     if (tanksWillFall) {
-        console.log("tanksWillFall");
         dispatch(setTanksFalling(newYValues));
     }
 };
@@ -184,7 +180,6 @@ export const animateTanksFalling = (ctx, customProps) => {
         else if (tank.position[1] < tank.targetY) {
             newTankY = tank.position[1] + fallAnimationSpeed;
         }
-        console.log(i, newTankY);
         dispatch(updateTankPosition({ newPosition: [tank.position[0], newTankY], tankInd: i }));
     }
     // const position = tank.position;
