@@ -8,6 +8,7 @@ import {
 import {
   animateTankDriving,
   cancelTankAnimationAndAdvanceTurn,
+  cancelTankAnimation,
   shouldCancelDriveAnimation,
   shouldCancelFallAnimation,
   drawTanks,
@@ -20,7 +21,6 @@ const Tanks = () => {
   const dispatch = useAppDispatch();
   const tanksAreDriving = useAppSelector((state) => state.players.tanksDriving);
   const tanksAreFalling = useAppSelector((state) => state.players.tanksFalling);
-  console.log("tanksAreDriving", tanksAreDriving, "tanksAreFalling", tanksAreFalling)
 
   const tanksAreAnimating = tanksAreDriving || tanksAreFalling;
   const useFallAnimations = !tanksAreDriving && tanksAreFalling;
@@ -28,7 +28,6 @@ const Tanks = () => {
   const tank = useAppSelector(selectCurrentTank);
   const tankInd = useAppSelector(selectCurrentPlayerIndex);
   const topography = useAppSelector(selectTopography);
-  console.log("tanksAreAnimating", tanksAreAnimating);
 
   return (
     <>
@@ -49,7 +48,11 @@ const Tanks = () => {
               ? shouldCancelFallAnimation
               : shouldCancelDriveAnimation
           }
-          onCancelation={cancelTankAnimationAndAdvanceTurn}
+          onCancelation={
+            useFallAnimations
+              ? cancelTankAnimation
+              : cancelTankAnimationAndAdvanceTurn
+          }
         />
       ) : (
         <Canvas staticShapes={drawTanks} customProps={{ tanks }} />

@@ -112,12 +112,13 @@ const playersSlice = createSlice({
     },
     updateTanksFalling: (state) => {
       for (let tank of state.tanks) {
-        if (tank.targetY === tank.position[1]) continue;
+        if (!tank.targetY || tank.targetY === tank.position[1]) continue;
         if (
           Math.abs(tank.position[1] - tank.targetY) <
           environmentConstants.fallAnimationSpeed
         ) {
           tank.position[1] = tank.targetY;
+          tank.targetY = null;
         } else if (tank.position[1] >= tank.targetY) {
           tank.position[1] =
             tank.position[1] - environmentConstants.fallAnimationSpeed;

@@ -107,7 +107,7 @@ export const initiateTank = ({
     shields: 100,
     position: tankPosition,
     targetX: tankPosition[0],
-    targetY: tankPosition[1],
+    targetY: null,
     tankDriveAnimationExecuting: false,
     localColor: arrayToRgba(tankColor[index]),
     currentColor: arrayToRgba(tankColor[index]),
@@ -237,11 +237,13 @@ export const shouldCancelDriveAnimation = ({
 };
 
 export const shouldCancelFallAnimation = ({
-  tanks
+  tanks,
 }: {
   tanks: Tank[];
 }): boolean => {
-  return tanks.every((tank) => tank.position[1] === tank.targetY);
+  return tanks.every((tank) => {
+    return !tank.targetY || tank.position[1] >= tank.targetY;
+  });
 };
 
 export const cancelTankAnimationAndAdvanceTurn = ({
@@ -257,6 +259,14 @@ export const cancelTankAnimationAndAdvanceTurn = ({
   advancePlayerTurn({ dispatch, tankInd, tanks });
 };
 
+export const cancelTankAnimation = ({
+  dispatch,
+}: {
+  dispatch: Function;
+}): void => {
+  dispatch(cancelTanksAnimating());
+};
+
 export const startTanksFalling = ({
   topography,
   tanks,
@@ -269,7 +279,6 @@ export const startTanksFalling = ({
   let tanksWillFall = false;
   let newYValues = new Array(tanks.length).fill(null);
   for (let i = 0; i < tanks.length; i++) {
-    console.log(i);
     let [currX, currY] = tanks[i].position;
     const centerX = currX + tankDimensions.width / 2;
     const bottomOfTankY = currY + tankDimensions.height;
@@ -277,13 +286,13 @@ export const startTanksFalling = ({
       topography,
       point: [centerX, currY],
     });
-    // need to check to make sure shot landing is within crater
-    console.log("topoY, currY", topoPosition[1], bottomOfTankY)
+
     if (topoPosition != null && topoPosition[1] > bottomOfTankY) {
       tanksWillFall = true;
-      newYValues[i] = topoPosition[1] - tankDimensions.width;
+      newYValues[i] = topoPosition[1] - tankDimensions.height;
     }
   }
+
   if (tanksWillFall) {
     dispatch(setTanksFalling(newYValues));
   }
@@ -303,14 +312,19 @@ export const animateTanksFalling = (
 
   for (let i in tanks) {
     const tank = tanks[i];
-    if (tank.targetY === tank.position[1]) continue;
+    if (!tank.targetY || tank.targetY === tank.position[1]) continue;
     let newTankY = tank.position[1];
     if (Math.abs(tank.position[1] - tank.targetY) < fallAnimationSpeed) {
       newTankY = tank.targetY;
     } else if (tank.position[1] < tank.targetY) {
       newTankY = tank.position[1] + fallAnimationSpeed;
     }
-    dispatch(updateTankPosition({ newPosition: [tank.position[0], newTankY], tankInd: i }));
+    dispatch(
+      updateTankPosition({
+        newPosition: [tank.position[0], newTankY],
+        tankInd: i,
+      })
+    );
   }
 
   // const position = tank.position;

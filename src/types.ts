@@ -15,7 +15,7 @@ export type Tank = {
   shields: number;
   position: Tuple;
   targetX: number;
-  targetY: number;
+  targetY: number | null;
   tankDriveAnimationExecuting: boolean;
   localColor: string;
   currentColor: string;

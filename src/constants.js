@@ -8,6 +8,10 @@ export const designConstants = {
     landscapeStrokeWidth: 8,
     landscapeFillStyle: "lightgreen",
     destroyedTankColor: "#997570",
+    devGridBigLineColor: "red",
+    devGridSmallLineColor: "grey",
+    devGridBigLineWidth: 2,
+    devGridSmallLineWidth: 1,
 };
 export const topographyConstants = {
     increments: 50,

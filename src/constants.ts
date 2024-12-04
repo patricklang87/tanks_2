@@ -11,12 +11,20 @@ export const designConstants: {
   landscapeStrokeWidth: number;
   landscapeFillStyle: string;
   destroyedTankColor: string;
+  devGridBigLineColor: string;
+  devGridSmallLineColor: string;
+  devGridBigLineWidth: number;
+  devGridSmallLineWidth: number;
 } = {
   skyColor: "skyblue",
   landscapeStrokeStyle: "darkgreen",
   landscapeStrokeWidth: 8,
   landscapeFillStyle: "lightgreen",
   destroyedTankColor: "#997570",
+  devGridBigLineColor: "red",
+  devGridSmallLineColor: "grey",
+  devGridBigLineWidth: 2,
+  devGridSmallLineWidth: 1,
 };
 
 export const topographyConstants : {
