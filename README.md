@@ -54,7 +54,8 @@ Not yet implemented.
 - [x] End projectile movement when projectile intersects topography.
 - [x] Implement start screen and player count selection.
 - [x] Add explosion animation.
-- [ ] Update topography on strike.
+- [x] Update topography on strike.
+- [ ] Improve aiming system. 
 
 
 ## Future Updates
