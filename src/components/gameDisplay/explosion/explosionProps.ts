@@ -8,6 +8,7 @@ import {
 import { arrayToRgba } from "../../../utils/colors";
 import { actions } from "../../../constants";
 import { setOnTopography } from "../../../utils/pointCentering";
+import { startTanksFalling } from "../tanks/tanksProps";
 
 export const startExplosion = ({
   dispatch,
@@ -25,8 +26,10 @@ export const startExplosion = ({
   const actionSelector = tank.selectedAction as keyof typeof actions;
   const selectedAction = actions[actionSelector];
   const { explosionColor, damage } = selectedAction;
-  const maxRadius = damage ? damage / 2: 5;
-  const centerPoint = topographyStruck ? setOnTopography({point: center, topography}) : center;
+  const maxRadius = damage ? damage / 2 : 5;
+  const centerPoint = topographyStruck
+    ? setOnTopography({ point: center, topography })
+    : center;
 
   dispatch(
     setExplosionAnimating({
@@ -67,14 +70,23 @@ export const animateExplosion = (
 
 export const shouldCancelExplosionAnimation = ({
   radius,
-  maxReached
+  maxReached,
 }: {
   radius: number;
   maxReached: boolean;
 }) => {
   return radius <= 0 && maxReached;
-}
+};
 
-export const resetExplosionValues = ({ dispatch }: { dispatch: Function }) => {
+export const resetExplosionValues = ({
+  dispatch,
+  topography,
+  tanks,
+}: {
+  dispatch: Function;
+  topography: Tuple[];
+  tanks: Tank[];
+}) => {
   dispatch(clearExplosionValues());
+  startTanksFalling({ topography, tanks, dispatch });
 };

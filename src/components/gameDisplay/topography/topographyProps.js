@@ -1,5 +1,7 @@
 import { canvasConstants, designConstants } from "../../../constants";
 import { getYForXInLine } from "../../../utils/linearEval";
+import { getCoordinatesOnCircle } from "../../../utils/angleManipulation";
+import { getSelectedActionData } from "../../../utils/tankData";
 const calculateStartingHeight = ({ canvasHeight, minHeightCoefficient, maxHeightCoefficient, getStartingHeight, }) => {
     const maxHeight = canvasHeight * maxHeightCoefficient;
     let startingHeight = getStartingHeight(maxHeight);
@@ -122,4 +124,53 @@ export const checkForGroundCollision = ({ topography, point, }) => {
         return [point[0], topographyLineY];
     }
     return null;
+};
+export const calculateNewTopographyOnStrike = ({ point, topography, tank, }) => {
+    const selectedActionData = getSelectedActionData(tank.selectedAction, tank.availableActions);
+    const damage = selectedActionData.damage || 0;
+    const damageRadius = damage / 2;
+    const leftX = point[0] - damageRadius;
+    const rightX = point[0] + damageRadius;
+    const leftCraterRightIndex = topography.findIndex((segment) => segment[0] >= leftX);
+    const leftCraterLeftIndex = leftCraterRightIndex - 1;
+    const leftCrater = [
+        leftX,
+        getYForXInLine({
+            point1: topography[leftCraterLeftIndex],
+            point2: topography[leftCraterRightIndex],
+            currentX: leftX,
+        }),
+    ];
+    const rightCraterRightIndex = topography.findIndex((segment) => segment[0] >= rightX);
+    const rightCraterLeftIndex = rightCraterRightIndex - 1;
+    const rightCrater = [
+        rightX,
+        getYForXInLine({
+            point1: topography[rightCraterLeftIndex],
+            point2: topography[rightCraterRightIndex],
+            currentX: rightX,
+        }),
+    ];
+    const leftTopography = topography.slice(0, leftCraterLeftIndex + 1);
+    const rightTopography = topography.slice(rightCraterRightIndex, topography.length);
+    const rightCraterWall = getCoordinatesOnCircle({
+        center: point,
+        radius: damageRadius,
+        angle: 45,
+    });
+    const leftCraterWall = getCoordinatesOnCircle({
+        center: point,
+        radius: damageRadius,
+        angle: -225,
+    });
+    const craterBase = [point[0], point[1] + damageRadius];
+    return [
+        ...leftTopography,
+        leftCrater,
+        leftCraterWall,
+        craterBase,
+        rightCraterWall,
+        rightCrater,
+        ...rightTopography,
+    ];
 };

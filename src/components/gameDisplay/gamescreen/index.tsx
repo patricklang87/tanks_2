@@ -4,6 +4,7 @@ import Topography from "../topography/topography";
 import Tanks from "../tanks/tanks";
 import Explosion from "../explosion/explosion";
 import WinnerPopup from "./WinnerPopup";
+// import Grid from "../developmentAids/Grid";
 import { canvasConstants } from "../../../constants";
 import Projectile from "../projectile/projectile";
 import { useAppSelector } from "../../../redux/hooks";
@@ -31,6 +32,7 @@ const GameScreen = () => {
         <Tanks />
         {displayProjectile && <Projectile />}
         {displayExplosion && <Explosion />}
+        {/* <Grid /> */}
       </div>
     </div>
   );

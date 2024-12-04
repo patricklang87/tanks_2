@@ -10,10 +10,11 @@ import {
 import { drawCircle } from "../../common/commonAnimationFunctions";
 import { degreesToRadians } from "../../../utils/angleManipulation";
 import { setNewTankShields } from "../../../redux/playersRedux";
+import { setTopography } from "../../../redux/topographyRedux";
 import { Tank, Tuple } from "../../../types";
 import { advancePlayerTurn } from "../gameControls";
 import { intersect } from "mathjs";
-import { checkForGroundCollision } from "../topography/topographyProps";
+import { calculateNewTopographyOnStrike, checkForGroundCollision } from "../topography/topographyProps";
 import { startExplosion } from "../explosion/explosionProps";
 
 export const animateProjectile = (
@@ -93,6 +94,15 @@ export const shouldCancelProjectileAnimation = ({
       topography,
       topographyStruck: !!topographyStruck,
     });
+  }
+
+  if (topographyStruck) {
+    const newTopography = calculateNewTopographyOnStrike({
+      point: topographyStruck,
+      topography,
+      tank
+    });
+    dispatch(setTopography(newTopography))
   }
 
   return outOfBounds || !!struckTanks.length || !!topographyStruck;

@@ -11,12 +11,20 @@ export const designConstants: {
   landscapeStrokeWidth: number;
   landscapeFillStyle: string;
   destroyedTankColor: string;
+  devGridBigLineColor: string;
+  devGridSmallLineColor: string;
+  devGridBigLineWidth: number;
+  devGridSmallLineWidth: number;
 } = {
   skyColor: "skyblue",
   landscapeStrokeStyle: "darkgreen",
   landscapeStrokeWidth: 8,
   landscapeFillStyle: "lightgreen",
   destroyedTankColor: "#997570",
+  devGridBigLineColor: "red",
+  devGridSmallLineColor: "grey",
+  devGridBigLineWidth: 2,
+  devGridSmallLineWidth: 1,
 };
 
 export const topographyConstants : {
@@ -35,11 +43,13 @@ export const environmentConstants : {
   gravity: number;
   shotSlowingFactor: number;
   driveAnimationSpeed: number;
+  fallAnimationSpeed: number;
   explosionRate: number;
 } = {
   gravity: 0.5,
   shotSlowingFactor: 0.3,
   driveAnimationSpeed: 3,
+  fallAnimationSpeed: 3,
   explosionRate: 0.5,
 };
 
