@@ -29,3 +29,5 @@ export type Tank = {
 export type Tuple = [number, number];
 
 export type NullTuple = [null, null];
+
+export type Cloud = { point: Tuple; size: number };

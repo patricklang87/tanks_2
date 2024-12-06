@@ -4,7 +4,7 @@ import {
   canvasConstants,
   tankDimensions,
 } from "../../constants";
-import { setTopography } from "../../redux/topographyRedux";
+import { setClouds, setTopography } from "../../redux/topographyRedux";
 import {
   reduceRemainingRounds,
   setInitialPlayerState,
@@ -23,6 +23,7 @@ import {
 import { calculateInitialVelocities } from "./projectile/projectileProps";
 import { Tank } from "../../types";
 import { activateGame } from "../../redux/gameRedux";
+import { initiateClouds } from "./decoration/cloudProps";
 
 export const initiateGame = ({
   dispatch,
@@ -42,6 +43,9 @@ export const initiateGame = ({
     maxHeightCoefficient: topographyConstants.maxHeightCoefficient,
   });
 
+  const cloudArray = initiateClouds();
+  console.log("cloud array in initiate game", cloudArray)
+
   const tankPositions = generateTankPositions({
     topography: initialTopography,
     numberOfTanks: playerCount,
@@ -51,6 +55,7 @@ export const initiateGame = ({
     initiateTank({ tankPosition, index })
   );
   dispatch(setTopography(initialTopography));
+  dispatch(setClouds(cloudArray));
   dispatch(setInitialPlayerState(initialTanks));
   dispatch(activateGame());
 };

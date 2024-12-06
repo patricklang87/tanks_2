@@ -1,6 +1,7 @@
 import StaticBackground from "../staticBackground";
 import "../../../css/gamescreen.css";
 import Topography from "../topography/topography";
+import Clouds from "../decoration/clouds";
 import Tanks from "../tanks/tanks";
 import Explosion from "../explosion/explosion";
 import WinnerPopup from "./WinnerPopup";
@@ -12,7 +13,9 @@ import { selectProjectileAnimating } from "../../../redux/projectileRedux";
 
 const GameScreen = () => {
   const displayProjectile = useAppSelector(selectProjectileAnimating);
-  const displayExplosion = useAppSelector(state => state.explosion.explosionIsAnimating)
+  const displayExplosion = useAppSelector(
+    (state) => state.explosion.explosionIsAnimating
+  );
   const winner = useAppSelector((state) => state.players.winner);
   const showWinnerPopup = winner != null;
 
@@ -28,6 +31,7 @@ const GameScreen = () => {
         }}
       >
         <StaticBackground />
+        <Clouds />
         <Topography />
         <Tanks />
         {displayProjectile && <Projectile />}
