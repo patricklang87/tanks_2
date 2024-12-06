@@ -23,6 +23,7 @@ export type Tank = {
   fuel: number;
   selectedAction: string;
   availableActions: Action[];
+  directlyStruck: boolean;
 };
 
 export type Tuple = [number, number];
