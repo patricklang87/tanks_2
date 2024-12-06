@@ -20,7 +20,6 @@ const topographySlice = createSlice({
       state.current = action.payload;
     },
     setClouds: (state, action) => {
-      console.log("in redux", action.payload)
       state.clouds = action.payload;
     }
   },

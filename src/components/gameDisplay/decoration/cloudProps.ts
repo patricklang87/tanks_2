@@ -4,7 +4,6 @@ import { canvasConstants } from "../../../constants";
 export const initiateClouds = () : Cloud[] => {
     const cloudArray = [];
     let numClouds = Math.floor(Math.random() * 15);
-    console.log("num", numClouds)
     for (let i = 0; i < numClouds; i++) {
         const newCloud : Cloud = {point: [0, 0], size: 0};
         newCloud.size = 10 + Math.floor(Math.random() * 40);
@@ -21,7 +20,6 @@ export const drawClouds = (
   customProps: { clouds : Cloud[]}
 ): void => {
     const { clouds } = customProps;
-    console.log(clouds);
     for (let cloud of clouds) {
         drawCloud(ctx, cloud);
     }

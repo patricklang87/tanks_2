@@ -44,7 +44,6 @@ export const initiateGame = ({
   });
 
   const cloudArray = initiateClouds();
-  console.log("cloud array in initiate game", cloudArray)
 
   const tankPositions = generateTankPositions({
     topography: initialTopography,

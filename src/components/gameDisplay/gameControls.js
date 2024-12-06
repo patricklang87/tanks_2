@@ -18,7 +18,6 @@ export const initiateGame = ({ dispatch, playerCount, }) => {
         maxHeightCoefficient: topographyConstants.maxHeightCoefficient,
     });
     const cloudArray = initiateClouds();
-    console.log("cloud array in initiate game", cloudArray);
     const tankPositions = generateTankPositions({
         topography: initialTopography,
         numberOfTanks: playerCount,
