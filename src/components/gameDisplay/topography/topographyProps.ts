@@ -1,6 +1,6 @@
-import { canvasConstants, designConstants } from "../../../constants";
+import { canvasConstants, designConstants, colorSchemes } from "../../../constants";
 import { getYForXInLine } from "../../../utils/linearEval";
-import { Tuple, NullTuple, Tank } from "../../../types";
+import { Tuple, NullTuple, Tank, ColorScheme } from "../../../types";
 import { getCoordinatesOnCircle } from "../../../utils/angleManipulation";
 import { getSelectedActionData } from "../../../utils/tankData";
 
@@ -125,9 +125,9 @@ export const createInitialTopography = ({
 
 export const drawTopography = (
   ctx: CanvasRenderingContext2D,
-  customProps: { topography: Tuple[] }
+  customProps: { topography: Tuple[], colors: ColorScheme }
 ): void => {
-  const { topography } = customProps;
+  const { topography, colors } = customProps;
   ctx.clearRect(0, 0, canvasConstants.width, canvasConstants.height);
   ctx.beginPath();
   topography?.forEach((point, index) => {
@@ -145,10 +145,10 @@ export const drawTopography = (
     canvasConstants.height + designConstants.landscapeStrokeWidth
   );
   ctx.lineTo(0, canvasConstants.height);
-  ctx.strokeStyle = designConstants.landscapeStrokeStyle;
+  ctx.strokeStyle = colors.landscapeStrokeStyle;
   ctx.lineWidth = designConstants.landscapeStrokeWidth;
   ctx.stroke();
-  ctx.fillStyle = designConstants.landscapeFillStyle;
+  ctx.fillStyle = colors.landscapeFillStyle;
   ctx.fill();
   ctx.closePath();
 };

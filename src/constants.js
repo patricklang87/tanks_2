@@ -3,15 +3,26 @@ export const canvasConstants = {
     height: 600,
 };
 export const designConstants = {
-    skyColor: "skyblue",
-    landscapeStrokeStyle: "darkgreen",
     landscapeStrokeWidth: 8,
-    landscapeFillStyle: "lightgreen",
     destroyedTankColor: "#997570",
     devGridBigLineColor: "red",
     devGridSmallLineColor: "grey",
     devGridBigLineWidth: 2,
     devGridSmallLineWidth: 1,
+};
+export const colorSchemes = {
+    dayColors: {
+        skyColor: "skyblue",
+        landscapeStrokeStyle: "darkgreen",
+        landscapeFillStyle: "lightgreen",
+        cloudColor: "white",
+    },
+    duskColors: {
+        skyColor: "#0f013b",
+        landscapeStrokeStyle: "#016308",
+        landscapeFillStyle: "#013b2c",
+        cloudColor: "hotpink",
+    }
 };
 export const topographyConstants = {
     increments: 50,
@@ -46,7 +57,7 @@ export const actions = {
         damage: 20,
         type: "PROJECTILE",
         rounds: "Infinite",
-        explosionColor: [241, 90, 34, 1]
+        explosionColor: [241, 90, 34, 1],
     },
     drive: { name: "drive", displayName: "Drive", fuel: 1, type: "DRIVE" },
     steelShotput: {
@@ -55,6 +66,6 @@ export const actions = {
         damage: 35,
         type: "PROJECTILE",
         rounds: 3,
-        explosionColor: [241, 90, 34, 1]
+        explosionColor: [241, 90, 34, 1],
     },
 };

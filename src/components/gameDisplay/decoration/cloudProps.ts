@@ -17,11 +17,11 @@ export const initiateClouds = () : Cloud[] => {
 
 export const drawClouds = (
   ctx: CanvasRenderingContext2D,
-  customProps: { clouds : Cloud[]}
+  customProps: { clouds : Cloud[], cloudColor: string}
 ): void => {
-    const { clouds } = customProps;
+    const { clouds, cloudColor } = customProps;
     for (let cloud of clouds) {
-        drawCloud(ctx, cloud);
+        drawCloud(ctx, {...cloud, cloudColor});
     }
 };
 
@@ -29,7 +29,7 @@ const drawCloud = (
   ctx: CanvasRenderingContext2D,
   cloud: Cloud
 ): void => {
-  const { point, size } = cloud;
+  const { point, size, cloudColor } = cloud;
   const [x, y] = point;
   ctx.beginPath()
   ctx.arc(x, y, size, 0.5 * Math.PI, (3 / 2) * Math.PI);
@@ -42,9 +42,9 @@ const drawCloud = (
   ctx.closePath();
 
   ctx.lineWidth = 1;
-  ctx.strokeStyle = "white";
+  ctx.strokeStyle = cloudColor || "white";
 
   ctx?.stroke();
-  ctx.fillStyle = "white";
+  ctx.fillStyle = cloudColor || "white";
   ctx.fill();
 };

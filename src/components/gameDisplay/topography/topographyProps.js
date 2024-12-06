@@ -84,7 +84,7 @@ export const createInitialTopography = ({ canvasHeight, canvasWidth, increments,
     return points.map((point) => [point[0], canvasHeight - point[1]]);
 };
 export const drawTopography = (ctx, customProps) => {
-    const { topography } = customProps;
+    const { topography, colors } = customProps;
     ctx.clearRect(0, 0, canvasConstants.width, canvasConstants.height);
     ctx.beginPath();
     topography?.forEach((point, index) => {
@@ -99,10 +99,10 @@ export const drawTopography = (ctx, customProps) => {
     });
     ctx.lineTo(canvasConstants.width, canvasConstants.height + designConstants.landscapeStrokeWidth);
     ctx.lineTo(0, canvasConstants.height);
-    ctx.strokeStyle = designConstants.landscapeStrokeStyle;
+    ctx.strokeStyle = colors.landscapeStrokeStyle;
     ctx.lineWidth = designConstants.landscapeStrokeWidth;
     ctx.stroke();
-    ctx.fillStyle = designConstants.landscapeFillStyle;
+    ctx.fillStyle = colors.landscapeFillStyle;
     ctx.fill();
     ctx.closePath();
 };

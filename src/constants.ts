@@ -1,4 +1,4 @@
-import { Action } from "./types";
+import { Action, ColorScheme } from "./types";
 
 export const canvasConstants: { width: number; height: number } = {
   width: 1400,
@@ -6,20 +6,14 @@ export const canvasConstants: { width: number; height: number } = {
 };
 
 export const designConstants: {
-  skyColor: string;
-  landscapeStrokeStyle: string;
   landscapeStrokeWidth: number;
-  landscapeFillStyle: string;
   destroyedTankColor: string;
   devGridBigLineColor: string;
   devGridSmallLineColor: string;
   devGridBigLineWidth: number;
   devGridSmallLineWidth: number;
 } = {
-  skyColor: "skyblue",
-  landscapeStrokeStyle: "darkgreen",
   landscapeStrokeWidth: 8,
-  landscapeFillStyle: "lightgreen",
   destroyedTankColor: "#997570",
   devGridBigLineColor: "red",
   devGridSmallLineColor: "grey",
@@ -27,7 +21,25 @@ export const designConstants: {
   devGridSmallLineWidth: 1,
 };
 
-export const topographyConstants : {
+export const colorSchemes : {
+  dayColors: ColorScheme;
+  duskColors: ColorScheme;
+} = {
+    dayColors: {
+      skyColor: "skyblue",
+      landscapeStrokeStyle: "darkgreen",
+      landscapeFillStyle: "lightgreen",
+      cloudColor: "white",
+    },
+    duskColors: {
+      skyColor: "#0f013b",
+      landscapeStrokeStyle: "#016308",
+      landscapeFillStyle: "#013b2c",
+      cloudColor: "hotpink",
+    }
+}
+
+export const topographyConstants: {
   increments: number;
   maxVariationCoefficient: number;
   minHeightCoefficient: number;
@@ -39,7 +51,7 @@ export const topographyConstants : {
   maxHeightCoefficient: 0.8,
 };
 
-export const environmentConstants : {
+export const environmentConstants: {
   gravity: number;
   shotSlowingFactor: number;
   driveAnimationSpeed: number;
@@ -53,7 +65,7 @@ export const environmentConstants : {
   explosionRate: 0.5,
 };
 
-export const tankDimensions : {
+export const tankDimensions: {
   height: number;
   width: number;
   turretLength: number;
@@ -72,7 +84,7 @@ export const tankColor: number[][] = [
   [255, 22, 133, 1],
 ];
 
-export const actions : {
+export const actions: {
   standardShot: Action;
   drive: Action;
   steelShotput: Action;
@@ -83,7 +95,7 @@ export const actions : {
     damage: 20,
     type: "PROJECTILE",
     rounds: "Infinite",
-    explosionColor: [241, 90, 34, 1]
+    explosionColor: [241, 90, 34, 1],
   },
   drive: { name: "drive", displayName: "Drive", fuel: 1, type: "DRIVE" },
   steelShotput: {
@@ -92,6 +104,6 @@ export const actions : {
     damage: 35,
     type: "PROJECTILE",
     rounds: 3,
-    explosionColor: [241, 90, 34, 1]
+    explosionColor: [241, 90, 34, 1],
   },
 };

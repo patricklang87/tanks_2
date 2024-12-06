@@ -5,11 +5,13 @@ import { Cloud } from "../types";
 interface TopographyState{
   current: number[];
   clouds: Cloud[];
+  colorScheme: string
 }
 
 const initialState: TopographyState = {
   current: [],
-  clouds: []
+  clouds: [],
+  colorScheme: "",
 }
 
 const topographySlice = createSlice({
@@ -21,11 +23,14 @@ const topographySlice = createSlice({
     },
     setClouds: (state, action) => {
       state.clouds = action.payload;
+    },
+    setColorScheme: (state, action) => {
+      state.colorScheme = action.payload;
     }
   },
 });
 
-export const { setTopography, setClouds } = topographySlice.actions;
+export const { setTopography, setClouds, setColorScheme } = topographySlice.actions;
 export const selectTopography = (state : RootState) => state.topography.current;
 
 export default topographySlice.reducer;

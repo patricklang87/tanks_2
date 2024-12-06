@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     current: [],
-    clouds: []
+    clouds: [],
+    colorScheme: "",
 };
 const topographySlice = createSlice({
     name: "topography",
@@ -12,9 +13,12 @@ const topographySlice = createSlice({
         },
         setClouds: (state, action) => {
             state.clouds = action.payload;
+        },
+        setColorScheme: (state, action) => {
+            state.colorScheme = action.payload;
         }
     },
 });
-export const { setTopography, setClouds } = topographySlice.actions;
+export const { setTopography, setClouds, setColorScheme } = topographySlice.actions;
 export const selectTopography = (state) => state.topography.current;
 export default topographySlice.reducer;

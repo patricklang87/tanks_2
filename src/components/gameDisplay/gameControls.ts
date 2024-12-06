@@ -4,7 +4,7 @@ import {
   canvasConstants,
   tankDimensions,
 } from "../../constants";
-import { setClouds, setTopography } from "../../redux/topographyRedux";
+import { setClouds, setColorScheme, setTopography } from "../../redux/topographyRedux";
 import {
   reduceRemainingRounds,
   setInitialPlayerState,
@@ -33,6 +33,7 @@ export const initiateGame = ({
   playerCount: number;
 }): void => {
   const { height: canvasHeight, width: canvasWidth } = canvasConstants;
+  const colorScheme = Math.random() > 0.5 ? "duskColors" : "dayColors";
 
   const initialTopography = createInitialTopography({
     canvasHeight,
@@ -53,6 +54,7 @@ export const initiateGame = ({
   const initialTanks = tankPositions.map((tankPosition, index) =>
     initiateTank({ tankPosition, index })
   );
+  dispatch(setColorScheme(colorScheme));
   dispatch(setTopography(initialTopography));
   dispatch(setClouds(cloudArray));
   dispatch(setInitialPlayerState(initialTanks));
