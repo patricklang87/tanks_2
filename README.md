@@ -55,6 +55,9 @@ Not yet implemented.
 - [x] Implement start screen and player count selection.
 - [x] Add explosion animation.
 - [x] Update topography on strike.
+- [x] Implement explosion damage.
+- [ ] Implement fall damage.
+- [ ] Handle projectile edge case when topograph is at bottom of screen.
 - [ ] Improve aiming system. 
 
 

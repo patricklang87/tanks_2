@@ -40,6 +40,25 @@ const playersSlice = createSlice({
             for (let tankInd of action.payload) {
                 const newShieldValue = state.tanks[tankInd].shields - attackDamage;
                 state.tanks[tankInd].shields = newShieldValue;
+                state.tanks[tankInd].directlyStruck = true;
+            }
+            let count = 0;
+            for (let tank of state.tanks) {
+                if (tank.shields > 0)
+                    count++;
+            }
+            if (count < 2) {
+                let survivor = state.tanks.findIndex((tank) => tank.shields > 0);
+                state.winner = survivor;
+            }
+        },
+        setDamageFollowingExplosion: (state, action) => {
+            const damages = action.payload;
+            for (let i = 0; i < damages.length; i++) {
+                if (damages[i] && !state.tanks[i].directlyStruck) {
+                    state.tanks[i].shields = state.tanks[i].shields - damages[i];
+                }
+                state.tanks[i].directlyStruck = false;
             }
             let count = 0;
             for (let tank of state.tanks) {
@@ -105,7 +124,7 @@ const playersSlice = createSlice({
         },
     },
 });
-export const { setInitialPlayerState, setCurrentTankTurretAngle, setCurrentTankShotPower, setCurrentTankDriveDistance, setCurrentTankSelectedAction, setPlayerTurn, setNewTankShields, reduceRemainingRounds, updateTankPosition, setTanksDriving, cancelTanksAnimating, setTanksFalling, } = playersSlice.actions;
+export const { setInitialPlayerState, setCurrentTankTurretAngle, setCurrentTankShotPower, setCurrentTankDriveDistance, setCurrentTankSelectedAction, setPlayerTurn, setNewTankShields, reduceRemainingRounds, updateTankPosition, setTanksDriving, cancelTanksAnimating, setTanksFalling, setDamageFollowingExplosion, } = playersSlice.actions;
 export const selectTanks = (state) => state.players.tanks;
 export const selectCurrentTank = (state) => state.players.tanks[state.players.currentPlayerIndex];
 export const selectCurrentPlayerIndex = (state) => state.players.currentPlayerIndex;

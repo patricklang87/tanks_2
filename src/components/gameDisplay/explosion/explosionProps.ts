@@ -1,3 +1,4 @@
+import { distance } from "mathjs";
 import { Tuple, Tank, NullTuple } from "../../../types";
 import { drawCircle } from "../../common/commonAnimationFunctions";
 import {
@@ -5,8 +6,9 @@ import {
   clearExplosionValues,
   setExplosionAnimating,
 } from "../../../redux/explosionRedux";
+import { setDamageFollowingExplosion } from "../../../redux/playersRedux";
 import { arrayToRgba } from "../../../utils/colors";
-import { actions } from "../../../constants";
+import { actions, tankDimensions } from "../../../constants";
 import { setOnTopography } from "../../../utils/pointCentering";
 import { startTanksFalling } from "../tanks/tanksProps";
 
@@ -71,11 +73,23 @@ export const animateExplosion = (
 export const shouldCancelExplosionAnimation = ({
   radius,
   maxReached,
+  dispatch,
+  center,
+  tanks,
+  maxRadius,
 }: {
   radius: number;
+  maxRadius: number;
   maxReached: boolean;
+  dispatch: Function;
+  center: Tuple;
+  tanks: Tank[];
 }) => {
-  return radius <= 0 && maxReached;
+  if (radius <= 0 && maxReached) {
+    registerExplosionDamage({ tanks, maxRadius, center, dispatch });
+    return true;
+  }
+  return false;
 };
 
 export const resetExplosionValues = ({
@@ -89,4 +103,36 @@ export const resetExplosionValues = ({
 }) => {
   dispatch(clearExplosionValues());
   startTanksFalling({ topography, tanks, dispatch });
+};
+
+export const registerExplosionDamage = ({
+  tanks,
+  maxRadius,
+  center,
+  dispatch,
+}: {
+  tanks: Tank[];
+  center: Tuple;
+  dispatch: Function;
+  maxRadius: number;
+}): void => {
+  const tankDamageTaken = new Array(tanks.length).fill(null);
+  for (let i in tanks) {
+    const [tankX, tankY] = tanks[i].position;
+    const tankCenter = [
+      tankX + tankDimensions.width / 2,
+      tankY + tankDimensions.height / 2,
+    ];
+    const dist: number = Number(distance(tankCenter, center));
+    if (dist <= tankDimensions.width / 2 + maxRadius) {
+      const approxOverlap = Math.abs(
+        maxRadius - (dist - 0.5 * tankDimensions.width)
+      );
+
+      const percent = approxOverlap / maxRadius;
+      const damage = maxRadius * 2 * percent;
+      tankDamageTaken[i] = Math.floor(damage);
+    }
+  }
+  dispatch(setDamageFollowingExplosion(tankDamageTaken));
 };

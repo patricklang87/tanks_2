@@ -74,6 +74,7 @@ export const initiateTank = ({ index, tankPosition, }) => {
             actions.steelShotput,
             actions.drive,
         ],
+        directlyStruck: false,
     };
 };
 export const drawTank = (ctx, customProps) => {
