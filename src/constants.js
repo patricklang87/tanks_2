@@ -68,4 +68,12 @@ export const actions = {
         rounds: 3,
         explosionColor: [241, 90, 34, 1],
     },
+    begemot: {
+        name: "begemot",
+        displayName: "Begemot",
+        damage: 70,
+        type: "PROJECTILE",
+        rounds: 1,
+        explosionColor: [241, 90, 34, 1],
+    },
 };

@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { actions, environmentConstants } from "../constants";
+import { getSelectedActionData } from "../utils/tankData";
 const initialState = {
     tanks: [],
     currentPlayerIndex: 0,
@@ -31,6 +32,13 @@ const playersSlice = createSlice({
             state.tanks[state.currentPlayerIndex].selectedAction = action.payload;
         },
         setPlayerTurn: (state, action) => {
+            const currTank = state.tanks[state.currentPlayerIndex];
+            const selectedActionData = getSelectedActionData(currTank.selectedAction, currTank.availableActions);
+            const selectedActionRounds = selectedActionData.rounds;
+            if (typeof selectedActionRounds === "number" &&
+                selectedActionRounds <= 0) {
+                state.tanks[state.currentPlayerIndex].selectedAction = "standardShot";
+            }
             state.currentPlayerIndex = action.payload;
         },
         setNewTankShields: (state, action) => {
@@ -81,9 +89,6 @@ const playersSlice = createSlice({
                 typeof selectedActionRounds == "number") {
                 const newRoundValue = selectedActionRounds - 1;
                 state.tanks[state.currentPlayerIndex].availableActions[selectedActionIndex].rounds = newRoundValue;
-                if (newRoundValue <= 0) {
-                    state.tanks[state.currentPlayerIndex].selectedAction = "standardShot";
-                }
             }
         },
         updateTankPosition: (state, action) => {

@@ -118,6 +118,7 @@ export const initiateTank = ({
       actions.standardShot,
       actions.steelShotput,
       actions.drive,
+      actions.begemot
     ],
     directlyStruck: false,
   };
