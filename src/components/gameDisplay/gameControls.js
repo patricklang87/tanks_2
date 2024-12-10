@@ -1,12 +1,13 @@
 import { createInitialTopography } from "./topography/topographyProps";
 import { topographyConstants, canvasConstants, tankDimensions, } from "../../constants";
-import { setClouds, setColorScheme, setTopography } from "../../redux/topographyRedux";
+import { setClouds, setTrees, setColorScheme, setTopography, } from "../../redux/topographyRedux";
 import { reduceRemainingRounds, setInitialPlayerState, setTanksDriving, setPlayerTurn, } from "../../redux/playersRedux";
 import { setProjectileValues, startProjectileAnimating, } from "../../redux/projectileRedux";
 import { calculateTurretEndpoints, generateTankPositions, initiateTank, } from "./tanks/tanksProps";
 import { calculateInitialVelocities } from "./projectile/projectileProps";
 import { activateGame } from "../../redux/gameRedux";
 import { initiateClouds } from "./decoration/cloudProps";
+import { initiateTrees } from "./decoration/treeProps";
 export const initiateGame = ({ dispatch, playerCount, }) => {
     const { height: canvasHeight, width: canvasWidth } = canvasConstants;
     const colorScheme = Math.random() > 0.5 ? "duskColors" : "dayColors";
@@ -19,6 +20,7 @@ export const initiateGame = ({ dispatch, playerCount, }) => {
         maxHeightCoefficient: topographyConstants.maxHeightCoefficient,
     });
     const cloudArray = initiateClouds();
+    const treeArray = initiateTrees(initialTopography);
     const tankPositions = generateTankPositions({
         topography: initialTopography,
         numberOfTanks: playerCount,
@@ -26,6 +28,7 @@ export const initiateGame = ({ dispatch, playerCount, }) => {
     const initialTanks = tankPositions.map((tankPosition, index) => initiateTank({ tankPosition, index }));
     dispatch(setColorScheme(colorScheme));
     dispatch(setTopography(initialTopography));
+    dispatch(setTrees(treeArray));
     dispatch(setClouds(cloudArray));
     dispatch(setInitialPlayerState(initialTanks));
     dispatch(activateGame());

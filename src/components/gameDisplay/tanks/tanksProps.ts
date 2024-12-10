@@ -21,7 +21,7 @@ export const generateTankPositions = ({
   topography,
   numberOfTanks = 2,
 }: {
-  topography: number[][];
+  topography: Tuple[];
   numberOfTanks: number;
 }): Tuple[] => {
   const rangeWidth = canvasConstants.width / numberOfTanks;
@@ -42,7 +42,7 @@ export const getTankY = ({
   topography,
   tankX,
 }: {
-  topography: number[][];
+  topography: Tuple[];
   tankX: number;
 }): number => {
   const tankRightIndex = topography.findIndex((point) => point[0] >= tankX);
@@ -200,7 +200,7 @@ export const animateTankDriving = (
     tanks: Tank[];
     tank: Tank;
     tankInd: number;
-    topography: number[][];
+    topography: Tuple[];
     dispatch: Function;
   }
 ): void => {
@@ -304,7 +304,7 @@ export const animateTanksFalling = (
   ctx: CanvasRenderingContext2D,
   customProps: {
     tanks: Tank[];
-    topography: number[][];
+    topography: Tuple[];
     dispatch: Function;
   }
 ): void => {

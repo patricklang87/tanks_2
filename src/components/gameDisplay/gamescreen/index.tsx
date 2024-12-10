@@ -4,6 +4,7 @@ import Topography from "../topography/topography";
 import Clouds from "../decoration/clouds";
 import Tanks from "../tanks/tanks";
 import Explosion from "../explosion/explosion";
+import Trees from "../decoration/trees";
 import WinnerPopup from "./WinnerPopup";
 // import Grid from "../developmentAids/Grid";
 import { canvasConstants } from "../../../constants";
@@ -33,6 +34,7 @@ const GameScreen = () => {
         <StaticBackground />
         <Clouds />
         <Topography />
+        <Trees />
         <Tanks />
         {displayProjectile && <Projectile />}
         {displayExplosion && <Explosion />}

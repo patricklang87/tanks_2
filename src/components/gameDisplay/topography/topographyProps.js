@@ -1,4 +1,4 @@
-import { canvasConstants, designConstants } from "../../../constants";
+import { canvasConstants, designConstants, } from "../../../constants";
 import { getYForXInLine } from "../../../utils/linearEval";
 import { getCoordinatesOnCircle } from "../../../utils/angleManipulation";
 import { getSelectedActionData } from "../../../utils/tankData";
@@ -109,12 +109,20 @@ export const drawTopography = (ctx, customProps) => {
 export const checkForGroundCollision = ({ topography, point, }) => {
     if (point[0] === null)
         return null;
-    const currentSectorEndIndex = topography.findIndex((sector) => sector[0] >= point[0]);
-    if (currentSectorEndIndex === -1)
+    const topographySector = getCurrentTopographySector({
+        topography,
+        currentX: point[0],
+    });
+    if (!topographySector)
         return null;
-    const currentSectorStartIndex = currentSectorEndIndex - 1;
-    const startPoint = topography[currentSectorStartIndex];
-    const endPoint = topography[currentSectorEndIndex];
+    const { startPoint, endPoint } = topographySector;
+    // const currentSectorEndIndex = topography.findIndex(
+    //   (sector) => sector[0] >= point[0]
+    // );
+    // if (currentSectorEndIndex === -1) return null;
+    // const currentSectorStartIndex = currentSectorEndIndex - 1;
+    // const startPoint = topography[currentSectorStartIndex];
+    // const endPoint = topography[currentSectorEndIndex];
     const topographyLineY = getYForXInLine({
         point1: startPoint,
         point2: endPoint,
@@ -173,4 +181,13 @@ export const calculateNewTopographyOnStrike = ({ point, topography, tank, }) => 
         rightCrater,
         ...rightTopography,
     ];
+};
+export const getCurrentTopographySector = ({ topography, currentX, }) => {
+    const currentSectorEndIndex = topography.findIndex((sector) => sector[0] >= currentX);
+    if (currentSectorEndIndex === -1)
+        return null;
+    const currentSectorStartIndex = currentSectorEndIndex - 1;
+    const startPoint = topography[currentSectorStartIndex];
+    const endPoint = topography[currentSectorEndIndex];
+    return { startPoint, endPoint };
 };

@@ -29,13 +29,15 @@ export const colorSchemes : {
       skyColor: "skyblue",
       landscapeStrokeStyle: "darkgreen",
       landscapeFillStyle: "lightgreen",
-      cloudColor: "white",
+    cloudColor: "white",
+      treeColor: "rgba(0, 116, 85, 0.8)"
     },
     duskColors: {
       skyColor: "#0f013b",
       landscapeStrokeStyle: "#016308",
       landscapeFillStyle: "#013b2c",
       cloudColor: "hotpink",
+      treeColor: "rgba(0, 28, 6, 0.8)"
     }
 }
 

@@ -1,4 +1,8 @@
-import { canvasConstants, designConstants, colorSchemes } from "../../../constants";
+import {
+  canvasConstants,
+  designConstants,
+  colorSchemes,
+} from "../../../constants";
 import { getYForXInLine } from "../../../utils/linearEval";
 import { Tuple, NullTuple, Tank, ColorScheme } from "../../../types";
 import { getCoordinatesOnCircle } from "../../../utils/angleManipulation";
@@ -85,7 +89,7 @@ export const createInitialTopography = ({
   maxVariationCoefficient: number;
   minHeightCoefficient: number;
   maxHeightCoefficient: number;
-}): number[][] => {
+}): Tuple[] => {
   const points: Tuple[] = [];
 
   const { getDirection, getStartingHeight } = risingFallingValleyFlatOrPeak();
@@ -125,7 +129,7 @@ export const createInitialTopography = ({
 
 export const drawTopography = (
   ctx: CanvasRenderingContext2D,
-  customProps: { topography: Tuple[], colors: ColorScheme }
+  customProps: { topography: Tuple[]; colors: ColorScheme }
 ): void => {
   const { topography, colors } = customProps;
   ctx.clearRect(0, 0, canvasConstants.width, canvasConstants.height);
@@ -161,13 +165,22 @@ export const checkForGroundCollision = ({
   point: Tuple | NullTuple;
 }): Tuple | null => {
   if (point[0] === null) return null;
-  const currentSectorEndIndex = topography.findIndex(
-    (sector) => sector[0] >= point[0]
-  );
-  if (currentSectorEndIndex === -1) return null;
-  const currentSectorStartIndex = currentSectorEndIndex - 1;
-  const startPoint = topography[currentSectorStartIndex];
-  const endPoint = topography[currentSectorEndIndex];
+
+  const topographySector = getCurrentTopographySector({
+    topography,
+    currentX: point[0],
+  });
+
+  if (!topographySector) return null;
+
+  const { startPoint, endPoint } = topographySector;
+  // const currentSectorEndIndex = topography.findIndex(
+  //   (sector) => sector[0] >= point[0]
+  // );
+  // if (currentSectorEndIndex === -1) return null;
+  // const currentSectorStartIndex = currentSectorEndIndex - 1;
+  // const startPoint = topography[currentSectorStartIndex];
+  // const endPoint = topography[currentSectorEndIndex];
 
   const topographyLineY = getYForXInLine({
     point1: startPoint,
@@ -189,8 +202,11 @@ export const calculateNewTopographyOnStrike = ({
   topography: Tuple[];
   tank: Tank;
 }) => {
-  const selectedActionData = getSelectedActionData(tank.selectedAction, tank.availableActions);
-  const damage = selectedActionData.damage || 0
+  const selectedActionData = getSelectedActionData(
+    tank.selectedAction,
+    tank.availableActions
+  );
+  const damage = selectedActionData.damage || 0;
   const damageRadius = damage / 2;
   const leftX = point[0] - damageRadius;
   const rightX = point[0] + damageRadius;
@@ -245,4 +261,22 @@ export const calculateNewTopographyOnStrike = ({
     rightCrater,
     ...rightTopography,
   ];
+};
+
+export const getCurrentTopographySector = ({
+  topography,
+  currentX,
+}: {
+  topography: Tuple[];
+  currentX: number;
+}): { startPoint: Tuple; endPoint: Tuple } | null  => {
+  const currentSectorEndIndex = topography.findIndex(
+    (sector) => sector[0] >= currentX
+  );
+  if (currentSectorEndIndex === -1) return null;
+  const currentSectorStartIndex = currentSectorEndIndex - 1;
+  const startPoint = topography[currentSectorStartIndex];
+  const endPoint = topography[currentSectorEndIndex];
+
+  return { startPoint, endPoint };
 };
