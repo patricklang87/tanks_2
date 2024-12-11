@@ -58,7 +58,7 @@ Not yet implemented.
 - [x] Implement explosion damage.
 - [ ] Implement fall damage.
 - [ ] Handle projectile edge case when topograph is at bottom of screen.
-- [ ] Improve aiming system. 
+- [ ] Improve aiming system.
 
 
 ## Future Updates
