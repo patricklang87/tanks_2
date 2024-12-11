@@ -8,6 +8,8 @@ const StartScreen = () => {
   const [playerCount, setPlayerCount] = useState(2);
   const maxPlayerCount = tankColor.length;
 
+  const invalidPlayerCount = playerCount < 2 || playerCount > maxPlayerCount;
+
   return (
     <>
       <h1 className="title-card">Tanks fer Nuthin'!</h1>
@@ -26,9 +28,16 @@ const StartScreen = () => {
         </label>
       </div>
 
-      <button onClick={() => initiateGame({ dispatch, playerCount })}>
+      <button
+        disabled={invalidPlayerCount}
+        onClick={() => initiateGame({ dispatch, playerCount })}
+      >
         Start Game
       </button>
+
+      {invalidPlayerCount && (
+        <p>Number of Players must be between 2 and {maxPlayerCount}.</p>
+      )}
     </>
   );
 };
