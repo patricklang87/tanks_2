@@ -7,7 +7,7 @@ import { arrayToRgba } from "../../../utils/colors";
 
 const CurrentPlayerIndicator = () => {
   const currentPlayerIndex = useAppSelector(selectCurrentPlayerIndex);
-  const currentColor = arrayToRgba(tankColor[currentPlayerIndex]);
+  const currentColor = tankColor[currentPlayerIndex];
   const width = 100;
   const height = 100;
   const factor = 2;

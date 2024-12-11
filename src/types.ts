@@ -17,8 +17,8 @@ export type Tank = {
   targetX: number;
   targetY: number | null;
   tankDriveAnimationExecuting: boolean;
-  localColor: string;
-  currentColor: string;
+  localColor: number[];
+  currentColor: number[];
   tankFallAnimationExecuting: boolean;
   fuel: number;
   selectedAction: string;

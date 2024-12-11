@@ -109,8 +109,8 @@ export const initiateTank = ({
     targetX: tankPosition[0],
     targetY: null,
     tankDriveAnimationExecuting: false,
-    localColor: arrayToRgba(tankColor[index]),
-    currentColor: arrayToRgba(tankColor[index]),
+    localColor: tankColor[index],
+    currentColor: tankColor[index],
     tankFallAnimationExecuting: false,
     fuel: 100,
     selectedAction: "standardShot",
@@ -129,7 +129,7 @@ export const drawTank = (
   customProps: {
     shields: number;
     position: Tuple;
-    currentColor: string;
+    currentColor: number[];
     turretAngle: number;
     factor?: number;
   }
@@ -142,10 +142,11 @@ export const drawTank = (
     factor = 1,
   } = customProps;
   const [tankX, tankY] = position;
+  console.log("1", currentColor, designConstants.destroyedTankColor)
   const tankFillColor =
     shields > 0 ? currentColor : designConstants.destroyedTankColor;
   ctx.clearRect(0, 0, 100, 100);
-  ctx.fillStyle = tankFillColor;
+  ctx.fillStyle = arrayToRgba(tankFillColor);
   ctx.fillRect(
     tankX,
     tankY,
@@ -153,7 +154,7 @@ export const drawTank = (
     tankDimensions.height * factor
   );
 
-  ctx.fillStyle = tankFillColor;
+  ctx.fillStyle = arrayToRgba(tankFillColor);
   ctx.beginPath();
   ctx.arc(
     tankX + (tankDimensions.width * factor) / 2,
@@ -172,7 +173,7 @@ export const drawTank = (
   ctx.beginPath();
   ctx.moveTo(...startingPoint);
   ctx.lineTo(...endingPoint);
-  ctx.strokeStyle = tankFillColor;
+  ctx.strokeStyle = arrayToRgba(tankFillColor);
   ctx.lineWidth = 3 * factor;
   ctx.stroke();
   ctx.closePath();
