@@ -6,6 +6,7 @@
 
 ### Desktop
 <img width="1470" alt="Screenshot 2024-12-02 at 9 39 20 PM" src="https://github.com/user-attachments/assets/0504d35a-1cf0-4531-9a5b-5e07484ad888">
+<img width="1470" alt="Screenshot 2024-12-11 at 3 36 27 PM" src="https://github.com/user-attachments/assets/22dd2ff7-d351-429b-aa47-8279a6731bd2" />
 
   
 ### Mobile
@@ -59,11 +60,13 @@ Not yet implemented.
 - [ ] Implement fall damage.
 - [ ] Handle projectile edge case when topograph is at bottom of screen.
 - [ ] Improve aiming system.
+- [ ] Implement sector-based collision-checking system.
 
 
-## Future Updates
+## Major Future Updates
 
-- Implement Java-based websocket backend to enable online multiplayer play.
+- Implement Java Spring Boot websocket backend to enable online multiplayer play.
+- I eventually want to migrate this into TypeScript/React Native, optimize this for mobile, and publish it as a introductory Mobile app.
  
 ## Author
 
