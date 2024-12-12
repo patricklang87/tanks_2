@@ -1,12 +1,12 @@
-import { canvasConstants, environmentConstants, tankDimensions, } from "../../../constants";
+import { canvasConstants, designConstants, environmentConstants, tankDimensions, } from "../../../constants";
 import { setProjectileValues, clearProjectileValues, } from "../../../redux/projectileRedux";
 import { drawCircle } from "../../common/commonAnimationFunctions";
 import { degreesToRadians } from "../../../utils/angleManipulation";
-import { setNewTankShields } from "../../../redux/playersRedux";
+import { setNewTankShields, setStruckTankColors, resetTankColors, } from "../../../redux/playersRedux";
 import { setTopography } from "../../../redux/topographyRedux";
 import { advancePlayerTurn } from "../gameControls";
 import { intersect } from "mathjs";
-import { calculateNewTopographyOnStrike, checkForGroundCollision } from "../topography/topographyProps";
+import { calculateNewTopographyOnStrike, checkForGroundCollision, } from "../topography/topographyProps";
 import { startExplosion } from "../explosion/explosionProps";
 export const animateProjectile = (ctx, customProps) => {
     const { dispatch, projectilePosition, projectileVelocity } = customProps;
@@ -46,6 +46,7 @@ export const shouldCancelProjectileAnimation = ({ projectilePosition, prevPositi
     });
     if (struckTanks.length) {
         dispatch(setNewTankShields(struckTanks));
+        initiateTankDamageAnimation({ dispatch, struckTanks });
     }
     if (!!struckTanks.length || !!topographyStruck) {
         startExplosion({
@@ -60,7 +61,7 @@ export const shouldCancelProjectileAnimation = ({ projectilePosition, prevPositi
         const newTopography = calculateNewTopographyOnStrike({
             point: topographyStruck,
             topography,
-            tank
+            tank,
         });
         dispatch(setTopography(newTopography));
     }
@@ -141,4 +142,13 @@ const checkForStrike = ({ prevPosition, projectilePosition, tanks, }) => {
         }
     });
     return struckTanks;
+};
+const initiateTankDamageAnimation = ({ dispatch, struckTanks, }) => {
+    dispatch(setStruckTankColors({
+        tankInds: struckTanks,
+        newColor: designConstants.struckTankColor,
+    }));
+    setTimeout(() => {
+        dispatch(resetTankColors(struckTanks));
+    }, 100);
 };

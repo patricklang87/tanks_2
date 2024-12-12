@@ -1,5 +1,6 @@
 import {
   canvasConstants,
+  designConstants,
   environmentConstants,
   tankDimensions,
 } from "../../../constants";
@@ -9,12 +10,19 @@ import {
 } from "../../../redux/projectileRedux";
 import { drawCircle } from "../../common/commonAnimationFunctions";
 import { degreesToRadians } from "../../../utils/angleManipulation";
-import { setNewTankShields } from "../../../redux/playersRedux";
+import {
+  setNewTankShields,
+  setStruckTankColors,
+  resetTankColors,
+} from "../../../redux/playersRedux";
 import { setTopography } from "../../../redux/topographyRedux";
 import { Tank, Tuple } from "../../../types";
 import { advancePlayerTurn } from "../gameControls";
 import { intersect } from "mathjs";
-import { calculateNewTopographyOnStrike, checkForGroundCollision } from "../topography/topographyProps";
+import {
+  calculateNewTopographyOnStrike,
+  checkForGroundCollision,
+} from "../topography/topographyProps";
 import { startExplosion } from "../explosion/explosionProps";
 
 export const animateProjectile = (
@@ -84,6 +92,7 @@ export const shouldCancelProjectileAnimation = ({
 
   if (struckTanks.length) {
     dispatch(setNewTankShields(struckTanks));
+    initiateTankDamageAnimation({dispatch, struckTanks})
   }
 
   if (!!struckTanks.length || !!topographyStruck) {
@@ -100,9 +109,9 @@ export const shouldCancelProjectileAnimation = ({
     const newTopography = calculateNewTopographyOnStrike({
       point: topographyStruck,
       topography,
-      tank
+      tank,
     });
-    dispatch(setTopography(newTopography))
+    dispatch(setTopography(newTopography));
   }
 
   return outOfBounds || !!struckTanks.length || !!topographyStruck;
@@ -235,4 +244,24 @@ const checkForStrike = ({
     }
   });
   return struckTanks;
+};
+
+const initiateTankDamageAnimation = ({
+  dispatch,
+  struckTanks,
+}: {
+  dispatch: Function;
+  struckTanks: number[];
+}): void => {
+  dispatch(
+    setStruckTankColors({
+      tankInds: struckTanks,
+      newColor: designConstants.struckTankColor,
+    })
+  );
+  console.log("setting timeout")
+  setTimeout(() => {
+    console.log("resolving timeout")
+    dispatch(resetTankColors(struckTanks));
+  }, 500);
 };

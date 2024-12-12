@@ -127,9 +127,20 @@ const playersSlice = createSlice({
                 }
             }
         },
+        setStruckTankColors: (state, action) => {
+            const { tankInds, newColor } = action.payload;
+            for (let tankInd of tankInds) {
+                state.tanks[tankInd].currentColor = newColor;
+            }
+        },
+        resetTankColors: (state, action) => {
+            for (let tankInd of action.payload) {
+                state.tanks[tankInd].currentColor = state.tanks[tankInd].localColor;
+            }
+        }
     },
 });
-export const { setInitialPlayerState, setCurrentTankTurretAngle, setCurrentTankShotPower, setCurrentTankDriveDistance, setCurrentTankSelectedAction, setPlayerTurn, setNewTankShields, reduceRemainingRounds, updateTankPosition, setTanksDriving, cancelTanksAnimating, setTanksFalling, setDamageFollowingExplosion, } = playersSlice.actions;
+export const { setInitialPlayerState, setCurrentTankTurretAngle, setCurrentTankShotPower, setCurrentTankDriveDistance, setCurrentTankSelectedAction, setPlayerTurn, setNewTankShields, reduceRemainingRounds, updateTankPosition, setTanksDriving, cancelTanksAnimating, setTanksFalling, setDamageFollowingExplosion, setStruckTankColors, resetTankColors, } = playersSlice.actions;
 export const selectTanks = (state) => state.players.tanks;
 export const selectCurrentTank = (state) => state.players.tanks[state.players.currentPlayerIndex];
 export const selectCurrentPlayerIndex = (state) => state.players.currentPlayerIndex;

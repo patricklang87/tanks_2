@@ -8,6 +8,7 @@ export const canvasConstants: { width: number; height: number } = {
 export const designConstants: {
   landscapeStrokeWidth: number;
   destroyedTankColor: number[];
+  struckTankColor: number[];
   devGridBigLineColor: string;
   devGridSmallLineColor: string;
   devGridBigLineWidth: number;
@@ -15,6 +16,7 @@ export const designConstants: {
 } = {
   landscapeStrokeWidth: 8,
   destroyedTankColor: [153, 117, 112],
+  struckTankColor: [255, 0, 0, 1],
   devGridBigLineColor: "red",
   devGridSmallLineColor: "grey",
   devGridBigLineWidth: 2,

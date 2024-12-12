@@ -81,7 +81,6 @@ export const initiateTank = ({ index, tankPosition, }) => {
 export const drawTank = (ctx, customProps) => {
     const { shields, position, currentColor, turretAngle, factor = 1, } = customProps;
     const [tankX, tankY] = position;
-    console.log("1", currentColor, designConstants.destroyedTankColor);
     const tankFillColor = shields > 0 ? currentColor : designConstants.destroyedTankColor;
     ctx.clearRect(0, 0, 100, 100);
     ctx.fillStyle = arrayToRgba(tankFillColor);
