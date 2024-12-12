@@ -1,7 +1,7 @@
 import { tankDimensions, canvasConstants, tankColor, designConstants, actions, environmentConstants, } from "../../../constants";
 import { arrayToRgba } from "../../../utils/colors";
 import { getCoordinatesOnCircle } from "../../../utils/angleManipulation";
-import { cancelTanksAnimating, updateTankPosition, setTanksFalling, } from "../../../redux/playersRedux";
+import { cancelTanksAnimating, updateTankPosition, setTanksFalling, setStruckTankColors, resetTankColors } from "../../../redux/playersRedux";
 import { advancePlayerTurn } from "../gameControls";
 import { setOnTopography } from "../../../utils/pointCentering";
 export const generateTankPositions = ({ topography, numberOfTanks = 2, }) => {
@@ -189,18 +189,14 @@ export const animateTanksFalling = (ctx, customProps) => {
             tankInd: i,
         }));
     }
-    // const position = tank.position;
-    // const currX = uncenterTank(position)[0];
-    // const uncenteredTarget = tank.targetX + tankDimensions.width / 2;
-    // const driveDirection = uncenteredTarget - currX > 0 ? 1 : -1;
-    // let newX;
-    // if (Math.abs(uncenteredTarget - currX) < driveAnimationSpeed) {
-    //   newX = uncenteredTarget;
-    // } else {
-    //   newX = currX + driveDirection * driveAnimationSpeed;
-    // }
-    // const newY = getTankY({ topography, tankX: newX });
-    // const newPosition = centerTank([newX, newY]);
-    // dispatch(updateTankPosition({ newPosition, tankInd }));
     ctx?.stroke();
+};
+export const initiateTankDamageAnimation = ({ dispatch, struckTanks, }) => {
+    dispatch(setStruckTankColors({
+        tankInds: struckTanks,
+        newColor: designConstants.struckTankColor,
+    }));
+    setTimeout(() => {
+        dispatch(resetTankColors(struckTanks));
+    }, 500);
 };

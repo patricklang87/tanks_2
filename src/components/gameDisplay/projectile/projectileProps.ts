@@ -1,6 +1,5 @@
 import {
   canvasConstants,
-  designConstants,
   environmentConstants,
   tankDimensions,
 } from "../../../constants";
@@ -12,8 +11,6 @@ import { drawCircle } from "../../common/commonAnimationFunctions";
 import { degreesToRadians } from "../../../utils/angleManipulation";
 import {
   setNewTankShields,
-  setStruckTankColors,
-  resetTankColors,
 } from "../../../redux/playersRedux";
 import { setTopography } from "../../../redux/topographyRedux";
 import { Tank, Tuple } from "../../../types";
@@ -24,6 +21,7 @@ import {
   checkForGroundCollision,
 } from "../topography/topographyProps";
 import { startExplosion } from "../explosion/explosionProps";
+import { initiateTankDamageAnimation } from "../tanks/tanksProps";
 
 export const animateProjectile = (
   ctx: CanvasRenderingContext2D,
@@ -246,22 +244,3 @@ const checkForStrike = ({
   return struckTanks;
 };
 
-const initiateTankDamageAnimation = ({
-  dispatch,
-  struckTanks,
-}: {
-  dispatch: Function;
-  struckTanks: number[];
-}): void => {
-  dispatch(
-    setStruckTankColors({
-      tankInds: struckTanks,
-      newColor: designConstants.struckTankColor,
-    })
-  );
-  console.log("setting timeout")
-  setTimeout(() => {
-    console.log("resolving timeout")
-    dispatch(resetTankColors(struckTanks));
-  }, 500);
-};

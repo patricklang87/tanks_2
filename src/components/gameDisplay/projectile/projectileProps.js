@@ -1,13 +1,14 @@
-import { canvasConstants, designConstants, environmentConstants, tankDimensions, } from "../../../constants";
+import { canvasConstants, environmentConstants, tankDimensions, } from "../../../constants";
 import { setProjectileValues, clearProjectileValues, } from "../../../redux/projectileRedux";
 import { drawCircle } from "../../common/commonAnimationFunctions";
 import { degreesToRadians } from "../../../utils/angleManipulation";
-import { setNewTankShields, setStruckTankColors, resetTankColors, } from "../../../redux/playersRedux";
+import { setNewTankShields, } from "../../../redux/playersRedux";
 import { setTopography } from "../../../redux/topographyRedux";
 import { advancePlayerTurn } from "../gameControls";
 import { intersect } from "mathjs";
 import { calculateNewTopographyOnStrike, checkForGroundCollision, } from "../topography/topographyProps";
 import { startExplosion } from "../explosion/explosionProps";
+import { initiateTankDamageAnimation } from "../tanks/tanksProps";
 export const animateProjectile = (ctx, customProps) => {
     const { dispatch, projectilePosition, projectileVelocity } = customProps;
     const [currX, currY] = projectilePosition;
@@ -142,13 +143,4 @@ const checkForStrike = ({ prevPosition, projectilePosition, tanks, }) => {
         }
     });
     return struckTanks;
-};
-const initiateTankDamageAnimation = ({ dispatch, struckTanks, }) => {
-    dispatch(setStruckTankColors({
-        tankInds: struckTanks,
-        newColor: designConstants.struckTankColor,
-    }));
-    setTimeout(() => {
-        dispatch(resetTankColors(struckTanks));
-    }, 100);
 };
