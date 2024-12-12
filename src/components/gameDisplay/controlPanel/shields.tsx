@@ -2,6 +2,7 @@ import { useAppSelector } from "../../../redux/hooks";
 import { selectTanks } from "../../../redux/playersRedux";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import { designConstants } from "../../../constants";
+import { arrayToRgba } from "../../../utils/colors";
 
 const Shields = () => {
   const tanks = useAppSelector(selectTanks);
@@ -15,7 +16,7 @@ const Shields = () => {
           className="row shields-indicator"
           style={{
             backgroundColor:
-              tank.shields > 0 ? tank.localColor : destroyedTankColor,
+              tank.shields > 0 ? arrayToRgba(tank.localColor) : arrayToRgba(destroyedTankColor),
           }}
         >
           <span className="col-4">
@@ -26,7 +27,7 @@ const Shields = () => {
             <ProgressBar
               animated
               now={tank.shields}
-              style={{ color: tank.localColor }}
+              style={{ color: arrayToRgba(tank.localColor) }}
             />
           </div>
         </div>

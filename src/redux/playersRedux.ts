@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { actions, environmentConstants } from "../constants";
+import { actions, designConstants, environmentConstants } from "../constants";
 import { getSelectedActionData } from "../utils/tankData";
 import { RootState } from "./store";
 import { Tank, Action } from "../types";
@@ -156,6 +156,17 @@ const playersSlice = createSlice({
         }
       }
     },
+    setStruckTankColors: (state, action) => {
+      const { tankInds, newColor } = action.payload;
+      for (let tankInd of tankInds) {
+        state.tanks[tankInd].currentColor = newColor;
+      }
+    },
+    resetTankColors: (state, action) => {
+      for (let tankInd of action.payload) {
+        state.tanks[tankInd].currentColor = state.tanks[tankInd].localColor;
+      }
+    }
   },
 });
 
@@ -173,6 +184,8 @@ export const {
   cancelTanksAnimating,
   setTanksFalling,
   setDamageFollowingExplosion,
+  setStruckTankColors,
+  resetTankColors,
 } = playersSlice.actions;
 export const selectTanks = (state: RootState) => state.players.tanks;
 export const selectCurrentTank = (state: RootState) =>

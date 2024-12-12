@@ -13,6 +13,8 @@ import {
   cancelTanksAnimating,
   updateTankPosition,
   setTanksFalling,
+  setStruckTankColors,
+  resetTankColors
 } from "../../../redux/playersRedux";
 import { advancePlayerTurn } from "../gameControls";
 import { setOnTopography } from "../../../utils/pointCentering";
@@ -109,8 +111,8 @@ export const initiateTank = ({
     targetX: tankPosition[0],
     targetY: null,
     tankDriveAnimationExecuting: false,
-    localColor: arrayToRgba(tankColor[index]),
-    currentColor: arrayToRgba(tankColor[index]),
+    localColor: tankColor[index],
+    currentColor: tankColor[index],
     tankFallAnimationExecuting: false,
     fuel: 100,
     selectedAction: "standardShot",
@@ -129,7 +131,7 @@ export const drawTank = (
   customProps: {
     shields: number;
     position: Tuple;
-    currentColor: string;
+    currentColor: number[];
     turretAngle: number;
     factor?: number;
   }
@@ -145,7 +147,7 @@ export const drawTank = (
   const tankFillColor =
     shields > 0 ? currentColor : designConstants.destroyedTankColor;
   ctx.clearRect(0, 0, 100, 100);
-  ctx.fillStyle = tankFillColor;
+  ctx.fillStyle = arrayToRgba(tankFillColor);
   ctx.fillRect(
     tankX,
     tankY,
@@ -153,7 +155,7 @@ export const drawTank = (
     tankDimensions.height * factor
   );
 
-  ctx.fillStyle = tankFillColor;
+  ctx.fillStyle = arrayToRgba(tankFillColor);
   ctx.beginPath();
   ctx.arc(
     tankX + (tankDimensions.width * factor) / 2,
@@ -172,7 +174,7 @@ export const drawTank = (
   ctx.beginPath();
   ctx.moveTo(...startingPoint);
   ctx.lineTo(...endingPoint);
-  ctx.strokeStyle = tankFillColor;
+  ctx.strokeStyle = arrayToRgba(tankFillColor);
   ctx.lineWidth = 3 * factor;
   ctx.stroke();
   ctx.closePath();
@@ -328,19 +330,23 @@ export const animateTanksFalling = (
       })
     );
   }
-
-  // const position = tank.position;
-  // const currX = uncenterTank(position)[0];
-  // const uncenteredTarget = tank.targetX + tankDimensions.width / 2;
-  // const driveDirection = uncenteredTarget - currX > 0 ? 1 : -1;
-  // let newX;
-  // if (Math.abs(uncenteredTarget - currX) < driveAnimationSpeed) {
-  //   newX = uncenteredTarget;
-  // } else {
-  //   newX = currX + driveDirection * driveAnimationSpeed;
-  // }
-  // const newY = getTankY({ topography, tankX: newX });
-  // const newPosition = centerTank([newX, newY]);
-  // dispatch(updateTankPosition({ newPosition, tankInd }));
   ctx?.stroke();
+};
+
+export const initiateTankDamageAnimation = ({
+  dispatch,
+  struckTanks,
+}: {
+  dispatch: Function;
+  struckTanks: number[];
+}): void => {
+  dispatch(
+    setStruckTankColors({
+      tankInds: struckTanks,
+      newColor: designConstants.struckTankColor,
+    })
+  );
+  setTimeout(() => {
+    dispatch(resetTankColors(struckTanks));
+  }, 500);
 };

@@ -5,7 +5,7 @@ import { setDamageFollowingExplosion } from "../../../redux/playersRedux";
 import { arrayToRgba } from "../../../utils/colors";
 import { actions, tankDimensions } from "../../../constants";
 import { setOnTopography } from "../../../utils/pointCentering";
-import { startTanksFalling } from "../tanks/tanksProps";
+import { startTanksFalling, initiateTankDamageAnimation } from "../tanks/tanksProps";
 export const startExplosion = ({ dispatch, center, tank, topography, topographyStruck, }) => {
     const actionSelector = tank.selectedAction;
     const selectedAction = actions[actionSelector];
@@ -63,4 +63,11 @@ export const registerExplosionDamage = ({ tanks, maxRadius, center, dispatch, })
         }
     }
     dispatch(setDamageFollowingExplosion(tankDamageTaken));
+    const struckTanks = [];
+    tankDamageTaken.forEach((tank, i) => {
+        if (typeof tank === "number") {
+            struckTanks.push(i);
+        }
+    });
+    initiateTankDamageAnimation({ dispatch, struckTanks });
 };
