@@ -10,7 +10,7 @@
 
   
 ### Mobile
-The project has not yet been optimized for mobile devices.
+The project has not yet been optimized for mobile devices. I intend to eventually migrate this project to React Native and optimize it for mobile apps.
 
 ## Links
 
