@@ -67,6 +67,7 @@ Not yet implemented.
 
 - Implement Java Spring Boot websocket backend to enable online multiplayer play.
 - I eventually want to migrate this into TypeScript/React Native, optimize this for mobile, and publish it as a introductory Mobile app.
+- Replace canvas-drawn sprites with animated .gif figures.
  
 ## Author
 
