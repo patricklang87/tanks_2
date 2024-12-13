@@ -27,14 +27,16 @@ export const colorSchemes : {
   dayColors: ColorScheme;
   duskColors: ColorScheme;
 } = {
-    dayColors: {
-      skyColor: "skyblue",
+  dayColors: {
+      lowSkyColor: "beige",
+    skyColor: "skyblue",
       landscapeStrokeStyle: "darkgreen",
       landscapeFillStyle: "lightgreen",
       cloudColor: "white",
     },
-    duskColors: {
-      skyColor: "#0f013b",
+  duskColors: {
+      lowSkyColor: "#f06a41",
+    skyColor: "#0f013b",
       landscapeStrokeStyle: "#016308",
       landscapeFillStyle: "#013b2c",
       cloudColor: "hotpink",
@@ -98,7 +100,7 @@ export const actions: {
     damage: 20,
     type: "PROJECTILE",
     rounds: "Infinite",
-    explosionColor: [241, 90, 34, 1],
+    explosionColor: [250, 183, 0],
   },
   drive: { name: "drive", displayName: "Drive", fuel: 1, type: "DRIVE" },
   steelShotput: {

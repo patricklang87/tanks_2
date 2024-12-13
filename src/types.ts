@@ -33,6 +33,7 @@ export type NullTuple = [null, null];
 export type Cloud = { point: Tuple; size: number; cloudColor?: string; };
 
 export type ColorScheme = {
+  lowSkyColor: string;
   skyColor: string;
   landscapeStrokeStyle: string;
   landscapeFillStyle: string;

@@ -13,8 +13,11 @@ const StaticBackground = () => {
     const { lineWidth = 1 } = rectDims;
     const settingColors: ColorScheme = colorSchemes[colorScheme as keyof typeof colorSchemes]
     ctx.lineWidth = lineWidth;
-    ctx.fillStyle = settingColors.skyColor;
-    ctx.strokeStyle = settingColors.skyColor;
+    const skyGrad=ctx.createLinearGradient(0, canvasConstants.height, 0,0);
+    skyGrad.addColorStop(0, settingColors.lowSkyColor);
+    skyGrad.addColorStop(1, settingColors.skyColor);
+    ctx.fillStyle = skyGrad;
+    ctx.strokeStyle = skyGrad;
     ctx.fillRect(0, 0, canvasConstants.width, canvasConstants.height);
   };
 
