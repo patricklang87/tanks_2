@@ -1,6 +1,6 @@
 <h1 align="center">Tanks fer Nuthin'!</h1>
 
-<p align="center">To continue upskilling while on the job market, I a writing a clone of "Tanks," a childhood favorite. The frontend implements TypeScript, React, React-Redux, with the embedded JS Canvas API. I plan to add a Java backend to enable online multiplayer with websockets.</p>
+<p align="center">To continue upskilling while on the job market, I am writing a clone of "Tanks," a childhood favorite. The frontend implements TypeScript, React, React-Redux, with the embedded JS Canvas API. I plan to add a Java backend to enable online multiplayer with websockets.</p>
 
 ## Screenshots
 
@@ -26,6 +26,16 @@ To run the project locally:
 - After navigating to the root directory in the terminal, run the "npm install" command.
 - Start the project locally with the "npm run dev" command.
 
+## Run the tests
+
+Unit tests use [Vitest](https://vitest.dev/) and cover the geometry helpers (angles, line interpolation, placing points on the terrain) and the players Redux slice (damage, winner detection, ammunition, falling tanks).
+
+```bash
+npm test
+```
+
+Tests also run on every push and pull request via GitHub Actions.
+
 ## Built with
 
 - TypeScript
@@ -42,8 +52,11 @@ To run the project locally:
 - Mathjs
 
 
-### Backend 
-Not yet implemented.
+### Backend
+A Java Spring Boot websocket backend for online multiplayer is in progress in [tanksmp](https://github.com/patricklang87/tanksmp).
+
+### Testing
+- Vitest
 
 ## Next Updates
 
